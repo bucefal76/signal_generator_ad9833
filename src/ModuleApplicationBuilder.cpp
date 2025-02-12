@@ -1,5 +1,9 @@
 
 #include "ModuleApplicationBuilder.hpp"
+#include "ModuleConfig.hpp"
+#include "ModuleApplicationIf.hpp"
+#include "Model/Vobulator.hpp"
+#include "Controler/SerialPortMenu.hpp"
 
 void ModuleApplicationBuilder::buildApplication(ModuleApplicationIf &rApplication)
 {
@@ -8,4 +12,9 @@ void ModuleApplicationBuilder::buildApplication(ModuleApplicationIf &rApplicatio
 
 void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 {
+#ifdef USE_SERIAL
+    rApplication.addThread(SerialPortMenu::getInstance());
+    SerialPortMenu::getInstance()->enable();
+#endif
+    rApplication.addThread(Vobulator::getInstance());
 }
