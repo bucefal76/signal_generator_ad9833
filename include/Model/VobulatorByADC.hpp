@@ -1,6 +1,10 @@
 #ifndef VOBULATORBYADC_HPP
 #define VOBULATORBYADC_HPP
 
+#include "ModuleConfig.hpp"
+
+#ifdef USE_ESP32
+
 #include <Thread.h>
 
 class VobulatorByADC : public Thread
@@ -18,8 +22,8 @@ private:
     static void onRunCallback();
 
     static VobulatorByADC *m_Instance;
-
-    bool state;
 };
+
+#endif
 
 #endif

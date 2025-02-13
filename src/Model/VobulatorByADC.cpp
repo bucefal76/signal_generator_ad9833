@@ -1,26 +1,49 @@
 #include "Model/VobulatorByADC.hpp"
-#include "ModuleConfig.hpp"
 
-/*
-const int dacPin = 25; // Define the DAC pin (GPIO 25 in this example)
+#ifdef USE_ESP32
 
-void setup() {
-  // No need for serial communication setup in this example
+#include <math.h>
+#include <stdint.h>
+
+#include <esp_task_wdt.h>
+
+#define DAC1_PIN 25
+#define DAC2_PIN 26
+
+#define SINE_TABLE_SIZE 256
+#define RAMP_TABLE_SIZE 25
+
+uint8_t sineTable[SINE_TABLE_SIZE];
+
+uint8_t rampTable[RAMP_TABLE_SIZE];
+
+void generateSineTable()
+{
+    for (int i = 0; i < SINE_TABLE_SIZE; i++)
+    {
+        float angle = (2.0f * M_PI * i) / SINE_TABLE_SIZE;     // Calculate the angle in radians
+        float sineValue = sin(angle);                          // Get the sine value
+        sineTable[i] = (uint8_t)((sineValue + 1.0f) * 127.5f); // Scale to 0-255 range
+    }
 }
 
-void loop() {
-  for (int value = 0; value <= 255; value++) { // Loop through values from 0 to 255
-    dacWrite(dacPin, value); // Write the analog value to the DAC pin
-    delay(10); // Wait for 10 milliseconds before writing the next value
-  }
-  for (int value = 255; value >= 0; value--) { // Loop through values from 255 to 0
-    dacWrite(dacPin, value); // Write the analog value to the DAC pin
-    delay(10); // Wait for 10 milliseconds before writing the next value
-  }
+void generateRampTable()
+{
+    for (int i = 0; i < RAMP_TABLE_SIZE; i++)
+    {
+        rampTable[i] = i; // Calculate the ramp value
+    }
 }
-  */
 
-#define DAC_PIN 25
+void generateRampTable(int num_samples)
+{
+    for (int i = 0; i < num_samples; i++)
+    {
+        rampTable[i] = 0xFF - (i * 0xFF / (num_samples - 1)); // Calculate the ramp value
+    }
+}
+
+bool S = true;
 
 VobulatorByADC *VobulatorByADC::m_Instance = nullptr;
 
@@ -40,7 +63,8 @@ VobulatorByADC::VobulatorByADC()
     onRun(onRunCallback);
     enabled = false;
 
-    state = true;
+    generateSineTable();
+    generateRampTable(RAMP_TABLE_SIZE);
 }
 
 void VobulatorByADC::enable()
@@ -55,21 +79,25 @@ void VobulatorByADC::disable()
 
 void VobulatorByADC::update()
 {
-    if (state)
+    for (uint16_t j = 0; j < RAMP_TABLE_SIZE; j++)
     {
-        dacWrite(DAC_PIN, 0xFF);
-    }
-    else
-    {
-        dacWrite(DAC_PIN, 0x00);
+        dacWrite(DAC2_PIN, rampTable[j]);
+
+        for (uint8_t cycles = 0; cycles < 5; cycles++)
+        {
+            for (uint16_t i = 0; i < SINE_TABLE_SIZE; i++)
+            {
+                dacWrite(DAC1_PIN, sineTable[i]);
+            }
+        }
     }
 
-    state = !state;
-
-    Serial.println(F("CLICK"));
+    // esp_task_wdt_reset();
 }
 
 void VobulatorByADC::onRunCallback()
 {
     m_Instance->update();
 }
+
+#endif
