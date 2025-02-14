@@ -4,6 +4,8 @@
 #ifdef USE_ESP32
 #define ESP_WATCHDOG_TIMEOUT_SEK 3U
 #define VOBULATOR_BY_DC_THREAD_TIME_INTERVAL_MS 50U
+#else
+#define CHANNEL_1_SPI_CS 10
 #endif
 
 #define USE_SERIAL

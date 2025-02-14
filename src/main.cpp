@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <SPI.h>
 
 #include "ModuleConfig.hpp"
 #include "ModuleApplication.hpp"
@@ -6,6 +7,8 @@
 
 #ifdef USE_ESP32
 #include <esp_task_wdt.h>
+#else
+
 #endif
 
 ModuleApplication gApplication;
@@ -24,6 +27,8 @@ void setup()
   Serial.println(F(__TIME__));
   Serial.println(F("Enter any char to open the menu..."));
 #endif
+
+  SPI.begin();
 
   ModuleApplicationBuilder gApplicationBuilder;
   gApplicationBuilder.buildApplication(gApplication);
