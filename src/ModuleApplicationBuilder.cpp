@@ -7,6 +7,7 @@
 #include "Model/VobulatorByADC.hpp"
 #endif
 #include "Controler/SerialPortMenu.hpp"
+#include "Model/Generator.hpp"
 
 void ModuleApplicationBuilder::buildApplication(ModuleApplicationIf &rApplication)
 {
@@ -15,6 +16,8 @@ void ModuleApplicationBuilder::buildApplication(ModuleApplicationIf &rApplicatio
 
 void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 {
+    Generator *gen = new Generator();
+
 #ifdef USE_SERIAL
     rApplication.addThread(SerialPortMenu::getInstance());
     SerialPortMenu::getInstance()->enable();
