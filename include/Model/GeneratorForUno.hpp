@@ -11,6 +11,11 @@ class GeneratorForUno : public GeneratorAd9833
 {
 
 public:
+    /// @brief Constructor to initialize the generator.
+    /// The implementation is specific to the Arduino Uno board.
+    /// All other functionality is same as the GeneratorAd9833 class.
+    /// At default it always uses a hardware SPI interface, lines 10,11,13.
+    /// @param spiCsLine The chip select line to use (e.g. 10).
     GeneratorForUno(const uint8_t spiCsLine);
 };
 
