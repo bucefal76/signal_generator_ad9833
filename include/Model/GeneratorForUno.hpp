@@ -10,8 +10,10 @@ class GeneratorForUno : public GeneratorIf
 
 public:
     GeneratorForUno(const uint8_t spiCsLine);
-    virtual void enableGenerator(const GetTypes type, const uint16_t frequency);
-    virtual void disableGenerator();
+    ~GeneratorForUno();
+    virtual void setWave(const WaveType type, const uint16_t frequency);
+    virtual bool isEnabled() const;
+    virtual void disableWave();
 
 private:
     AD9833 *m_AD;

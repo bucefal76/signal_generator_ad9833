@@ -1,9 +1,13 @@
 #ifndef SERIALPORTMENU_HPP
 #define SERIALPORTMENU_HPP
 
+#ifdef USE_SERIAL
+
 #include <Thread.h>
 
-class SerialPortMenu : public Thread
+#include "ControllerIf.hpp"
+
+class SerialPortMenu : public Thread, public ControllerIf
 {
 public:
     static SerialPortMenu *getInstance();
@@ -13,11 +17,19 @@ public:
     virtual void enable();
     virtual void disable();
 
+    virtual void setGeneratorsToControl(GeneratorIf *generatorLine1, GeneratorIf *generatorLine2);
+
 private:
     void update();
     void displayMainMenu();
-    void displayChannel1Menu();
-    void displayChannel2Menu();
+    void displayChannelMenu();
+    void displayWaveTypeMenu();
+    void setGenerator1LineWave(const GeneratorIf::WaveType waveType, const uint16_t frequency);
+    void setGenerator2LineWave(const GeneratorIf::WaveType waveType, const uint16_t frequency);
+    void disableGeneratorChannel1();
+    void disableGeneratorChannel2();
+    void displayChannel1Status();
+    void displayChannel2Status();
 
     static void onRunCallback();
 
@@ -27,16 +39,22 @@ private:
         MenuStateStart,
         MenuStateMain,
         MenuStateChannel1Menu,
-        MenuStateChannel1EnableDisableMenu,
-        MenuStateChannel1SelectSignalTypeMenu,
+        MenuStateChannel1SelectWaveTypeMenu,
         MenuStateChannel1SelectFrequencyMenu,
-        MenuStateChannel2Menu,
-        MenuStateChannel1VobulatorMenu
+        MenuStateChannel2Menu
     };
 
     MenuStateT m_menuState;
+    GeneratorIf *m_generatorChannel1;
+    GeneratorIf *m_generatorChannel2;
+    GeneratorIf::WaveType m_lastSelectedGeneratorChannel1WaveType;
+    GeneratorIf::WaveType m_lastSelectedGeneratorChannel2WaveType;
+    uint16_t m_lastSelectedGeneratorChannel1Frequency;
+    uint16_t m_lastSelectedGeneratorChannel2Frequency;
 
     static SerialPortMenu *m_Instance;
 };
+
+#endif
 
 #endif
