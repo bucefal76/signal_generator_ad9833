@@ -103,7 +103,9 @@ void SerialPortMenu::update()
                 displayWaveTypeMenu();
                 break;
             case '4':
-                m_menuState = MenuStateChannel1Menu;
+                m_menuState = MenuStateChannel1SelectFrequencyMenu;
+                displayChannel1Status();
+                displayFrequencyMenu();
                 break;
             default:
                 m_menuState = MenuStateMain;
@@ -157,6 +159,34 @@ void SerialPortMenu::update()
         break;
     }
 
+    case MenuStateChannel1SelectFrequencyMenu:
+    {
+        if (Serial.available() > 0)
+        {
+            const String input = Serial.readString();
+            Serial.println(input);
+
+            const long frequency = atol(input.c_str());
+
+            if (frequency > 0)
+            {
+                setGenerator1LineWave(m_lastSelectedGeneratorChannel1WaveType, frequency);
+                displayChannel1Status();
+                displayChannelMenu();
+                m_menuState = MenuStateChannel1Menu;
+            }
+            else
+            {
+                m_menuState = MenuStateChannel1Menu;
+                Serial.println(F("Invalid frequency!"));
+                displayChannel1Status();
+                displayMainMenu();
+            }
+        }
+
+        break;
+    }
+
     case MenuStateChannel2Menu:
     {
         if (Serial.available() > 0)
@@ -191,8 +221,8 @@ void SerialPortMenu::displayMainMenu()
 {
     Serial.println(F(""));
     Serial.println(F("Main Menu:"));
-    Serial.println(F("1 - Set up generator LINE 1"));
-    Serial.println(F("2 - Set up generator LINE 2"));
+    Serial.println(F("1 - Set up generator channel 1"));
+    Serial.println(F("2 - Set up generator channel 2"));
     // Serial.println(F("3 - Enable/disable vobulator LINE 1"));
 }
 
@@ -213,6 +243,11 @@ void SerialPortMenu::displayWaveTypeMenu()
     Serial.println(F("0 Return to main menu"));
 }
 
+void SerialPortMenu::displayFrequencyMenu()
+{
+    Serial.print(F("Enter frequency in Hz:"));
+}
+
 void SerialPortMenu::onRunCallback()
 {
     m_Instance->update();
@@ -227,23 +262,23 @@ void SerialPortMenu::setGeneratorsToControl(GeneratorIf *generatorLine1, Generat
     setGenerator2LineWave(GeneratorIf::TypeSinusoidal, DEFAULT_FREQUENCY);
 }
 
-void SerialPortMenu::setGenerator1LineWave(const GeneratorIf::WaveType waveType, const uint16_t frequency)
+void SerialPortMenu::setGenerator1LineWave(const GeneratorIf::WaveType waveType, const long frequency)
 {
     if (m_generatorChannel1 != nullptr)
     {
-        m_generatorChannel1->setWave(waveType, frequency);
-        m_lastSelectedGeneratorChannel1Frequency = frequency;
-        m_lastSelectedGeneratorChannel1WaveType = waveType;
+        m_generatorChannel1->generateWave(waveType, frequency);
+        m_lastSelectedGeneratorChannel1Frequency = m_generatorChannel1->getFrequency();
+        m_lastSelectedGeneratorChannel1WaveType = m_generatorChannel1->getWaveType();
     }
 }
 
-void SerialPortMenu::setGenerator2LineWave(const GeneratorIf::WaveType waveType, const uint16_t frequency)
+void SerialPortMenu::setGenerator2LineWave(const GeneratorIf::WaveType waveType, const long frequency)
 {
     if (m_generatorChannel2 != nullptr)
     {
-        m_generatorChannel2->setWave(waveType, frequency);
-        m_lastSelectedGeneratorChannel2Frequency = frequency;
-        m_lastSelectedGeneratorChannel2WaveType = waveType;
+        m_generatorChannel2->generateWave(waveType, frequency);
+        m_lastSelectedGeneratorChannel2Frequency = m_generatorChannel2->getFrequency();
+        m_lastSelectedGeneratorChannel2WaveType = m_generatorChannel2->getWaveType();
     }
 }
 
@@ -271,11 +306,11 @@ void SerialPortMenu::displayChannel1Status()
         Serial.print(F("Channel 1: [State: "));
         if (m_generatorChannel1->isEnabled())
         {
-            Serial.print(F("Enabled "));
+            Serial.print(F("Enabled, "));
         }
         else
         {
-            Serial.print(F("Disabled "));
+            Serial.print(F("Disabled, "));
         }
         Serial.print(F("Wave type: "));
         switch (m_lastSelectedGeneratorChannel1WaveType)

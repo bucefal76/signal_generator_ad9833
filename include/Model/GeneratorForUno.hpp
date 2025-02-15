@@ -5,15 +5,18 @@
 
 class AD9833;
 
+/// @brief Class to generate waves with the AD9833 function generator
 class GeneratorForUno : public GeneratorIf
 {
 
 public:
     GeneratorForUno(const uint8_t spiCsLine);
     ~GeneratorForUno();
-    virtual void setWave(const WaveType type, const uint16_t frequency);
-    virtual bool isEnabled() const;
+    virtual void generateWave(const WaveType type, const long frequency);
     virtual void disableWave();
+    virtual long getFrequency() const;
+    virtual WaveType getWaveType() const;
+    virtual bool isEnabled() const;
 
 private:
     AD9833 *m_AD;

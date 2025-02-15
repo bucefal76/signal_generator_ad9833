@@ -19,17 +19,17 @@ void ModuleApplicationBuilder::buildApplication(ModuleApplicationIf &rApplicatio
 
 void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 {
-    GeneratorIf *generatorLine1 = nullptr;
-    GeneratorIf *generatorLine2 = nullptr;
+    GeneratorIf *generatorChannel1 = nullptr;
+    GeneratorIf *generatorChannel2 = nullptr;
 #ifdef USE_ESP32
 
 #else
-    generatorLine1 = new GeneratorForUno(CHANNEL_1_SPI_CS);
+    generatorChannel1 = new GeneratorForUno(CHANNEL_1_SPI_CS);
 #endif
 
 #ifdef USE_SERIAL
     rApplication.addThread(SerialPortMenu::getInstance());
-    SerialPortMenu::getInstance()->setGeneratorsToControl(generatorLine1, generatorLine2);
+    SerialPortMenu::getInstance()->setGeneratorsToControl(generatorChannel1, generatorChannel2);
     SerialPortMenu::getInstance()->enable();
 #endif
     rApplication.addThread(Vobulator::getInstance());

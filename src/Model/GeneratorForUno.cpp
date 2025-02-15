@@ -22,7 +22,7 @@ GeneratorForUno::~GeneratorForUno()
     }
 }
 
-void GeneratorForUno::setWave(const WaveType type, const uint16_t frequency)
+void GeneratorForUno::generateWave(const WaveType type, const long frequency)
 {
     if (m_AD != nullptr)
     {
@@ -45,6 +45,36 @@ void GeneratorForUno::setWave(const WaveType type, const uint16_t frequency)
             m_AD->setWave(AD9833_OFF);
         }
     }
+}
+
+GeneratorIf::WaveType GeneratorForUno::getWaveType() const
+{
+    if (m_AD != nullptr)
+    {
+        switch (m_AD->getWave())
+        {
+        case AD9833_SINE:
+            return TypeSinusoidal;
+        case AD9833_SQUARE1:
+            return TypeSquare;
+        case AD9833_TRIANGLE:
+            return TypeRamp;
+        default:
+            return TypeNone;
+        }
+    }
+
+    return TypeNone;
+}
+
+long GeneratorForUno::getFrequency() const
+{
+    if (m_AD != nullptr)
+    {
+        return m_AD->getFrequency(0);
+    }
+
+    return 0U;
 }
 
 bool GeneratorForUno::isEnabled() const

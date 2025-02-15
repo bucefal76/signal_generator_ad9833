@@ -1,6 +1,8 @@
 #ifndef MODULECONFIG_HPP
 #define MODULECONFIG_HPP
 
+/// @brief Configuration of the module
+
 #ifdef USE_ESP32
 #define ESP_WATCHDOG_TIMEOUT_SEK 3U
 #define VOBULATOR_BY_DC_THREAD_TIME_INTERVAL_MS 50U

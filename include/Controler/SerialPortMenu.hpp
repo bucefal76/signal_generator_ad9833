@@ -24,8 +24,9 @@ private:
     void displayMainMenu();
     void displayChannelMenu();
     void displayWaveTypeMenu();
-    void setGenerator1LineWave(const GeneratorIf::WaveType waveType, const uint16_t frequency);
-    void setGenerator2LineWave(const GeneratorIf::WaveType waveType, const uint16_t frequency);
+    void displayFrequencyMenu();
+    void setGenerator1LineWave(const GeneratorIf::WaveType waveType, const long frequency);
+    void setGenerator2LineWave(const GeneratorIf::WaveType waveType, const long frequency);
     void disableGeneratorChannel1();
     void disableGeneratorChannel2();
     void displayChannel1Status();
@@ -49,8 +50,8 @@ private:
     GeneratorIf *m_generatorChannel2;
     GeneratorIf::WaveType m_lastSelectedGeneratorChannel1WaveType;
     GeneratorIf::WaveType m_lastSelectedGeneratorChannel2WaveType;
-    uint16_t m_lastSelectedGeneratorChannel1Frequency;
-    uint16_t m_lastSelectedGeneratorChannel2Frequency;
+    long m_lastSelectedGeneratorChannel1Frequency;
+    long m_lastSelectedGeneratorChannel2Frequency;
 
     static SerialPortMenu *m_Instance;
 };
