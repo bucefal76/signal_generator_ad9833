@@ -12,6 +12,11 @@ At least as long as suitable library to talk ith the chip are available.
 - Single channel sine, square and ramp signal up to 12Mhz.
 - Control over serial port.
 
+# Required hardware
+
+- Atmega 328p with Arduino UNO (or clone) + 2 x AD9833 (for two channel configuration).
+- ESP32 with Wemos D1 R32 (or clone) + 2 x AD9833 (for two channel configuration).
+
 # Serial port settings
 
  - COMM port - same as used with Arduino IDE or VSC Platform IO
@@ -25,7 +30,7 @@ At least as long as suitable library to talk ith the chip are available.
         -----------------                                       ----------------
         |               |                                       |              |
         |      UNO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out  ---  your scope
-  USB - |               |  Pin 11 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN --- your scope
+  USB - |  ARDUINO      |  Pin 11 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN --- your scope
         |               |  Pin 13 ----------------- Pin SCKL    |              |
         |               |  Pin 5V ----------------- Pin VCC     |              |
         |               |  Pin GND ---------------- Pin DGND    |              |

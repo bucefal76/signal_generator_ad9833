@@ -3,22 +3,17 @@
 
 #ifdef ESP32
 
-#include "GeneratorIf.hpp"
-#include <Arduino.h>
+#include "Model/GeneratorAd9833.hpp"
 
-class GeneratorForEsp32 : public GeneratorIf
+class SPIClass;
+
+class GeneratorForEsp32 : public GeneratorAd9833
 {
 public:
     GeneratorForEsp32(const uint8_t spiCsLine);
-    ~GeneratorForEsp32();
-    virtual void generateWave(const WaveType type, const long frequency);
-    virtual void disableWave();
-    virtual long getFrequency() const;
-    virtual WaveType getWaveType() const;
-    virtual bool isEnabled() const;
 
 private:
-    AD9833 *m_AD;
+    SPIClass *m_spi;
 };
 
 #endif

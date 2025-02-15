@@ -1,4 +1,3 @@
-
 #ifndef GENERATORIF_HPP
 #define GENERATORIF_HPP
 

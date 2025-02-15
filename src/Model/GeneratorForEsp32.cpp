@@ -1,30 +1,26 @@
 
+#include "Model/GeneratorForEsp32.hpp"
+
 #ifdef ESP32
 
-GeneratorForEsp32(const uint8_t spiCsLine)
-{
-}
-~GeneratorForEsp32()
-{
-}
-void generateWave(const WaveType type, const long frequency);
-{
-}
+#include "AD9833.h"
 
-void disableWave()
+GeneratorForEsp32::GeneratorForEsp32(const uint8_t spiCsLine)
+    : m_spi(nullptr)
 {
-}
 
-long getFrequency() const
-{
-}
+    m_AD = new AD9833(spiCsLine, 23, 18);
+    if (m_AD != nullptr)
+    {
+        Serial.println("created AD");
+        m_AD->begin();
 
-WaveType getWaveType() const
-{
-}
-
-bool isEnabled() const
-{
+        while (1)
+        {
+            m_AD->setFrequency(1000, 0);
+            m_AD->setWave(AD9833_SQUARE1);
+        }
+    }
 }
 
 #endif

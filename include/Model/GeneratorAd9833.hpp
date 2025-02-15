@@ -6,7 +6,8 @@
 class AD9833;
 
 /// @brief Class to generate waves with the AD9833 function generator
-/// for the Arduino Uno board.
+/// for the Atmega 328p Arduino Uno and ESP32 Wemos R32 board.
+/// This is a common code.
 class GeneratorAd9833 : public GeneratorIf
 {
 
