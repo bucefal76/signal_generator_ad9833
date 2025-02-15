@@ -25,7 +25,7 @@ At least as long as suitable library to talk ith the chip are available.
         -----------------                                       ----------------
         |               |                                       |              |
         |      UNO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out  ---  your scope
-        |               |  Pin 11 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN --- your scope
+  USB - |               |  Pin 11 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN --- your scope
         |               |  Pin 13 ----------------- Pin SCKL    |              |
         |               |  Pin 5V ----------------- Pin VCC     |              |
         |               |  Pin GND ---------------- Pin DGND    |              |
@@ -34,6 +34,16 @@ At least as long as suitable library to talk ith the chip are available.
 ## ESP 32
 
 TO DO
+
+# Architecture
+
+There is "dirty set up code" the application area; see ModuleApplicationBuilder.cpp.
+This code is responsible for creating and connecting all building blocks.
+The building blocks interact with the echoer through formal interfaces.
+
+The Controller, objects in this area implements ControllerIf - this part of code is responsible for controlling the generators objects.
+The Model, objects in this implements the GeneratorIf, this part of code is responsible for talking to the real generator hardware.
+Obviously, the View is missing, looks like I entangled data presentation with controller, something to fix in the future :).
 
 # Future developments
 
