@@ -7,6 +7,8 @@
 
 class SPIClass;
 
+/// @brief Class to generate waves with the AD9833 function generator
+/// for the ESP32 Wemos D1 R32 board.
 class GeneratorForEsp32 : public GeneratorAd9833
 {
 public:

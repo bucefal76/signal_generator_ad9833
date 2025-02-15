@@ -2,6 +2,7 @@
 
 
 # Introduction
+
 This is a signal generator for Arduino UNO / ESP32 with use of AD9833 chips.
 it uses AD9833 chips. It depends on robtillaart/AD9833 library to talk to the AD9833.
 But the idea is the core of functionality can be switch to the different chip without lot of changes.
@@ -22,15 +23,15 @@ At least as long as suitable library to talk ith the chip are available.
  - COMM port - same as used with Arduino IDE or VSC Platform IO
  - 9600, data bits 8, Stop bits 1, Parity None, XON/XOFF, best to use Putty
 
-# Pinouts
+# Pinout
 
 ## Arduino UNO
 
 
         -----------------                                       ----------------
         |               |                                       |              |
-        |      UNO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out  ---  your scope
-  USB - |  ARDUINO      |  Pin 11 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN --- your scope
+        |  ARDUINO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out  ---
+  USB - |  UNO          |  Pin 11 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN ---
         |               |  Pin 13 ----------------- Pin SCKL    |              |
         |               |  Pin 5V ----------------- Pin VCC     |              |
         |               |  Pin GND ---------------- Pin DGND    |              |
@@ -38,7 +39,14 @@ At least as long as suitable library to talk ith the chip are available.
 
 ## ESP 32
 
-TO DO
+        -----------------                                        ----------------
+        |               |                                       |              |
+        |  ESP32        |  Pin 12 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out  ---
+  USB - |  WEMOS        |  Pin 23 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN ---
+        |  D1 R32       |  Pin 18 ----------------- Pin SCKL    |              |
+        |               |  Pin 3.3V --------------- Pin VCC     |              |
+        |               |  Pin GND ---------------- Pin DGND    |              |
+        -----------------                                       ----------------
 
 # Architecture
 
@@ -52,9 +60,9 @@ Obviously, the View is missing, looks like I entangled data presentation with co
 
 # Future developments
 
- - Single channel support for ESP32
- - Dual channel support for Arduino UNO
- - Dual channel support for ESP32
- - Vobulator feature for ESP32
- - Vobulator feature for UNO
- - WiFi/Web based UI for ESP32
+ - Dual channel support for Arduino UNO.
+ - Dual channel support for ESP32.
+ - Use hardware SPI for ESP32 instead of software emulation.
+ - Vobulator feature for ESP32.
+ - Vobulator feature for UNO.
+ - WiFi/Web based UI for ESP32.
