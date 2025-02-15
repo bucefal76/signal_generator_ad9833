@@ -21,16 +21,17 @@ public:
 
 private:
     void update();
-    void displayMainMenu();
-    void displayChannelMenu();
-    void displayWaveTypeMenu();
-    void displayFrequencyMenu();
+
     void setGenerator1LineWave(const GeneratorIf::WaveType waveType, const long frequency);
     void setGenerator2LineWave(const GeneratorIf::WaveType waveType, const long frequency);
     void disableGeneratorChannel1();
     void disableGeneratorChannel2();
-    void displayChannel1Status();
-    void displayChannel2Status();
+
+    void displayMainMenu();
+    void displayChannelMenu();
+    void displayWaveTypeMenu();
+    void displayFrequencyMenu();
+    void displayChannelStatus(const uint8_t channelId, const bool channelEnabled, const GeneratorIf::WaveType waveType, const long frequency);
 
     static void onRunCallback();
 
@@ -42,7 +43,9 @@ private:
         MenuStateChannel1Menu,
         MenuStateChannel1SelectWaveTypeMenu,
         MenuStateChannel1SelectFrequencyMenu,
-        MenuStateChannel2Menu
+        MenuStateChannel2Menu,
+        MenuStateChannel2SelectWaveTypeMenu,
+        MenuStateChannel2SelectFrequencyMenu,
     };
 
     MenuStateT m_menuState;

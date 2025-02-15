@@ -1,5 +1,6 @@
 # signal_generator_ad9833
 
+Ver 0.2.1
 
 # Introduction
 
@@ -28,25 +29,38 @@ At least as long as suitable library to talk ith the chip are available.
 ## Arduino UNO
 
 
-        -----------------                                       ----------------
-        |               |                                       |              |
-        |  ARDUINO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out  ---
-  USB - |  UNO          |  Pin 11 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN ---
-        |               |  Pin 13 ----------------- Pin SCKL    |              |
-        |               |  Pin 5V ----------------- Pin VCC     |              |
-        |               |  Pin GND ---------------- Pin DGND    |              |
-        -----------------                                       ----------------
+      -----------------                                       ----------------
+      |               |                                       |              |
+      |  ARDUINO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out
+      |  UNO          |  Pin 11 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN
+      |               |  Pin 13 ----------------- Pin SCKL    |              | 
+      |               |  Pin 5V ----------------- Pin VCC     |              |
+      |               |  Pin GND ---------------- Pin DGND    |              |
+      -----------------                                       ----------------
 
 ## ESP 32
 
-        -----------------                                        ----------------
-        |               |                                       |              |
-        |  ESP32        |  Pin 12 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out  ---
-  USB - |  WEMOS        |  Pin 23 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN ---
-        |  D1 R32       |  Pin 18 ----------------- Pin SCKL    |              |
-        |               |  Pin 3.3V --------------- Pin VCC     |              |
-        |               |  Pin GND ---------------- Pin DGND    |              |
-        -----------------                                       ----------------
+For channel 1, select is a pin 12, other input pins are the same, power is 3.3V.
+
+      -----------------                                        ----------------
+      |               |                                       |              |
+      |  ESP32        |  Pin 12 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out
+      |  WEMOS        |  Pin 23 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN
+      |  D1 R32       |  Pin 18 ----------------- Pin SCKL    |              |
+      |               |  Pin 3.3V --------------- Pin VCC     |              |
+      |               |  Pin GND ---------------- Pin DGND    |              |
+      -----------------                                       ----------------
+
+For channel 2, select is a pin 13, other input pins are the same, power is 3.3V.
+
+      -----------------                                        ----------------
+      |               |                                       |              |
+      |  ESP32        |  Pin 13 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out
+      |  WEMOS        |  Pin 23 ----------------- Pin SDATA   |   Channel 2  |  Pin AGDN
+      |  D1 R32       |  Pin 18 ----------------- Pin SCKL    |              |
+      |               |  Pin 3.3V --------------- Pin VCC     |              |
+      |               |  Pin GND ---------------- Pin DGND    |              |
+      -----------------                                       ----------------
 
 # Architecture
 
@@ -60,8 +74,8 @@ Obviously, the View is missing, looks like I entangled data presentation with co
 
 # Future developments
 
+ - Extract View from Controller 
  - Dual channel support for Arduino UNO.
- - Dual channel support for ESP32.
  - Use hardware SPI for ESP32 instead of software emulation.
  - Vobulator feature for ESP32.
  - Vobulator feature for UNO.
