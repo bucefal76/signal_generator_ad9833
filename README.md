@@ -1,6 +1,6 @@
 # signal_generator_ad9833
 
-Ver 0.2.1
+Ver 0.2.2
 
 # Introduction
 
@@ -64,17 +64,16 @@ For channel 2, select is a pin 13, other input pins are the same, power is 3.3V.
 
 # Architecture
 
-There is "dirty set up code" the application area; see ModuleApplicationBuilder.cpp.
+The application area has "dirty set up code"; see ModuleApplicationBuilder.cpp.
 This code is responsible for creating and connecting all building blocks.
 The building blocks interact with the echoer through formal interfaces.
 
-The Controller, objects in this area implements ControllerIf - this part of code is responsible for controlling the generators objects.
-The Model, objects in this implements the GeneratorIf, this part of code is responsible for talking to the real generator hardware.
-Obviously, the View is missing, looks like I entangled data presentation with controller, something to fix in the future :).
+The Controller, objects in this area implement ControllerIf - this part of the code controls the generator's objects.
+The Model, objects in this implement the GeneratorIf, this part of code is responsible for talking to the real generator hardware.
+The View is missing, looks like I entangled data presentation with the controller, something to fix in the future :).
 
 # Future developments
 
- - Extract View from Controller 
  - Dual channel support for Arduino UNO.
  - Use hardware SPI for ESP32 instead of software emulation.
  - Vobulator feature for ESP32.

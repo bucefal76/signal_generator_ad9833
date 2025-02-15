@@ -18,20 +18,15 @@ public:
     virtual void disable();
 
     virtual void setGeneratorsToControl(GeneratorIf *generatorLine1, GeneratorIf *generatorLine2);
+    virtual void setView(ViewIf *view);
 
 private:
     void update();
 
-    void setGenerator1LineWave(const GeneratorIf::WaveType waveType, const long frequency);
-    void setGenerator2LineWave(const GeneratorIf::WaveType waveType, const long frequency);
+    void setGeneratorChannel1Wave(const GeneratorIf::WaveType waveType, const long frequency);
+    void setGeneratorChannel2Wave(const GeneratorIf::WaveType waveType, const long frequency);
     void disableGeneratorChannel1();
     void disableGeneratorChannel2();
-
-    void displayMainMenu();
-    void displayChannelMenu();
-    void displayWaveTypeMenu();
-    void displayFrequencyMenu();
-    void displayChannelStatus(const uint8_t channelId, const bool channelEnabled, const GeneratorIf::WaveType waveType, const long frequency);
 
     static void onRunCallback();
 
@@ -51,6 +46,7 @@ private:
     MenuStateT m_menuState;
     GeneratorIf *m_generatorChannel1;
     GeneratorIf *m_generatorChannel2;
+    ViewIf *m_view;
     GeneratorIf::WaveType m_lastSelectedGeneratorChannel1WaveType;
     GeneratorIf::WaveType m_lastSelectedGeneratorChannel2WaveType;
     long m_lastSelectedGeneratorChannel1Frequency;

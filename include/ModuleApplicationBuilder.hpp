@@ -3,6 +3,8 @@
 
 /*
     Class wraps application configuration details.
+    This is a "dirtY" code as it is named in the book.
+    I'm referring Clean Code by Robert C. Martin.
 */
 
 class ModuleApplicationIf;

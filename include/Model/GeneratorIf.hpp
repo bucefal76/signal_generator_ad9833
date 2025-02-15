@@ -6,7 +6,7 @@
 /// @brief Interface to define the methods to generate a wave with
 /// the any function generator, that implements this interface.
 /// The interface is used to abstract the implementation of the
-/// function generator, so that the application can use any.
+/// function generator, so that the controller can use any.
 class GeneratorIf
 {
 public:
