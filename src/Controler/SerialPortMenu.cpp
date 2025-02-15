@@ -55,6 +55,8 @@ void SerialPortMenu::update()
         {
             Serial.read();
             m_menuState = MenuStateMain;
+            m_view->displayChannelStatus(1, m_generatorChannel1->isEnabled(), m_lastSelectedGeneratorChannel1WaveType, m_lastSelectedGeneratorChannel1Frequency);
+            m_view->displayChannelStatus(2, m_generatorChannel2->isEnabled(), m_lastSelectedGeneratorChannel2WaveType, m_lastSelectedGeneratorChannel2Frequency);
             m_view->displayMainMenu();
         }
         break;
@@ -115,6 +117,8 @@ void SerialPortMenu::update()
                 break;
             default:
                 m_menuState = MenuStateMain;
+                m_view->displayChannelStatus(1, m_generatorChannel1->isEnabled(), m_lastSelectedGeneratorChannel1WaveType, m_lastSelectedGeneratorChannel1Frequency);
+                m_view->displayChannelStatus(2, m_generatorChannel2->isEnabled(), m_lastSelectedGeneratorChannel2WaveType, m_lastSelectedGeneratorChannel2Frequency);
                 m_view->displayMainMenu();
                 break;
             }
@@ -223,6 +227,8 @@ void SerialPortMenu::update()
                 break;
             default:
                 m_menuState = MenuStateMain;
+                m_view->displayChannelStatus(1, m_generatorChannel1->isEnabled(), m_lastSelectedGeneratorChannel1WaveType, m_lastSelectedGeneratorChannel1Frequency);
+                m_view->displayChannelStatus(2, m_generatorChannel2->isEnabled(), m_lastSelectedGeneratorChannel2WaveType, m_lastSelectedGeneratorChannel2Frequency);
                 m_view->displayMainMenu();
                 break;
             }

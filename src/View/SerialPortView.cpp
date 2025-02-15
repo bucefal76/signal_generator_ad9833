@@ -7,7 +7,6 @@ void SerialPortView::displayMainMenu()
     Serial.println("Main menu:");
     Serial.println("1. Channel 1");
     Serial.println("2. Channel 2");
-    Serial.println("3. Exit");
 }
 
 void SerialPortView::displayChannelMenu()
