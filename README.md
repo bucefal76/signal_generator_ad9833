@@ -28,25 +28,25 @@ At least as long as suitable library to talk ith the chip are available.
 ## Arduino UNO
 
 
-        -----------------                                       ----------------
-        |               |                                       |              |
-        |  ARDUINO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out  ---
-  USB - |  UNO          |  Pin 11 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN ---
-        |               |  Pin 13 ----------------- Pin SCKL    |              |
-        |               |  Pin 5V ----------------- Pin VCC     |              |
-        |               |  Pin GND ---------------- Pin DGND    |              |
-        -----------------                                       ----------------
+      -----------------                                       ----------------
+      |               |                                       |              |
+      |  ARDUINO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out
+      |  UNO          |  Pin 11 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN
+      |               |  Pin 13 ----------------- Pin SCKL    |              | 
+      |               |  Pin 5V ----------------- Pin VCC     |              |
+      |               |  Pin GND ---------------- Pin DGND    |              |
+      -----------------                                       ----------------
 
 ## ESP 32
 
-        -----------------                                        ----------------
-        |               |                                       |              |
-        |  ESP32        |  Pin 12 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out  ---
-  USB - |  WEMOS        |  Pin 23 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN ---
-        |  D1 R32       |  Pin 18 ----------------- Pin SCKL    |              |
-        |               |  Pin 3.3V --------------- Pin VCC     |              |
-        |               |  Pin GND ---------------- Pin DGND    |              |
-        -----------------                                       ----------------
+      -----------------                                        ----------------
+      |               |                                       |              |
+      |  ESP32        |  Pin 12 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out
+      |  WEMOS        |  Pin 23 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN
+      |  D1 R32       |  Pin 18 ----------------- Pin SCKL    |              |
+      |               |  Pin 3.3V --------------- Pin VCC     |              |
+      |               |  Pin GND ---------------- Pin DGND    |              |
+      -----------------                                       ----------------
 
 # Architecture
 

@@ -42,7 +42,9 @@ private:
         MenuStateChannel1Menu,
         MenuStateChannel1SelectWaveTypeMenu,
         MenuStateChannel1SelectFrequencyMenu,
-        MenuStateChannel2Menu
+        MenuStateChannel2Menu,
+        MenuStateChannel2SelectWaveTypeMenu,
+        MenuStateChannel2SelectFrequencyMenu,        
     };
 
     MenuStateT m_menuState;

@@ -12,10 +12,7 @@ class SPIClass;
 class GeneratorForEsp32 : public GeneratorAd9833
 {
 public:
-    GeneratorForEsp32(const uint8_t spiCsLine);
-
-private:
-    SPIClass *m_spi;
+    GeneratorForEsp32(const uint8_t spiCsLine, const uint8_t spiData, const uint8_t spiClock);
 };
 
 #endif

@@ -23,7 +23,8 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
     GeneratorIf *generatorChannel1 = nullptr;
     GeneratorIf *generatorChannel2 = nullptr;
 #ifdef USE_ESP32
-    generatorChannel1 = new GeneratorForEsp32(CHANNEL_1_SPI_CS);
+    generatorChannel1 = new GeneratorForEsp32(CHANNEL_1_SPI_CS, CHANNEL_1_SPI_SDATA, CHANNEL_1_SPI_SCLK);
+    generatorChannel2 = new GeneratorForEsp32(CHANNEL_2_SPI_CS, CHANNEL_2_SPI_SDATA, CHANNEL_2_SPI_SCLK);
 #else
     generatorChannel1 = new GeneratorForUno(CHANNEL_1_SPI_CS);
 #endif

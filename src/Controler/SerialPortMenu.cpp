@@ -70,6 +70,7 @@ void SerialPortMenu::update()
                 break;
             case '2':
                 m_menuState = MenuStateChannel2Menu;
+                displayChannel2Status();
                 displayChannelMenu();
                 break;
             default:
@@ -196,10 +197,24 @@ void SerialPortMenu::update()
             switch (incomingChar)
             {
             case '1':
-                m_menuState = MenuStateChannel2Menu;
+                setGenerator2LineWave(m_lastSelectedGeneratorChannel2WaveType, m_lastSelectedGeneratorChannel2Frequency);
+                displayChannel2Status();
+                displayChannelMenu();
                 break;
             case '2':
-                m_menuState = MenuStateChannel2Menu;
+                disableGeneratorChannel2();
+                displayChannel2Status();
+                displayChannelMenu();
+                break;
+            case '3':
+                m_menuState = MenuStateChannel2SelectWaveTypeMenu;
+                displayChannel2Status();
+                displayWaveTypeMenu();
+                break;
+            case '4':
+                m_menuState = MenuStateChannel2SelectFrequencyMenu;
+                displayChannel2Status();
+                displayFrequencyMenu();
                 break;
             default:
                 m_menuState = MenuStateMain;
@@ -209,7 +224,6 @@ void SerialPortMenu::update()
         }
         break;
     }
-
     default:
         break;
     }
@@ -336,6 +350,38 @@ void SerialPortMenu::displayChannel1Status()
 
 void SerialPortMenu::displayChannel2Status()
 {
+    if (m_generatorChannel1 != nullptr)
+    {
+        Serial.println(F(""));
+        Serial.print(F("Channel 2: [State: "));
+        if (m_generatorChannel1->isEnabled())
+        {
+            Serial.print(F("Enabled, "));
+        }
+        else
+        {
+            Serial.print(F("Disabled, "));
+        }
+        Serial.print(F("Wave type: "));
+        switch (m_lastSelectedGeneratorChannel2WaveType)
+        {
+        case GeneratorIf::TypeSinusoidal:
+            Serial.print(F("Sinusoidal"));
+            break;
+        case GeneratorIf::TypeSquare:
+            Serial.print(F("Square"));
+            break;
+        case GeneratorIf::TypeRamp:
+            Serial.print(F("Ramp"));
+            break;
+        default:
+            Serial.print(F("None"));
+            break;
+        }
+        Serial.print(F(", Frequency: "));
+        Serial.print(m_lastSelectedGeneratorChannel2Frequency);
+        Serial.println(F(" Hz]"));
+    }
 }
 
 #endif
