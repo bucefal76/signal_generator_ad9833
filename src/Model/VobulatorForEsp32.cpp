@@ -24,11 +24,10 @@ VobulatorForEsp32 *VobulatorForEsp32::getInstance()
 
 VobulatorForEsp32::VobulatorForEsp32()
     : m_Generator(nullptr),
-      m_startingFrequency(20),
+      m_startingFrequency(200),
       m_endingFrequency(20000),
       m_currentStep(VOBULATOR_RAMP_FIRST_STEP),
-      m_frequencyStep(1U),
-      m_initalStepRepeat(0U)
+      m_frequencyStep(1U)
 {
     setInterval(VOBULATOR_BY_DC_THREAD_TIME_INTERVAL_MS);
     onRun(onRunCallback);
@@ -41,7 +40,7 @@ void VobulatorForEsp32::enable()
 {
     if (m_Generator != nullptr)
     {
-        m_currentStep = m_initalStepRepeat = VOBULATOR_RAMP_FIRST_STEP;
+        m_currentStep = VOBULATOR_RAMP_FIRST_STEP;
 
         m_frequencyStep = (m_endingFrequency - m_startingFrequency) / VOBULATOR_NUMBER_OF_STEPS;
 
@@ -68,15 +67,7 @@ void VobulatorForEsp32::update()
             const long frequency = m_startingFrequency + m_currentStep * m_frequencyStep;
             m_Generator->generateWave(GeneratorIf::TypeSinusoidal, frequency);
 
-            if (m_initalStepRepeat < VOBULATOR_NUMBER_OF_INITIAL_STEPS)
-            {
-                m_initalStepRepeat = VOBULATOR_NUMBER_OF_INITIAL_STEPS;
-                m_initalStepRepeat++;
-            }
-            else
-            {
-                m_currentStep++;
-            }
+            m_currentStep++;
         }
         else
         {
