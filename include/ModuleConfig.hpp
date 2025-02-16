@@ -7,16 +7,21 @@
 #define ESP_WATCHDOG_TIMEOUT_SEK 3U
 #define VOBULATOR_BY_DC_THREAD_TIME_INTERVAL_MS 50U
 
-#define CHANNEL_1_SPI_CS 12
-#define CHANNEL_1_SPI_SCLK 18
-#define CHANNEL_1_SPI_SDATA 23
+#define ESP32_CHANNEL_1_SPI_CS 12
+#define ESP32_CHANNEL_1_SPI_SCLK 18
+#define ESP32_CHANNEL_1_SPI_SDATA 23
 
-#define CHANNEL_2_SPI_CS 13
-#define CHANNEL_2_SPI_SCLK CHANNEL_1_SPI_SCLK
-#define CHANNEL_2_SPI_SDATA CHANNEL_1_SPI_SDATA
+#define ESP32_CHANNEL_2_SPI_CS 13
+#define ESP32_CHANNEL_2_SPI_SCLK ESP32_CHANNEL_1_SPI_SCLK
+#define ESP32_CHANNEL_2_SPI_SDATA ESP32_CHANNEL_1_SPI_SDATA
+
+// #define ESP32_USE_HARDWARE_SPI
+// I think there is a bug in the AD9833 library at ESP32
+// I could not make it work with two generators because problem with select line.
+
 #else
-#define CHANNEL_1_SPI_CS 10
-#define CHANNEL_2_SPI_CS 9
+#define UNO_CHANNEL_1_SPI_CS 10
+#define UNO_CHANNEL_2_SPI_CS 9
 #endif
 
 #define USE_SERIAL

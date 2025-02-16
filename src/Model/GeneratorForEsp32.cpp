@@ -15,4 +15,14 @@ GeneratorForEsp32::GeneratorForEsp32(const uint8_t spiCsLine, const uint8_t spiD
     }
 }
 
+GeneratorForEsp32::GeneratorForEsp32(SPIClass *spi, const uint8_t spiCsLine)
+{
+    m_AD = new AD9833(spiCsLine, spi);
+
+    if (m_AD != nullptr)
+    {
+        m_AD->begin();
+    }
+}
+
 #endif

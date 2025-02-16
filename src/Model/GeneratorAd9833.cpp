@@ -2,6 +2,8 @@
 
 #include "AD9833.h"
 
+#define POWER_MODE_SLEEP_AL 3U
+
 GeneratorAd9833::GeneratorAd9833()
     : m_AD(nullptr)
 {
@@ -19,18 +21,19 @@ void GeneratorAd9833::generateWave(const WaveType type, const long frequency)
 {
     if (m_AD != nullptr)
     {
+        m_AD->setPowerMode();
+        m_AD->setFrequency(frequency, 0);
+
         switch (type)
         {
         case TypeSinusoidal:
-            m_AD->setFrequency(frequency, 0);
             m_AD->setWave(AD9833_SINE);
             break;
         case TypeSquare:
-            m_AD->setFrequency(frequency, 0);
+
             m_AD->setWave(AD9833_SQUARE1);
             break;
         case TypeRamp:
-            m_AD->setFrequency(frequency, 0);
             m_AD->setWave(AD9833_TRIANGLE);
             break;
         default:
@@ -86,5 +89,6 @@ void GeneratorAd9833::disableWave()
     {
         m_AD->setFrequency(0, 0);
         m_AD->setWave(AD9833_OFF);
+        m_AD->setPowerMode(POWER_MODE_SLEEP_AL);
     }
 }

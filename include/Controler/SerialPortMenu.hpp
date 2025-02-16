@@ -21,13 +21,25 @@ public:
     virtual void setView(ViewIf *view);
 
 private:
+    /// @brief Main function of the thread
     void update();
-
+    /// @brief  Set the wave type and frequency of the generator (first one).
+    /// @param waveType Type of the wave.
+    /// @param frequency The frequency of the wave.
     void setGeneratorChannel1Wave(const GeneratorIf::WaveType waveType, const long frequency);
+    /// @brief  Set the wave type and frequency of the generator (second one).
+    /// @param waveType Type of the wave.
+    /// @param frequency The frequency of the wave.
     void setGeneratorChannel2Wave(const GeneratorIf::WaveType waveType, const long frequency);
+    /// @brief Helper function to disable the first generator.
     void disableGeneratorChannel1();
+    /// @brief Helper function to disable the second generator.
     void disableGeneratorChannel2();
-
+    /// @brief Helper function to display the status of the first channel
+    void displayChannel1Status();
+    // @brief Helper function to display the status of the second channel
+    void displayChannel2Status();
+    /// @brief Callback function to run the thread.
     static void onRunCallback();
 
     /// @brief Current state of the menu, a primitive state machine implementation

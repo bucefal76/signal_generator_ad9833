@@ -1,6 +1,6 @@
 # signal_generator_ad9833
 
-Ver 0.2.2
+Ver 0.2.3
 
 # Introduction
 
@@ -52,7 +52,7 @@ For channel 2, select is a pin 9, other input pins are the same, power is 5V.
 
 See for details in the include/ModuleConfig.hpp.
 
-## ESP32 Weemos D1 R32
+## ESP32 Wemos D1 R32
 
 For channel 1, select is a pin 12, other input pins are the same, power is 3.3V.
 
@@ -96,9 +96,9 @@ The View, objects in this are implement the ViewIf, this part of code is respons
 
 # Future developments
 
- - Work with power modes to avoid distortion at least in one channel mode.
- - Use hardware SPI for ESP32 instead of software emulation.
  - Vobulator feature for ESP32.
  - Vobulator feature for UNO.
+ - Single channel only support.
+ - Use hardware SPI for ESP32 instead of software emulation.
  - Potentiometer to normalize values of signals for different waveforms.
  - WiFi/Web based UI for ESP32.
