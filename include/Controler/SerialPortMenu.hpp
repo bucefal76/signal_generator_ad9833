@@ -36,6 +36,10 @@ private:
     void disableGeneratorChannel1();
     /// @brief Helper function to disable the second generator.
     void disableGeneratorChannel2();
+
+    void enableVobulator();
+    void disableVobulator();
+
     /// @brief Helper function to display the status of the first channel
     void displayChannel1Status();
     // @brief Helper function to display the status of the second channel
@@ -54,17 +58,20 @@ private:
         MenuStateChannel2Menu,
         MenuStateChannel2SelectWaveTypeMenu,
         MenuStateChannel2SelectFrequencyMenu,
+        MenuStateVobulatorMenu
     };
 
     MenuStateT m_menuState;
-    GeneratorIf *m_generatorChannel1;
-    GeneratorIf *m_generatorChannel2;
-    ViewIf *m_view;
-    VobulatorIf *m_vobulator;
     GeneratorIf::WaveType m_lastSelectedGeneratorChannel1WaveType;
     GeneratorIf::WaveType m_lastSelectedGeneratorChannel2WaveType;
     long m_lastSelectedGeneratorChannel1Frequency;
     long m_lastSelectedGeneratorChannel2Frequency;
+    long m_vobulatorStartFrequency;
+    long m_vobulatorEndFrequency;
+    GeneratorIf *m_generatorChannel1;
+    GeneratorIf *m_generatorChannel2;
+    ViewIf *m_view;
+    VobulatorIf *m_vobulator;
 
     static SerialPortMenu *m_Instance;
 };

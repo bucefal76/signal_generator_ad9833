@@ -58,7 +58,7 @@ void VobulatorForEsp32::update()
 
             m_Generator->generateWave(GeneratorIf::TypeSinusoidal, currentFrequency);
             currentFrequency = currentFrequency + frequencyStep;
-            delay(100);
+            delay(500);
         }
 
         m_Generator->generateWave(GeneratorIf::TypeNone, 0);

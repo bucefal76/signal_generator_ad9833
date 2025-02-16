@@ -2,7 +2,7 @@
 
 #ifdef USE_SERIAL
 
-void SerialPortView::displayMainMenu()
+void SerialPortView::displayMainMenu() const
 {
     Serial.println("Main menu:");
     Serial.println("1. Channel 1");
@@ -10,7 +10,7 @@ void SerialPortView::displayMainMenu()
     Serial.println("3. Vobulator - channel 1");
 }
 
-void SerialPortView::displayChannelMenu()
+void SerialPortView::displayChannelMenu() const
 {
     Serial.println("Channel menu:");
     Serial.println("1. Enable");
@@ -20,7 +20,7 @@ void SerialPortView::displayChannelMenu()
     Serial.println("0. Return to main menu");
 }
 
-void SerialPortView::displayWaveTypeMenu()
+void SerialPortView::displayWaveTypeMenu() const
 {
     Serial.println("Wave type menu:");
     Serial.println("1. Sinusoidal");
@@ -29,13 +29,13 @@ void SerialPortView::displayWaveTypeMenu()
     Serial.println("0. Return to channel menu");
 }
 
-void SerialPortView::displayFrequencyMenu()
+void SerialPortView::displayFrequencyMenu() const
 {
     Serial.println("Frequency menu:");
     Serial.println("Enter frequency in Hz:");
 }
 
-void SerialPortView::displayChannelStatus(const uint8_t channelId, const bool channelEnabled, const GeneratorIf::WaveType waveType, const long frequency)
+void SerialPortView::displayChannelStatus(const uint8_t channelId, const bool channelEnabled, const GeneratorIf::WaveType waveType, const long frequency) const
 {
     Serial.print("Channel ");
     Serial.print(channelId);
@@ -67,6 +67,16 @@ void SerialPortView::displayChannelStatus(const uint8_t channelId, const bool ch
     Serial.print(", Frequency: ");
     Serial.print(frequency);
     Serial.println(" Hz]");
+}
+
+void SerialPortView::displayVobulatorMenu() const
+{
+    Serial.println("Vobulator menu:");
+    Serial.println("1. Enable");
+    Serial.println("2. Disable");
+    Serial.println("3. Set start frequency");
+    Serial.println("4. Set end frequency");
+    Serial.println("0. Return to main menu");
 }
 
 #endif // USE_SERIAL

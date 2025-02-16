@@ -6,7 +6,9 @@
 
 SerialPortMenu *SerialPortMenu::m_Instance = nullptr;
 
-#define DEFAULT_FREQUENCY 1000
+#define GENERATOR_DEFAULT_FREQUENCY_HZ 1000
+#define VOBULATOR_START_FREQUENCY_HZ 20
+#define VOBULATOR_END_FREQUENCY_HZ 20000
 
 SerialPortMenu *SerialPortMenu::getInstance()
 {
@@ -20,6 +22,8 @@ SerialPortMenu *SerialPortMenu::getInstance()
 
 SerialPortMenu::SerialPortMenu()
     : m_menuState(MenuStateStart),
+      m_vobulatorStartFrequency(1),
+      m_vobulatorEndFrequency(1),
       m_generatorChannel1(nullptr),
       m_generatorChannel2(nullptr),
       m_view(nullptr),
@@ -83,15 +87,8 @@ void SerialPortMenu::update()
                 break;
             case '3':
                 Serial.println(F("3"));
-                /// TEMP CODE
-                if (m_vobulator != nullptr)
-                {
-                    setGeneratorChannel1Wave(GeneratorIf::TypeNone, DEFAULT_FREQUENCY);
-                    setGeneratorChannel2Wave(GeneratorIf::TypeNone, DEFAULT_FREQUENCY);
-                    Serial.println(F("Vobulator enabled!"));
-                    m_vobulator->enable();
-                }
-                /// END OF TEMP CODE
+                m_menuState = MenuStateVobulatorMenu;
+                m_view->displayVobulatorMenu();
                 break;
             default:
                 break;
@@ -320,6 +317,28 @@ void SerialPortMenu::update()
         break;
     }
 
+    case MenuStateVobulatorMenu:
+    {
+        if (Serial.available() > 0)
+        {
+            const char incomingChar = Serial.read();
+
+            switch (incomingChar)
+            {
+            case '1':
+                enableVobulator();
+                break;
+            case '2':
+                disableVobulator();
+                break;
+            default:
+                m_view->displayMainMenu();
+                m_menuState = MenuStateMain;
+                break;
+            }
+        }
+    }
+
     default:
         break;
     }
@@ -349,11 +368,11 @@ void SerialPortMenu::displayChannel2Status()
 void SerialPortMenu::setGeneratorsToControl(GeneratorIf *generatorLine1, GeneratorIf *generatorLine2)
 {
     m_generatorChannel1 = generatorLine1;
-    setGeneratorChannel1Wave(GeneratorIf::TypeSquare, DEFAULT_FREQUENCY);
+    setGeneratorChannel1Wave(GeneratorIf::TypeSquare, GENERATOR_DEFAULT_FREQUENCY_HZ);
     /// setGeneratorChannel1Wave(GeneratorIf::TypeSquare, 1000000);
 
     m_generatorChannel2 = generatorLine2;
-    setGeneratorChannel2Wave(GeneratorIf::TypeSquare, DEFAULT_FREQUENCY / 2);
+    setGeneratorChannel2Wave(GeneratorIf::TypeSquare, GENERATOR_DEFAULT_FREQUENCY_HZ / 2);
     /// setGeneratorChannel2Wave(GeneratorIf::TypeSinusoidal, 1000000);
 }
 
@@ -400,6 +419,23 @@ void SerialPortMenu::disableGeneratorChannel2()
     if (m_generatorChannel2 != nullptr)
     {
         m_generatorChannel2->disableWave();
+    }
+}
+
+void SerialPortMenu::enableVobulator()
+{
+    if (m_vobulator != nullptr)
+    {
+        setGeneratorChannel1Wave(GeneratorIf::TypeNone, GENERATOR_DEFAULT_FREQUENCY_HZ);
+        setGeneratorChannel2Wave(GeneratorIf::TypeNone, GENERATOR_DEFAULT_FREQUENCY_HZ);
+        m_vobulator->enable();
+    }
+}
+void SerialPortMenu::disableVobulator()
+{
+    if (m_vobulator != nullptr)
+    {
+        m_vobulator->disable();
     }
 }
 
