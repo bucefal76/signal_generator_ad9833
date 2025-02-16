@@ -6,6 +6,10 @@
 #include <stdint.h>
 #include <driver/dac.h>
 
+#define VOBULATOR_RAMP_FIRST_STEP 0U
+// DAC resolution is 8 bits, so 256 steps
+#define VOBULATOR_RAMP_STEP (256 / VOBULATOR_NUMBER_OF_STEPS)
+
 VobulatorForEsp32 *VobulatorForEsp32::m_Instance = nullptr;
 
 VobulatorForEsp32 *VobulatorForEsp32::getInstance()
@@ -21,7 +25,10 @@ VobulatorForEsp32 *VobulatorForEsp32::getInstance()
 VobulatorForEsp32::VobulatorForEsp32()
     : m_Generator(nullptr),
       m_startingFrequency(20),
-      m_endingFrequency(20000)
+      m_endingFrequency(20000),
+      m_currentStep(VOBULATOR_RAMP_FIRST_STEP),
+      m_frequencyStep(1U),
+      m_initalStepRepeat(0U)
 {
     setInterval(VOBULATOR_BY_DC_THREAD_TIME_INTERVAL_MS);
     onRun(onRunCallback);
@@ -32,39 +39,52 @@ VobulatorForEsp32::VobulatorForEsp32()
 
 void VobulatorForEsp32::enable()
 {
-    enabled = true;
+    if (m_Generator != nullptr)
+    {
+        m_currentStep = m_initalStepRepeat = VOBULATOR_RAMP_FIRST_STEP;
+
+        m_frequencyStep = (m_endingFrequency - m_startingFrequency) / VOBULATOR_NUMBER_OF_STEPS;
+
+        enabled = true;
+    }
 }
 
 void VobulatorForEsp32::disable()
 {
     enabled = false;
+    dac_output_voltage(DAC_CHANNEL_1, 0U);
+    m_Generator->disableWave();
 }
 
 void VobulatorForEsp32::update()
 {
-
     if (enabled && m_Generator != nullptr)
     {
-        const long frequencyStep = (m_endingFrequency - m_startingFrequency) / RAMP_TABLE_SIZE;
-        const uint8_t rampStep = 256 / RAMP_TABLE_SIZE;
-
-        long currentFrequency = m_startingFrequency;
-        uint8_t currentRampValue = 0;
-
-        for (int i = 0; i < RAMP_TABLE_SIZE; i++)
+        if (m_currentStep < VOBULATOR_NUMBER_OF_STEPS)
         {
-            dac_output_voltage(DAC_CHANNEL_1, currentRampValue);
-            currentRampValue = currentRampValue + rampStep;
+            const uint8_t rampDcValue = m_currentStep * VOBULATOR_RAMP_STEP;
+            dac_output_voltage(DAC_CHANNEL_1, rampDcValue);
 
-            m_Generator->generateWave(GeneratorIf::TypeSinusoidal, currentFrequency);
-            currentFrequency = currentFrequency + frequencyStep;
-            delay(500);
+            const long frequency = m_startingFrequency + m_currentStep * m_frequencyStep;
+            m_Generator->generateWave(GeneratorIf::TypeSinusoidal, frequency);
+
+            if (m_initalStepRepeat < VOBULATOR_NUMBER_OF_INITIAL_STEPS)
+            {
+                m_initalStepRepeat = VOBULATOR_NUMBER_OF_INITIAL_STEPS;
+                m_initalStepRepeat++;
+            }
+            else
+            {
+                m_currentStep++;
+            }
         }
-
-        m_Generator->generateWave(GeneratorIf::TypeNone, 0);
-        dac_output_voltage(DAC_CHANNEL_1, 0U);
+        else
+        {
+            m_currentStep = VOBULATOR_RAMP_FIRST_STEP;
+        }
     }
 }
+
 void VobulatorForEsp32::setGenerator(GeneratorIf *generator)
 {
     m_Generator = generator;
