@@ -19,6 +19,7 @@ public:
 
     virtual void setGeneratorsToControl(GeneratorIf *generatorLine1, GeneratorIf *generatorLine2);
     virtual void setView(ViewIf *view);
+    virtual void setVobulator(VobulatorIf *vobulator);
 
 private:
     /// @brief Main function of the thread
@@ -59,6 +60,7 @@ private:
     GeneratorIf *m_generatorChannel1;
     GeneratorIf *m_generatorChannel2;
     ViewIf *m_view;
+    VobulatorIf *m_vobulator;
     GeneratorIf::WaveType m_lastSelectedGeneratorChannel1WaveType;
     GeneratorIf::WaveType m_lastSelectedGeneratorChannel2WaveType;
     long m_lastSelectedGeneratorChannel1Frequency;

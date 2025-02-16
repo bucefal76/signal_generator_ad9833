@@ -22,7 +22,8 @@ SerialPortMenu::SerialPortMenu()
     : m_menuState(MenuStateStart),
       m_generatorChannel1(nullptr),
       m_generatorChannel2(nullptr),
-      m_view(nullptr)
+      m_view(nullptr),
+      m_vobulator(nullptr)
 {
     setInterval(SERIAL_MENU_THREAD_TIME_INTERVAL_MS);
     onRun(onRunCallback);
@@ -56,10 +57,7 @@ void SerialPortMenu::update()
             Serial.read();
             m_menuState = MenuStateMain;
             displayChannel1Status();
-            if (m_generatorChannel2 != nullptr)
-            {
-                m_view->displayChannelStatus(2, m_generatorChannel2->isEnabled(), m_lastSelectedGeneratorChannel2WaveType, m_lastSelectedGeneratorChannel2Frequency);
-            }
+            displayChannel2Status();
             m_view->displayMainMenu();
         }
         break;
@@ -80,11 +78,20 @@ void SerialPortMenu::update()
                 break;
             case '2':
                 m_menuState = MenuStateChannel2Menu;
-                if (m_generatorChannel2 != nullptr)
-                {
-                    m_view->displayChannelStatus(2, m_generatorChannel2->isEnabled(), m_lastSelectedGeneratorChannel2WaveType, m_lastSelectedGeneratorChannel2Frequency);
-                }
+                displayChannel2Status();
                 m_view->displayChannelMenu();
+                break;
+            case '3':
+                Serial.println(F("3"));
+                /// TEMP CODE
+                if (m_vobulator != nullptr)
+                {
+                    setGeneratorChannel1Wave(GeneratorIf::TypeNone, DEFAULT_FREQUENCY);
+                    setGeneratorChannel2Wave(GeneratorIf::TypeNone, DEFAULT_FREQUENCY);
+                    Serial.println(F("Vobulator enabled!"));
+                    m_vobulator->enable();
+                }
+                /// END OF TEMP CODE
                 break;
             default:
                 break;
@@ -353,6 +360,11 @@ void SerialPortMenu::setGeneratorsToControl(GeneratorIf *generatorLine1, Generat
 void SerialPortMenu::setView(ViewIf *view)
 {
     m_view = view;
+}
+
+void SerialPortMenu::setVobulator(VobulatorIf *vobulator)
+{
+    m_vobulator = vobulator;
 }
 
 void SerialPortMenu::setGeneratorChannel1Wave(const GeneratorIf::WaveType waveType, const long frequency)

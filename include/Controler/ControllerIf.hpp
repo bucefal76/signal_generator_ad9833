@@ -2,6 +2,7 @@
 #define CONTROLLERIF_HPP
 
 #include "Model/GeneratorIf.hpp"
+#include "Model/VobulatorIf.hpp"
 #include "View/ViewIf.hpp"
 
 /// @brief Interface to define the methods to control the function generators.
@@ -17,6 +18,9 @@ public:
     /// @brief  Method use to set view do display messages to operator.
     /// @param view Pointer to the view to display messages.
     virtual void setView(ViewIf *view) = 0;
+    /// @brief Method to set the vobulator to control.
+    /// @param vobulator Pointer to the vobulator object.
+    virtual void setVobulator(VobulatorIf *vobulator) = 0;
 };
 
 #endif

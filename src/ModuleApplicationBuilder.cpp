@@ -2,8 +2,8 @@
 #include "ModuleApplicationBuilder.hpp"
 #include "ModuleConfig.hpp"
 #include "ModuleApplicationIf.hpp"
-#include "Model/Vobulator.hpp"
 #include "Model/GeneratorIf.hpp"
+#include "Model/VobulatorIf.hpp"
 #include "View/ViewIf.hpp"
 
 #ifdef USE_SERIAL
@@ -12,8 +12,8 @@
 #endif
 
 #ifdef USE_ESP32
-#include "Model/VobulatorByADC.hpp"
 #include "Model/GeneratorForEsp32.hpp"
+#include "Model/VobulatorForEsp32.hpp"
 #else
 #include "Model/GeneratorForUno.hpp"
 #endif
@@ -29,6 +29,7 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 {
     GeneratorIf *generatorChannel1 = nullptr;
     GeneratorIf *generatorChannel2 = nullptr;
+    VobulatorIf *vobulator = nullptr;
     ViewIf *view = nullptr;
 #ifdef USE_ESP32
 
@@ -54,17 +55,22 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
     generatorChannel2 = new GeneratorForUno(UNO_CHANNEL_2_SPI_CS);
 #endif
 
+#ifdef USE_ESP32
+    vobulator = VobulatorForEsp32::getInstance();
+    if (vobulator != nullptr)
+    {
+        rApplication.addThread(VobulatorForEsp32::getInstance());
+        vobulator->setGenerator(generatorChannel1);
+        vobulator->disable();
+    }
+#endif
+
 #ifdef USE_SERIAL
     view = new SerialPortView();
     rApplication.addThread(SerialPortMenu::getInstance());
     SerialPortMenu::getInstance()->setGeneratorsToControl(generatorChannel1, generatorChannel2);
+    SerialPortMenu::getInstance()->setVobulator(vobulator);
     SerialPortMenu::getInstance()->setView(view);
     SerialPortMenu::getInstance()->enable();
-#endif
-    rApplication.addThread(Vobulator::getInstance());
-
-#ifdef USE_ESP32
-    rApplication.addThread(VobulatorByADC::getInstance());
-    VobulatorByADC::getInstance()->enable();
 #endif
 }
