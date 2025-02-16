@@ -16,6 +16,7 @@
 #include "Model/GeneratorForEsp32.hpp"
 #else
 #include "Model/GeneratorForUno.hpp"
+#include <SPI.h>
 #endif
 
 void ModuleApplicationBuilder::buildApplication(ModuleApplicationIf &rApplication)
@@ -29,10 +30,14 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
     GeneratorIf *generatorChannel2 = nullptr;
     ViewIf *view = nullptr;
 #ifdef USE_ESP32
+    // The ESP32 uses software emulated SPI interface
     generatorChannel1 = new GeneratorForEsp32(CHANNEL_1_SPI_CS, CHANNEL_1_SPI_SDATA, CHANNEL_1_SPI_SCLK);
     generatorChannel2 = new GeneratorForEsp32(CHANNEL_2_SPI_CS, CHANNEL_2_SPI_SDATA, CHANNEL_2_SPI_SCLK);
 #else
+    // For Uno hardware SPI interface need to be initalized first
+    SPI.begin();
     generatorChannel1 = new GeneratorForUno(CHANNEL_1_SPI_CS);
+    generatorChannel2 = new GeneratorForUno(CHANNEL_2_SPI_CS);
 #endif
 
 #ifdef USE_SERIAL
