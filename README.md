@@ -26,8 +26,9 @@ At least as long as suitable library to talk ith the chip are available.
 
 # Pinout
 
-## Arduino UNO
+## Atmega 328p Arduino UNO
 
+For channel 1, select is a pin 10, other input pins are the same, power is 5V.
 
       -----------------                                       ----------------
       |               |                                       |              |
@@ -38,7 +39,20 @@ At least as long as suitable library to talk ith the chip are available.
       |               |  Pin GND ---------------- Pin DGND    |              |
       -----------------                                       ----------------
 
-## ESP 32
+For channel 2, select is a pin 9, other input pins are the same, power is 5V.      
+
+      -----------------                                       ----------------
+      |               |                                       |              |
+      |  ARDUINO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out
+      |  UNO          |  Pin 11 ----------------- Pin SDATA   |   Channel 2  |  Pin AGDN
+      |               |  Pin 13 ----------------- Pin SCKL    |              | 
+      |               |  Pin 5V ----------------- Pin VCC     |              |
+      |               |  Pin GND ---------------- Pin DGND    |              |
+      -----------------                                       ----------------      
+
+See for details in the include/ModuleConfig.hpp.
+
+## ESP32 Weemos D1 R32
 
 For channel 1, select is a pin 12, other input pins are the same, power is 3.3V.
 
@@ -62,6 +76,14 @@ For channel 2, select is a pin 13, other input pins are the same, power is 3.3V.
       |               |  Pin GND ---------------- Pin DGND    |              |
       -----------------                                       ----------------
 
+See for details in the include/ModuleConfig.hpp.
+
+# Other remarks
+
+- I have noticed that when both generators work at the same time, and one of them is generating a square wave, 
+the second generator may get distortion (spikes) as the power lines are not correctly filtered (assuming powering from the UNO board itself).
+For this reason, it is recommended that the power lines to both AD9833 devices be thoroughly filtered.
+
 # Architecture
 
 The application area has "dirty set up code"; see ModuleApplicationBuilder.cpp.
@@ -70,12 +92,13 @@ The building blocks interact with the echoer through formal interfaces.
 
 The Controller, objects in this area implement ControllerIf - this part of the code controls the generator's objects.
 The Model, objects in this implement the GeneratorIf, this part of code is responsible for talking to the real generator hardware.
-The View is missing, looks like I entangled data presentation with the controller, something to fix in the future :).
+The View, objects in this are implement the ViewIf, this part of code is responsible for displaying information to the operator.
 
 # Future developments
 
- - Dual channel support for Arduino UNO.
+ - Work with power modes to avoid distortion at least in one channel mode.
  - Use hardware SPI for ESP32 instead of software emulation.
  - Vobulator feature for ESP32.
  - Vobulator feature for UNO.
+ - Potentiometer to normalize values of signals for different waveforms.
  - WiFi/Web based UI for ESP32.

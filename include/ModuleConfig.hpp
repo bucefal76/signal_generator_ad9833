@@ -16,6 +16,7 @@
 #define CHANNEL_2_SPI_SDATA CHANNEL_1_SPI_SDATA
 #else
 #define CHANNEL_1_SPI_CS 10
+#define CHANNEL_2_SPI_CS 9
 #endif
 
 #define USE_SERIAL
