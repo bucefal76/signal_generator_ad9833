@@ -2,11 +2,11 @@
 #define VOBULATORFORESP32_HPP
 
 #include "ModuleConfig.hpp"
-#include "Model/VobulatorIf.hpp"
 
 #ifdef USE_ESP32
 
 #include <Thread.h>
+#include "Model/VobulatorIf.hpp"
 
 class GeneratorIf;
 
@@ -24,6 +24,10 @@ public:
 
     virtual void enable();
     virtual void disable();
+    virtual void pause();
+    virtual void resume();
+    virtual void stepUp();
+    virtual void stepDown();
 
     virtual void setGenerator(GeneratorIf *generator);
 
@@ -35,8 +39,8 @@ private:
     long m_startingFrequency; // Starting frequency
     long m_endingFrequency;   // Ending frequency
     long m_frequencyStep;     // Frequency step
-
     uint16_t m_currentStep;
+    bool m_isPaused;
 
     static VobulatorForEsp32 *m_Instance;
 };

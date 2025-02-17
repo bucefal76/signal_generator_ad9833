@@ -27,7 +27,8 @@ VobulatorForEsp32::VobulatorForEsp32()
       m_startingFrequency(200),
       m_endingFrequency(20000),
       m_currentStep(VOBULATOR_RAMP_FIRST_STEP),
-      m_frequencyStep(1U)
+      m_frequencyStep(1U),
+      m_isPaused(false)
 {
     setInterval(VOBULATOR_BY_DC_THREAD_TIME_INTERVAL_MS);
     onRun(onRunCallback);
@@ -67,7 +68,10 @@ void VobulatorForEsp32::update()
             const long frequency = m_startingFrequency + m_currentStep * m_frequencyStep;
             m_Generator->generateWave(GeneratorIf::TypeSinusoidal, frequency);
 
-            m_currentStep++;
+            if (false == m_isPaused)
+            {
+                m_currentStep++;
+            }
         }
         else
         {
@@ -84,6 +88,43 @@ void VobulatorForEsp32::setGenerator(GeneratorIf *generator)
 void VobulatorForEsp32::onRunCallback()
 {
     m_Instance->update();
+}
+
+void VobulatorForEsp32::pause()
+{
+    m_isPaused = true;
+}
+
+void VobulatorForEsp32::resume()
+{
+    m_isPaused = false;
+}
+
+void VobulatorForEsp32::stepUp()
+{
+    if (m_isPaused)
+    {
+        m_currentStep++;
+        if (m_currentStep >= VOBULATOR_NUMBER_OF_STEPS)
+        {
+            m_currentStep = VOBULATOR_NUMBER_OF_STEPS - 1;
+        }
+    }
+}
+
+void VobulatorForEsp32::stepDown()
+{
+    if (m_isPaused)
+    {
+        if (m_currentStep == VOBULATOR_RAMP_FIRST_STEP)
+        {
+            m_currentStep = VOBULATOR_RAMP_FIRST_STEP;
+        }
+        else
+        {
+            m_currentStep--;
+        }
+    }
 }
 
 #endif

@@ -2,16 +2,28 @@
 
 #ifdef USE_SERIAL
 
-void SerialPortView::displayMainMenu() const
+void SerialPortView::displayMainMenu(const GeneratorIf *generator1, const GeneratorIf *generator2) const
 {
+    if (generator1 != nullptr)
+    {
+        displayChannelStatus(generator1->getChannelId(), generator1->isEnabled(), generator1->getWaveType(), generator1->getFrequency());
+    } 
+    if (generator2 != nullptr)
+    {
+        displayChannelStatus(generator1->getChannelId(), generator2->isEnabled(), generator2->getWaveType(), generator2->getFrequency());
+    }
     Serial.println("Main menu:");
     Serial.println("1. Channel 1");
     Serial.println("2. Channel 2");
     Serial.println("3. Vobulator - channel 1");
 }
 
-void SerialPortView::displayChannelMenu() const
+void SerialPortView::displayChannelMenu(const GeneratorIf *generator) const
 {
+    if (generator != nullptr)
+    {
+        displayChannelStatus(generator->getChannelId(), generator->isEnabled(), generator->getWaveType(), generator->getFrequency());
+    }
     Serial.println("Channel menu:");
     Serial.println("1. Enable");
     Serial.println("2. Disable");
@@ -20,8 +32,12 @@ void SerialPortView::displayChannelMenu() const
     Serial.println("0. Return to main menu");
 }
 
-void SerialPortView::displayWaveTypeMenu() const
+void SerialPortView::displayWaveTypeMenu(const GeneratorIf *generator) const
 {
+    if (generator != nullptr)
+    {
+        displayChannelStatus(generator->getChannelId(), generator->isEnabled(), generator->getWaveType(), generator->getFrequency());
+    }
     Serial.println("Wave type menu:");
     Serial.println("1. Sinusoidal");
     Serial.println("2. Square");
@@ -29,8 +45,12 @@ void SerialPortView::displayWaveTypeMenu() const
     Serial.println("0. Return to channel menu");
 }
 
-void SerialPortView::displayFrequencyMenu() const
+void SerialPortView::displayFrequencyMenu(const GeneratorIf *generator) const
 {
+    if (generator != nullptr)
+    {
+        displayChannelStatus(generator->getChannelId(), generator->isEnabled(), generator->getWaveType(), generator->getFrequency());
+    }
     Serial.println("Frequency menu:");
     Serial.println("Enter frequency in Hz:");
 }
@@ -74,8 +94,12 @@ void SerialPortView::displayVobulatorMenu() const
     Serial.println("Vobulator menu:");
     Serial.println("1. Enable");
     Serial.println("2. Disable");
-    Serial.println("3. Set start frequency");
-    Serial.println("4. Set end frequency");
+    Serial.println("3. Pause");
+    Serial.println("4. Resume");
+    Serial.println("5. Step up");
+    Serial.println("6. Step down");
+    Serial.println("7. Set start frequency");
+    Serial.println("8. Set end frequency");
     Serial.println("0. Return to main menu");
 }
 

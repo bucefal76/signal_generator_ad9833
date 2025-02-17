@@ -17,6 +17,10 @@ public:
 
     virtual void enable() = 0;
     virtual void disable() = 0;
+    virtual void pause() = 0;
+    virtual void resume() = 0;
+    virtual void stepUp() = 0;
+    virtual void stepDown() = 0;
 };
 
 #endif

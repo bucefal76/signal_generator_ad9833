@@ -12,8 +12,10 @@ class AD9833;
 class GeneratorAd9833 : public GeneratorIf
 {
 public:
-    GeneratorAd9833();
+    GeneratorAd9833(const uint8_t channelId);
     virtual ~GeneratorAd9833();
+
+    virtual uint8_t getChannelId() const;
     virtual void generateWave(const WaveType type, const long frequency);
     virtual void disableWave();
     virtual long getFrequency() const;
@@ -23,6 +25,8 @@ public:
 protected:
     /// @brief Pointer to the AD9833 class form the robtillaart/AD9833 library.
     AD9833 *m_AD;
+    /// @brief The channel id of the generator.
+    uint8_t m_channelId;
 };
 
 #endif

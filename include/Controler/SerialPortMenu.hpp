@@ -36,14 +36,16 @@ private:
     void disableGeneratorChannel1();
     /// @brief Helper function to disable the second generator.
     void disableGeneratorChannel2();
-
+    /// @brief Helper function to enable the vobulator and disable the generators.
     void enableVobulator();
+    /// @brief Helper function to disable the vobulator.
     void disableVobulator();
 
-    /// @brief Helper function to display the status of the first channel
-    void displayChannel1Status();
-    // @brief Helper function to display the status of the second channel
-    void displayChannel2Status();
+    void pauseVobulator();
+    void resumeVobulator();
+    void stepUpVobulator();
+    void stepDownVobulator();
+
     /// @brief Callback function to run the thread.
     static void onRunCallback();
 

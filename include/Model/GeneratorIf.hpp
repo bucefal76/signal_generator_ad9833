@@ -19,6 +19,8 @@ public:
         TypeRamp
     };
 
+    /// @brief Method to get the channel id of the generator.
+    virtual uint8_t getChannelId() const = 0;
     /// @brief Method to generate a wave, either sinusoidal, square or ramp.
     /// @param type WaveType to generate.
     /// @param frequency Frequency of the wave to generate.

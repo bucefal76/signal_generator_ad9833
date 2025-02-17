@@ -11,19 +11,14 @@ class ViewIf
 {
 public:
     /// @brief Display the main menu.
-    virtual void displayMainMenu() const = 0;
+    virtual void displayMainMenu(const GeneratorIf *generator1, const GeneratorIf *generator2) const = 0;
     /// @brief Display the channel menu.
-    virtual void displayChannelMenu() const = 0;
+    virtual void displayChannelMenu(const GeneratorIf *generator) const = 0;
     /// @brief Display the wave type menu.
-    virtual void displayWaveTypeMenu() const = 0;
+    virtual void displayWaveTypeMenu(const GeneratorIf *generator) const = 0;
     /// @brief Display the frequency menu.
-    virtual void displayFrequencyMenu() const = 0;
-    /// @brief Display the status of the channel.
-    /// @param channelId The channel ID to display.
-    /// @param channelEnabled Display if the channel is enabled or disabled.
-    /// @param waveType Displays the type of wave.
-    /// @param frequency Displays the frequency of the wave.
-    virtual void displayChannelStatus(const uint8_t channelId, const bool channelEnabled, const GeneratorIf::WaveType waveType, const long frequency) const = 0;
+    virtual void displayFrequencyMenu(const GeneratorIf *generator) const = 0;
+
     /// @brief Display the vobulator menu.
     virtual void displayVobulatorMenu() const = 0;
 };

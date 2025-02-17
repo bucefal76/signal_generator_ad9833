@@ -10,12 +10,15 @@
 class SerialPortView : public ViewIf
 {
 public:
-    void displayMainMenu() const;
-    void displayChannelMenu() const;
-    void displayWaveTypeMenu() const;
-    void displayFrequencyMenu() const;
-    void displayChannelStatus(const uint8_t channelId, const bool channelEnabled, const GeneratorIf::WaveType waveType, const long frequency) const;
+    void displayMainMenu(const GeneratorIf *generator1, const GeneratorIf *generator2) const;
+    void displayChannelMenu(const GeneratorIf *generator) const;
+    void displayWaveTypeMenu(const GeneratorIf *generator) const;
+    void displayFrequencyMenu(const GeneratorIf *generator) const;
+
     void displayVobulatorMenu() const;
+
+private:
+    void displayChannelStatus(const uint8_t channelId, const bool channelEnabled, const GeneratorIf::WaveType waveType, const long frequency) const;
 };
 
 #endif
