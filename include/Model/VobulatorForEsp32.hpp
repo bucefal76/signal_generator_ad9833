@@ -28,6 +28,9 @@ public:
     virtual void resume();
     virtual void stepUp();
     virtual void stepDown();
+    virtual long getCurrentFrequency() const;
+    virtual bool isEnabled() const;
+    virtual bool isPaused() const;
 
     virtual void setGenerator(GeneratorIf *generator);
 

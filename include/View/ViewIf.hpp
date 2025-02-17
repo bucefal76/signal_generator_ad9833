@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "Model/GeneratorIf.hpp"
+#include "Model/VobulatorIf.hpp"
 
 /// @brief Interface to define the methods to display messages to the operator.
 /// The interface is used to abstract the implementation of the view from
@@ -18,9 +19,8 @@ public:
     virtual void displayWaveTypeMenu(const GeneratorIf *generator) const = 0;
     /// @brief Display the frequency menu.
     virtual void displayFrequencyMenu(const GeneratorIf *generator) const = 0;
-
     /// @brief Display the vobulator menu.
-    virtual void displayVobulatorMenu() const = 0;
+    virtual void displayVobulatorMenu(const VobulatorIf *vobulator) const = 0;
 };
 
 #endif // VIEWIF_HPP

@@ -84,7 +84,7 @@ void SerialPortMenu::update()
             case '3':
                 Serial.println(F("3"));
                 m_menuState = MenuStateVobulatorMenu;
-                m_view->displayVobulatorMenu();
+                m_view->displayVobulatorMenu(m_vobulator);
                 break;
             default:
                 break;
@@ -255,7 +255,7 @@ void SerialPortMenu::update()
             default:
                 setGeneratorChannel2Wave(m_lastSelectedGeneratorChannel2WaveType, m_lastSelectedGeneratorChannel2Frequency);
                 m_menuState = MenuStateChannel2Menu;
-                m_view->displayMainMenu(m_generatorChannel1,m_generatorChannel2);
+                m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2);
                 break;
             }
         }
@@ -299,21 +299,27 @@ void SerialPortMenu::update()
             {
             case '1':
                 enableVobulator();
+                m_view->displayVobulatorMenu(m_vobulator);
                 break;
             case '2':
                 disableVobulator();
+                m_view->displayVobulatorMenu(m_vobulator);
                 break;
             case '3':
                 pauseVobulator();
+                m_view->displayVobulatorMenu(m_vobulator);
                 break;
             case '4':
                 resumeVobulator();
+                m_view->displayVobulatorMenu(m_vobulator);
                 break;
             case '5':
                 stepUpVobulator();
+                m_view->displayVobulatorMenu(m_vobulator);
                 break;
             case '6':
                 stepDownVobulator();
+                m_view->displayVobulatorMenu(m_vobulator);
                 break;
             default:
                 m_view->displayMainMenu(nullptr, nullptr);

@@ -24,7 +24,7 @@ VobulatorForEsp32 *VobulatorForEsp32::getInstance()
 
 VobulatorForEsp32::VobulatorForEsp32()
     : m_Generator(nullptr),
-      m_startingFrequency(200),
+      m_startingFrequency(500),
       m_endingFrequency(20000),
       m_currentStep(VOBULATOR_RAMP_FIRST_STEP),
       m_frequencyStep(1U),
@@ -45,6 +45,7 @@ void VobulatorForEsp32::enable()
 
         m_frequencyStep = (m_endingFrequency - m_startingFrequency) / VOBULATOR_NUMBER_OF_STEPS;
 
+        m_isPaused = false;
         enabled = true;
     }
 }
@@ -52,6 +53,7 @@ void VobulatorForEsp32::enable()
 void VobulatorForEsp32::disable()
 {
     enabled = false;
+    m_isPaused = false;
     dac_output_voltage(DAC_CHANNEL_1, 0U);
     m_Generator->disableWave();
 }
@@ -125,6 +127,21 @@ void VobulatorForEsp32::stepDown()
             m_currentStep--;
         }
     }
+}
+
+long VobulatorForEsp32::getCurrentFrequency() const
+{
+    return m_startingFrequency + m_currentStep * m_frequencyStep;
+}
+
+bool VobulatorForEsp32::isEnabled() const
+{
+    return enabled;
+}
+
+bool VobulatorForEsp32::isPaused() const
+{
+    return m_isPaused;
 }
 
 #endif
