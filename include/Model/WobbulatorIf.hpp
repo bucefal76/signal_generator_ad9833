@@ -1,20 +1,20 @@
-#ifndef VOBULATORIF_HPP
-#define VOBULATORIF_HPP
+#ifndef WOBBULATORIF_HPP
+#define WOBBULATORIF_HPP
 
 #include "Model/GeneratorIf.hpp"
 
-/// @brief Vobulator interface, defines an abstract class for the Vobulator
-/// @details The Vobulator implementation classes a class that generates a signal
+/// @brief Wobbulator interface, defines an abstract class for the Wobbulator
+/// @details The Wobbulator implementation classes a class that generates a signal
 /// at the generator ouput with different frequencies and and at the same time
 /// it generates a ramp signal at DAC output.
-/// The abstraction allows to use different Vobulator implementations in the controller code.
-class VobulatorIf
+/// The abstraction allows to use different Wobbulator implementations in the controller code.
+class WobbulatorIf
 {
 public:
     /// @brief Sets the generator channel used to generate sine sweep signal.
     /// @param generator Pointer to the generator object.
     virtual void setGenerator(GeneratorIf *generator) = 0;
-    /// @brief Enable vobulator.
+    /// @brief Enable Wobbulator.
     virtual void enable() = 0;
     /// @brief Disable generator.
     virtual void disable() = 0;
@@ -32,13 +32,13 @@ public:
     virtual bool isEnabled() const = 0;
     /// @brief Returns true if auto step is disabled
     virtual bool isPaused() const = 0;
-    /// @brief Sets the start frequency for the vobulator sweep
+    /// @brief Sets the start frequency for the Wobbulator sweep
     virtual void setStartFrequency(const long startFrequency) = 0;
-    /// @brief Gets the start frequency for vobulator sweep
+    /// @brief Gets the start frequency for Wobbulator sweep
     virtual long getStartFrequency() const = 0;
-    /// @brief Sets the end frequency for the vobulator sweep
+    /// @brief Sets the end frequency for the Wobbulator sweep
     virtual void setEndFrequency(const long endFrequency) = 0;
-    /// @brief Gets the end frequency for vobulator sweep
+    /// @brief Gets the end frequency for Wobbulator sweep
     virtual long getEndFrequency() const = 0;
 };
 

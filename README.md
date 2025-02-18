@@ -103,12 +103,12 @@ The View, objects in this are implement the ViewIf, this part of code is respons
 
 # Future developments
 
- - Setting start end end frequency for the vobulator.
- - Restoring generators settings when vobulator enabled then disabled.
- - restoring vobulator settings when vobulator enabled then generators enabled and then vobulator enabled back.
+  - Setting start end end frequency for the Wobbulator.
+ - Restoring generators settings when Wobbulator enabled then disabled.
+ - restoring Wobbulator settings when Wobbulator enabled then generators enabled and then Wobbulator enabled back.
  - Single channel only support and make code ready for missing connection to the devices (power up diagnostics).
  - Amplitude scaling.
- - Vobulator feature for UNO.
+ - Wobbulator feature for UNO.
  - Potentiometer to normalize values of signals for different waveforms.
  - Use hardware SPI for ESP32 instead of software emulation.
  - WiFi/Web based UI for ESP32.

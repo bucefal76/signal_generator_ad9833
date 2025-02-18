@@ -1,4 +1,4 @@
-#include "Model/VobulatorForEsp32.hpp"
+#include "Model/WobbulatorForEsp32.hpp"
 
 #ifdef USE_ESP32
 
@@ -11,19 +11,19 @@
 // DAC resolution is 8 bits, so 256 steps
 #define VOBULATOR_RAMP_STEP (256 / VOBULATOR_NUMBER_OF_STEPS)
 
-VobulatorForEsp32 *VobulatorForEsp32::m_Instance = nullptr;
+WobbulatorForEsp32 *WobbulatorForEsp32::m_Instance = nullptr;
 
-VobulatorForEsp32 *VobulatorForEsp32::getInstance()
+WobbulatorForEsp32 *WobbulatorForEsp32::getInstance()
 {
     if (m_Instance == nullptr)
     {
-        m_Instance = new VobulatorForEsp32();
+        m_Instance = new WobbulatorForEsp32();
     }
 
     return m_Instance;
 }
 
-VobulatorForEsp32::VobulatorForEsp32()
+WobbulatorForEsp32::WobbulatorForEsp32()
     : m_Generator(nullptr),
       m_startFrequency(500),
       m_endFrequency(20000),
@@ -38,7 +38,7 @@ VobulatorForEsp32::VobulatorForEsp32()
     dac_output_enable(DAC_CHANNEL_1); // GPIO25
 }
 
-void VobulatorForEsp32::enable()
+void WobbulatorForEsp32::enable()
 {
     if (m_Generator != nullptr)
     {
@@ -51,7 +51,7 @@ void VobulatorForEsp32::enable()
     }
 }
 
-void VobulatorForEsp32::disable()
+void WobbulatorForEsp32::disable()
 {
     enabled = false;
     m_isPaused = false;
@@ -59,7 +59,7 @@ void VobulatorForEsp32::disable()
     m_Generator->disableWave();
 }
 
-void VobulatorForEsp32::update()
+void WobbulatorForEsp32::update()
 {
     if (enabled && m_Generator != nullptr)
     {
@@ -83,27 +83,27 @@ void VobulatorForEsp32::update()
     }
 }
 
-void VobulatorForEsp32::setGenerator(GeneratorIf *generator)
+void WobbulatorForEsp32::setGenerator(GeneratorIf *generator)
 {
     m_Generator = generator;
 }
 
-void VobulatorForEsp32::onRunCallback()
+void WobbulatorForEsp32::onRunCallback()
 {
     m_Instance->update();
 }
 
-void VobulatorForEsp32::pause()
+void WobbulatorForEsp32::pause()
 {
     m_isPaused = true;
 }
 
-void VobulatorForEsp32::resume()
+void WobbulatorForEsp32::resume()
 {
     m_isPaused = false;
 }
 
-void VobulatorForEsp32::stepUp()
+void WobbulatorForEsp32::stepUp()
 {
     if (m_isPaused)
     {
@@ -115,7 +115,7 @@ void VobulatorForEsp32::stepUp()
     }
 }
 
-void VobulatorForEsp32::stepDown()
+void WobbulatorForEsp32::stepDown()
 {
     if (m_isPaused)
     {
@@ -130,32 +130,32 @@ void VobulatorForEsp32::stepDown()
     }
 }
 
-long VobulatorForEsp32::getCurrentFrequency() const
+long WobbulatorForEsp32::getCurrentFrequency() const
 {
     return m_startFrequency + m_currentStep * m_frequencyStep;
 }
 
-bool VobulatorForEsp32::isEnabled() const
+bool WobbulatorForEsp32::isEnabled() const
 {
     return enabled;
 }
 
-bool VobulatorForEsp32::isPaused() const
+bool WobbulatorForEsp32::isPaused() const
 {
     return m_isPaused;
 }
 
-long VobulatorForEsp32::getStartFrequency() const
+long WobbulatorForEsp32::getStartFrequency() const
 {
     return m_startFrequency;
 }
 
-long VobulatorForEsp32::getEndFrequency() const
+long WobbulatorForEsp32::getEndFrequency() const
 {
     return m_endFrequency;
 }
 
-void VobulatorForEsp32::setStartFrequency(const long startFrequency)
+void WobbulatorForEsp32::setStartFrequency(const long startFrequency)
 {
     if ((startFrequency > 0) && (startFrequency < VOBULATOR_MAX_FREQUENCY))
     {
@@ -166,7 +166,7 @@ void VobulatorForEsp32::setStartFrequency(const long startFrequency)
     }
 }
 
-void VobulatorForEsp32::setEndFrequency(const long endFrequency)
+void WobbulatorForEsp32::setEndFrequency(const long endFrequency)
 {
     if ((endFrequency > 0) && (endFrequency <= VOBULATOR_MAX_FREQUENCY))
     {

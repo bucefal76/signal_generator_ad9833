@@ -19,7 +19,7 @@ public:
 
     virtual void setGeneratorsToControl(GeneratorIf *generatorLine1, GeneratorIf *generatorLine2) final;
     virtual void setView(ViewIf *view) final;
-    virtual void setVobulator(VobulatorIf *vobulator) final;
+    virtual void setWobbulator(WobbulatorIf *wobbulator) final;
 
 private:
     /// @brief Main function of the thread
@@ -36,22 +36,22 @@ private:
     void disableGeneratorChannel1();
     /// @brief Helper function to disable the second generator.
     void disableGeneratorChannel2();
-    /// @brief Helper function to enable the vobulator and disable the generators.
-    void enableVobulator();
-    /// @brief Helper function to disable the vobulator.
-    void disableVobulator();
-    /// @brief Helper function to pause vobulator auto step.
-    void pauseVobulator();
-    /// @brief Helper function to resume vobulator auto step.
-    void resumeVobulator();
-    /// @brief Helper function to increase vobulator step.
-    void stepUpVobulator();
-    /// @brief Helper function to decrease vobulator step.
-    void stepDownVobulator();
-    /// @brief Helper function to set start frequency for vobulator sweep.
-    void setStartFrequencyForVobulator(const long frequency);
-    /// @brief Helper function to set end frequency for vobulator sweep.
-    void setEndFrequencyForVobulator(const long frequency);
+    /// @brief Helper function to enable the Wobbulator and disable the generators.
+    void enableWobbulator();
+    /// @brief Helper function to disable the Wobbulator.
+    void disableWobbulator();
+    /// @brief Helper function to pause Wobbulator auto step.
+    void pauseWobbulator();
+    /// @brief Helper function to resume Wobbulator auto step.
+    void resumeWobbulator();
+    /// @brief Helper function to increase Wobbulator step.
+    void stepUpWobbulator();
+    /// @brief Helper function to decrease Wobbulator step.
+    void stepDownWobbulator();
+    /// @brief Helper function to set start frequency for Wobbulator sweep.
+    void setStartFrequencyForWobbulator(const long frequency);
+    /// @brief Helper function to set end frequency for Wobbulator sweep.
+    void setEndFrequencyForWobbulator(const long frequency);
 
     /// @brief Callback function to run the thread.
     static void onRunCallback();
@@ -67,9 +67,9 @@ private:
         MenuStateChannel2Menu,
         MenuStateChannel2SelectWaveTypeMenu,
         MenuStateChannel2SelectFrequencyMenu,
-        MenuStateVobulatorMenu,
-        MenuStateVobulatorSelectStartFrequencyMenu,
-        MenuStateVobulatorSelectEndFrequencyMenu
+        MenuStateWobbulatorMenu,
+        MenuStateWobbulatorSelectStartFrequencyMenu,
+        MenuStateWobbulatorSelectEndFrequencyMenu
     };
 
     MenuStateT m_menuState;
@@ -77,12 +77,12 @@ private:
     GeneratorIf::WaveType m_lastSelectedGeneratorChannel2WaveType;
     long m_lastSelectedGeneratorChannel1Frequency;
     long m_lastSelectedGeneratorChannel2Frequency;
-    long m_vobulatorStartFrequency;
-    long m_vobulatorEndFrequency;
+    long m_wobbulatorStartFrequency;
+    long m_wobbulatorEndFrequency;
     GeneratorIf *m_generatorChannel1;
     GeneratorIf *m_generatorChannel2;
     ViewIf *m_view;
-    VobulatorIf *m_vobulator;
+    WobbulatorIf *m_wobbulator;
 
     static SerialPortMenu *m_Instance;
 };
