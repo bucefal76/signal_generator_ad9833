@@ -9,9 +9,9 @@ class ModuleApplication : public ModuleApplicationIf
 public:
     ModuleApplication();
     /// @brief See ModuleApplicationIf::addThread.
-    virtual void addThread(Thread *pThread);
+    virtual void addThread(Thread *pThread) final;
     /// @brief See ModuleApplicationIf::runThreads.
-    virtual void runThreads();
+    virtual void runThreads() final;
 
 private:
     std::vector<Thread *> m_Threads;

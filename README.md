@@ -1,6 +1,6 @@
 # signal_generator_ad9833
 
-Ver 0.2.2
+Ver 0.2.4
 
 # Introduction
 
@@ -52,7 +52,7 @@ For channel 2, select is a pin 9, other input pins are the same, power is 5V.
 
 See for details in the include/ModuleConfig.hpp.
 
-## ESP32 Weemos D1 R32
+## ESP32 Wemos D1 R32
 
 For channel 1, select is a pin 12, other input pins are the same, power is 3.3V.
 
@@ -94,11 +94,20 @@ The Controller, objects in this area implement ControllerIf - this part of the c
 The Model, objects in this implement the GeneratorIf, this part of code is responsible for talking to the real generator hardware.
 The View, objects in this are implement the ViewIf, this part of code is responsible for displaying information to the operator.
 
+# Dependencies
+
+[robtillaart/AD9833](https://github.com/RobTillaart/AD9833)
+[ivanseidel/ArduinoThread](https://github.com/ivanseidel/ArduinoThread)
+[mike-matera/ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)
+[SPI](https://github.com/esp8266/Arduino/blob/master/libraries/SPI/SPI.h)
+
 # Future developments
 
- - Work with power modes to avoid distortion at least in one channel mode.
- - Use hardware SPI for ESP32 instead of software emulation.
- - Vobulator feature for ESP32.
+ - Setting start end end frequency for the vobulator.
+ - Restoring generators settings when vobulator enabled then disabled.
+ - restoring vobulator settings when vobulator enabled then generators enabled and then vobulator enabled back.
+ - Single channel only support and make code ready for missing connection to the devices (power up diagnostics).
  - Vobulator feature for UNO.
  - Potentiometer to normalize values of signals for different waveforms.
+ - Use hardware SPI for ESP32 instead of software emulation.
  - WiFi/Web based UI for ESP32.

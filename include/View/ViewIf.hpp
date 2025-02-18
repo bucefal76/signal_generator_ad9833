@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "Model/GeneratorIf.hpp"
+#include "Model/VobulatorIf.hpp"
 
 /// @brief Interface to define the methods to display messages to the operator.
 /// The interface is used to abstract the implementation of the view from
@@ -10,20 +11,26 @@
 class ViewIf
 {
 public:
+
+    enum VobulatorFrequency
+    {
+        FrequencyStart,
+        FrequencyEnd
+    };
+
     /// @brief Display the main menu.
-    virtual void displayMainMenu() = 0;
+    virtual void
+    displayMainMenu(const GeneratorIf *generator1, const GeneratorIf *generator2) const = 0;
     /// @brief Display the channel menu.
-    virtual void displayChannelMenu() = 0;
+    virtual void displayGeneratorChannelMenu(const GeneratorIf *generator) const = 0;
     /// @brief Display the wave type menu.
-    virtual void displayWaveTypeMenu() = 0;
+    virtual void displayGeneratorWaveTypeSelectionMenu(const GeneratorIf *generator) const = 0;
     /// @brief Display the frequency menu.
-    virtual void displayFrequencyMenu() = 0;
-    /// @brief Display the status of the channel.
-    /// @param channelId The channel ID to display.
-    /// @param channelEnabled Display if the channel is enabled or disabled.
-    /// @param waveType Displays the type of wave.
-    /// @param frequency Displays the frequency of the wave.
-    virtual void displayChannelStatus(const uint8_t channelId, const bool channelEnabled, const GeneratorIf::WaveType waveType, const long frequency) = 0;
+    virtual void displayGeneratorFrequencySelectionMenu(const GeneratorIf *generator) const = 0;
+    /// @brief Display the vobulator menu.
+    virtual void displayVobulatorMenu(const VobulatorIf *vobulator) const = 0;
+    /// @brief Displays the vobulator frequency selection menu
+    virtual void displayVobulatorFrequencySelectionMenu(const VobulatorIf *vobulator, const VobulatorFrequency frequencyType) const = 0;
 };
 
 #endif // VIEWIF_HPP
