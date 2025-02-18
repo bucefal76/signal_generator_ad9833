@@ -1,6 +1,6 @@
 # signal_generator_ad9833
 
-Ver 0.2.3
+Ver 0.2.4
 
 # Introduction
 
@@ -94,11 +94,20 @@ The Controller, objects in this area implement ControllerIf - this part of the c
 The Model, objects in this implement the GeneratorIf, this part of code is responsible for talking to the real generator hardware.
 The View, objects in this are implement the ViewIf, this part of code is responsible for displaying information to the operator.
 
+# Dependencies
+
+[robtillaart/AD9833](https://github.com/RobTillaart/AD9833)
+[ivanseidel/ArduinoThread](https://github.com/ivanseidel/ArduinoThread)
+[mike-matera/ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)
+[SPI](https://github.com/esp8266/Arduino/blob/master/libraries/SPI/SPI.h)
+
 # Future developments
 
- - Vobulator feature for ESP32.
+ - Setting start end end frequency for the vobulator.
+ - Restoring generators settings when vobulator enabled then disabled.
+ - restoring vobulator settings when vobulator enabled then generators enabled and then vobulator enabled back.
+ - Single channel only support and make code ready for missing connection to the devices (power up diagnostics).
  - Vobulator feature for UNO.
- - Single channel only support.
- - Use hardware SPI for ESP32 instead of software emulation.
  - Potentiometer to normalize values of signals for different waveforms.
+ - Use hardware SPI for ESP32 instead of software emulation.
  - WiFi/Web based UI for ESP32.

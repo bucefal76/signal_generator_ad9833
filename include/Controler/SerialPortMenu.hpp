@@ -14,12 +14,12 @@ public:
 
     SerialPortMenu();
 
-    virtual void enable();
-    virtual void disable();
+    virtual void enable() final;
+    virtual void disable() final;
 
-    virtual void setGeneratorsToControl(GeneratorIf *generatorLine1, GeneratorIf *generatorLine2);
-    virtual void setView(ViewIf *view);
-    virtual void setVobulator(VobulatorIf *vobulator);
+    virtual void setGeneratorsToControl(GeneratorIf *generatorLine1, GeneratorIf *generatorLine2) final;
+    virtual void setView(ViewIf *view) final;
+    virtual void setVobulator(VobulatorIf *vobulator) final;
 
 private:
     /// @brief Main function of the thread
@@ -40,12 +40,14 @@ private:
     void enableVobulator();
     /// @brief Helper function to disable the vobulator.
     void disableVobulator();
-
+    /// @brief Helper function to pause vobulator auto step.
     void pauseVobulator();
+    /// @brief Helper function to resume vobulator auto step.
     void resumeVobulator();
+    /// @brief Helper function to increase vobulator step.
     void stepUpVobulator();
+    /// @brief Helper function to decrease vobulator step.
     void stepDownVobulator();
-
     /// @brief Callback function to run the thread.
     static void onRunCallback();
 

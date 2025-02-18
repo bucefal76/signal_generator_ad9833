@@ -24,8 +24,8 @@ VobulatorForEsp32 *VobulatorForEsp32::getInstance()
 
 VobulatorForEsp32::VobulatorForEsp32()
     : m_Generator(nullptr),
-      m_startingFrequency(500),
-      m_endingFrequency(20000),
+      m_startFrequency(500),
+      m_endFrequency(20000),
       m_currentStep(VOBULATOR_RAMP_FIRST_STEP),
       m_frequencyStep(1U),
       m_isPaused(false)
@@ -43,7 +43,7 @@ void VobulatorForEsp32::enable()
     {
         m_currentStep = VOBULATOR_RAMP_FIRST_STEP;
 
-        m_frequencyStep = (m_endingFrequency - m_startingFrequency) / VOBULATOR_NUMBER_OF_STEPS;
+        m_frequencyStep = (m_endFrequency - m_startFrequency) / VOBULATOR_NUMBER_OF_STEPS;
 
         m_isPaused = false;
         enabled = true;
@@ -67,7 +67,7 @@ void VobulatorForEsp32::update()
             const uint8_t rampDcValue = m_currentStep * VOBULATOR_RAMP_STEP;
             dac_output_voltage(DAC_CHANNEL_1, rampDcValue);
 
-            const long frequency = m_startingFrequency + m_currentStep * m_frequencyStep;
+            const long frequency = m_startFrequency + m_currentStep * m_frequencyStep;
             m_Generator->generateWave(GeneratorIf::TypeSinusoidal, frequency);
 
             if (false == m_isPaused)
@@ -131,7 +131,7 @@ void VobulatorForEsp32::stepDown()
 
 long VobulatorForEsp32::getCurrentFrequency() const
 {
-    return m_startingFrequency + m_currentStep * m_frequencyStep;
+    return m_startFrequency + m_currentStep * m_frequencyStep;
 }
 
 bool VobulatorForEsp32::isEnabled() const
@@ -142,6 +142,16 @@ bool VobulatorForEsp32::isEnabled() const
 bool VobulatorForEsp32::isPaused() const
 {
     return m_isPaused;
+}
+
+long VobulatorForEsp32::getStartFrequency() const
+{
+    return m_startFrequency;
+}
+
+long VobulatorForEsp32::getEndFrequency() const
+{
+    return m_endFrequency;
 }
 
 #endif

@@ -22,15 +22,17 @@ public:
 
     VobulatorForEsp32();
 
-    virtual void enable();
-    virtual void disable();
-    virtual void pause();
-    virtual void resume();
-    virtual void stepUp();
+    virtual void enable() final;
+    virtual void disable() final;
+    virtual void pause() final;
+    virtual void resume() final;
+    virtual void stepUp() final;
     virtual void stepDown();
-    virtual long getCurrentFrequency() const;
-    virtual bool isEnabled() const;
-    virtual bool isPaused() const;
+    virtual long getCurrentFrequency() const final;
+    virtual bool isEnabled() const final;
+    virtual bool isPaused() const final;
+    virtual long getStartFrequency() const final;
+    virtual long getEndFrequency() const final;
 
     virtual void setGenerator(GeneratorIf *generator);
 
@@ -39,8 +41,8 @@ private:
     static void onRunCallback();
 
     GeneratorIf *m_Generator; // Pointer to the generator object
-    long m_startingFrequency; // Starting frequency
-    long m_endingFrequency;   // Ending frequency
+    long m_startFrequency;    // Starting frequency
+    long m_endFrequency;      // Ending frequency
     long m_frequencyStep;     // Frequency step
     uint16_t m_currentStep;
     bool m_isPaused;

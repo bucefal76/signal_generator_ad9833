@@ -75,11 +75,11 @@ void SerialPortMenu::update()
             {
             case '1':
                 m_menuState = MenuStateChannel1Menu;
-                m_view->displayChannelMenu(m_generatorChannel1);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel1);
                 break;
             case '2':
                 m_menuState = MenuStateChannel2Menu;
-                m_view->displayChannelMenu(m_generatorChannel2);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel2);
                 break;
             case '3':
                 Serial.println(F("3"));
@@ -103,19 +103,19 @@ void SerialPortMenu::update()
             {
             case '1':
                 setGeneratorChannel1Wave(m_lastSelectedGeneratorChannel1WaveType, m_lastSelectedGeneratorChannel1Frequency);
-                m_view->displayChannelMenu(m_generatorChannel1);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel1);
                 break;
             case '2':
                 disableGeneratorChannel1();
-                m_view->displayChannelMenu(m_generatorChannel1);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel1);
                 break;
             case '3':
                 m_menuState = MenuStateChannel1SelectWaveTypeMenu;
-                m_view->displayWaveTypeMenu(m_generatorChannel1);
+                m_view->displayGeneratorWaveTypeSelectionMenu(m_generatorChannel1);
                 break;
             case '4':
                 m_menuState = MenuStateChannel1SelectFrequencyMenu;
-                m_view->displayFrequencyMenu(m_generatorChannel1);
+                m_view->displayGeneratorFrequencySelectionMenu(m_generatorChannel1);
                 break;
             default:
                 m_menuState = MenuStateMain;
@@ -136,21 +136,21 @@ void SerialPortMenu::update()
             {
             case '1':
                 setGeneratorChannel1Wave(GeneratorIf::TypeSinusoidal, m_lastSelectedGeneratorChannel1Frequency);
-                m_view->displayChannelMenu(m_generatorChannel1);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel1);
                 m_menuState = MenuStateChannel1Menu;
                 break;
 
             case '2':
             {
                 setGeneratorChannel1Wave(GeneratorIf::TypeSquare, m_lastSelectedGeneratorChannel1Frequency);
-                m_view->displayChannelMenu(m_generatorChannel1);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel1);
                 m_menuState = MenuStateChannel1Menu;
                 break;
             }
             case '3':
             {
                 setGeneratorChannel1Wave(GeneratorIf::TypeRamp, m_lastSelectedGeneratorChannel1Frequency);
-                m_view->displayChannelMenu(m_generatorChannel1);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel1);
                 m_menuState = MenuStateChannel1Menu;
                 break;
             }
@@ -177,7 +177,7 @@ void SerialPortMenu::update()
             if (frequency > 0)
             {
                 setGeneratorChannel1Wave(m_lastSelectedGeneratorChannel1WaveType, frequency);
-                m_view->displayChannelMenu(m_generatorChannel1);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel1);
                 m_menuState = MenuStateChannel1Menu;
             }
             else
@@ -201,19 +201,19 @@ void SerialPortMenu::update()
             {
             case '1':
                 setGeneratorChannel2Wave(m_lastSelectedGeneratorChannel2WaveType, m_lastSelectedGeneratorChannel2Frequency);
-                m_view->displayChannelMenu(m_generatorChannel2);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel2);
                 break;
             case '2':
                 disableGeneratorChannel2();
-                m_view->displayChannelMenu(m_generatorChannel2);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel2);
                 break;
             case '3':
                 m_menuState = MenuStateChannel2SelectWaveTypeMenu;
-                m_view->displayWaveTypeMenu(m_generatorChannel2);
+                m_view->displayGeneratorWaveTypeSelectionMenu(m_generatorChannel2);
                 break;
             case '4':
                 m_menuState = MenuStateChannel2SelectFrequencyMenu;
-                m_view->displayFrequencyMenu(m_generatorChannel2);
+                m_view->displayGeneratorFrequencySelectionMenu(m_generatorChannel2);
                 break;
             default:
                 m_menuState = MenuStateMain;
@@ -234,21 +234,21 @@ void SerialPortMenu::update()
             {
             case '1':
                 setGeneratorChannel2Wave(GeneratorIf::TypeSinusoidal, m_lastSelectedGeneratorChannel2Frequency);
-                m_view->displayChannelMenu(m_generatorChannel2);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel2);
                 m_menuState = MenuStateChannel2Menu;
                 break;
 
             case '2':
             {
                 setGeneratorChannel2Wave(GeneratorIf::TypeSquare, m_lastSelectedGeneratorChannel2Frequency);
-                m_view->displayChannelMenu(m_generatorChannel2);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel2);
                 m_menuState = MenuStateChannel2Menu;
                 break;
             }
             case '3':
             {
                 setGeneratorChannel2Wave(GeneratorIf::TypeRamp, m_lastSelectedGeneratorChannel2Frequency);
-                m_view->displayChannelMenu(m_generatorChannel2);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel2);
                 m_menuState = MenuStateChannel2Menu;
                 break;
             }
@@ -275,7 +275,7 @@ void SerialPortMenu::update()
             if (frequency > 0)
             {
                 setGeneratorChannel2Wave(m_lastSelectedGeneratorChannel2WaveType, frequency);
-                m_view->displayChannelMenu(m_generatorChannel1);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel1);
                 m_menuState = MenuStateChannel2Menu;
             }
             else

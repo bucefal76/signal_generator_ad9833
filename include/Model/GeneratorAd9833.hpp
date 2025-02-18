@@ -15,12 +15,12 @@ public:
     GeneratorAd9833(const uint8_t channelId);
     virtual ~GeneratorAd9833();
 
-    virtual uint8_t getChannelId() const;
-    virtual void generateWave(const WaveType type, const long frequency);
-    virtual void disableWave();
-    virtual long getFrequency() const;
-    virtual WaveType getWaveType() const;
-    virtual bool isEnabled() const;
+    virtual uint8_t getChannelId() const override;
+    virtual void generateWave(const WaveType type, const long frequency) override;
+    virtual void disableWave() override;
+    virtual long getFrequency() const override;
+    virtual WaveType getWaveType() const override;
+    virtual bool isEnabled() const override;
 
 protected:
     /// @brief Pointer to the AD9833 class form the robtillaart/AD9833 library.

@@ -11,16 +11,26 @@
 class ViewIf
 {
 public:
+
+    enum VobulatorFrequency
+    {
+        FrequencyStart,
+        FrequencyEnd
+    };
+
     /// @brief Display the main menu.
-    virtual void displayMainMenu(const GeneratorIf *generator1, const GeneratorIf *generator2) const = 0;
+    virtual void
+    displayMainMenu(const GeneratorIf *generator1, const GeneratorIf *generator2) const = 0;
     /// @brief Display the channel menu.
-    virtual void displayChannelMenu(const GeneratorIf *generator) const = 0;
+    virtual void displayGeneratorChannelMenu(const GeneratorIf *generator) const = 0;
     /// @brief Display the wave type menu.
-    virtual void displayWaveTypeMenu(const GeneratorIf *generator) const = 0;
+    virtual void displayGeneratorWaveTypeSelectionMenu(const GeneratorIf *generator) const = 0;
     /// @brief Display the frequency menu.
-    virtual void displayFrequencyMenu(const GeneratorIf *generator) const = 0;
+    virtual void displayGeneratorFrequencySelectionMenu(const GeneratorIf *generator) const = 0;
     /// @brief Display the vobulator menu.
     virtual void displayVobulatorMenu(const VobulatorIf *vobulator) const = 0;
+    /// @brief Displays the vobulator frequency selection menu
+    virtual void displayVobulatorFrequencySelectionMenu(const VobulatorIf *vobulator, const VobulatorFrequency frequencyType) const = 0;
 };
 
 #endif // VIEWIF_HPP

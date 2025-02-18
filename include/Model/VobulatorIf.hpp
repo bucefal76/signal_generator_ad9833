@@ -32,6 +32,9 @@ public:
     virtual bool isEnabled() const = 0;
     /// @brief Returns true if auto step is disabled
     virtual bool isPaused() const = 0;
+
+    virtual long getStartFrequency() const = 0;
+    virtual long getEndFrequency() const = 0;
 };
 
 #endif
