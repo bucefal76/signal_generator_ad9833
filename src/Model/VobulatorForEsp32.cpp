@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <driver/dac.h>
 
+#define VOBULATOR_MAX_FREQUENCY 12500000U
 #define VOBULATOR_RAMP_FIRST_STEP 0U
 // DAC resolution is 8 bits, so 256 steps
 #define VOBULATOR_RAMP_STEP (256 / VOBULATOR_NUMBER_OF_STEPS)
@@ -152,6 +153,28 @@ long VobulatorForEsp32::getStartFrequency() const
 long VobulatorForEsp32::getEndFrequency() const
 {
     return m_endFrequency;
+}
+
+void VobulatorForEsp32::setStartFrequency(const long startFrequency)
+{
+    if ((startFrequency > 0) && (startFrequency < VOBULATOR_MAX_FREQUENCY))
+    {
+        if (startFrequency < m_endFrequency)
+        {
+            m_startFrequency = startFrequency;
+        }
+    }
+}
+
+void VobulatorForEsp32::setEndFrequency(const long endFrequency)
+{
+    if ((endFrequency > 0) && (endFrequency <= VOBULATOR_MAX_FREQUENCY))
+    {
+        if (m_startFrequency < endFrequency)
+        {
+            m_endFrequency = endFrequency;
+        }
+    }
 }
 
 #endif

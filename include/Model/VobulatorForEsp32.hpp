@@ -33,8 +33,9 @@ public:
     virtual bool isPaused() const final;
     virtual long getStartFrequency() const final;
     virtual long getEndFrequency() const final;
-
-    virtual void setGenerator(GeneratorIf *generator);
+    virtual void setStartFrequency(const long startFrequency) final;
+    virtual void setEndFrequency(const long endFrequency) final;
+    virtual void setGenerator(GeneratorIf *generator) final;
 
 private:
     void update();

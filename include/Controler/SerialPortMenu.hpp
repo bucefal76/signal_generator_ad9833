@@ -48,6 +48,11 @@ private:
     void stepUpVobulator();
     /// @brief Helper function to decrease vobulator step.
     void stepDownVobulator();
+    /// @brief Helper function to set start frequency for vobulator sweep.
+    void setStartFrequencyForVobulator(const long frequency);
+    /// @brief Helper function to set end frequency for vobulator sweep.
+    void setEndFrequencyForVobulator(const long frequency);
+
     /// @brief Callback function to run the thread.
     static void onRunCallback();
 
@@ -62,7 +67,9 @@ private:
         MenuStateChannel2Menu,
         MenuStateChannel2SelectWaveTypeMenu,
         MenuStateChannel2SelectFrequencyMenu,
-        MenuStateVobulatorMenu
+        MenuStateVobulatorMenu,
+        MenuStateVobulatorSelectStartFrequencyMenu,
+        MenuStateVobulatorSelectEndFrequencyMenu
     };
 
     MenuStateT m_menuState;

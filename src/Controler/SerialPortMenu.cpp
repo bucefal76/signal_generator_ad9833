@@ -321,12 +321,74 @@ void SerialPortMenu::update()
                 stepDownVobulator();
                 m_view->displayVobulatorMenu(m_vobulator);
                 break;
+            case '7':
+                m_view->displayVobulatorFrequencySelectionMenu(m_vobulator, ViewIf::FrequencyStart);
+                m_menuState = MenuStateVobulatorSelectStartFrequencyMenu;
+                break;
+            case '8':
+                m_view->displayVobulatorFrequencySelectionMenu(m_vobulator, ViewIf::FrequencyStart);
+                m_menuState = MenuStateVobulatorSelectEndFrequencyMenu;
+                break;
             default:
                 m_view->displayMainMenu(nullptr, nullptr);
                 m_menuState = MenuStateMain;
                 break;
             }
         }
+
+        break;
+    }
+
+    case MenuStateVobulatorSelectStartFrequencyMenu:
+    {
+        if (Serial.available() > 0)
+        {
+            const String input = Serial.readString();
+            Serial.println(input);
+
+            const long frequency = atol(input.c_str());
+
+            if (frequency > 0)
+            {
+                setStartFrequencyForVobulator(frequency);
+                m_view->displayVobulatorMenu(m_vobulator);
+                m_menuState = MenuStateVobulatorMenu;
+            }
+            else
+            {
+                Serial.println(F("Invalid frequency!"));
+                m_view->displayVobulatorMenu(m_vobulator);
+                m_menuState = MenuStateVobulatorMenu;
+            }
+        }
+
+        break;
+    }
+
+    case MenuStateVobulatorSelectEndFrequencyMenu:
+    {
+        if (Serial.available() > 0)
+        {
+            const String input = Serial.readString();
+            Serial.println(input);
+
+            const long frequency = atol(input.c_str());
+
+            if (frequency > 0)
+            {
+                setEndFrequencyForVobulator(frequency);
+                m_view->displayVobulatorMenu(m_vobulator);
+                m_menuState = MenuStateVobulatorMenu;
+            }
+            else
+            {
+                Serial.println(F("Invalid frequency!"));
+                m_view->displayVobulatorMenu(m_vobulator);
+                m_menuState = MenuStateVobulatorMenu;
+            }
+        }
+
+        break;
     }
 
     default:
@@ -442,6 +504,28 @@ void SerialPortMenu::stepDownVobulator()
     if (m_vobulator != nullptr)
     {
         m_vobulator->stepDown();
+    }
+}
+
+void SerialPortMenu::setStartFrequencyForVobulator(const long frequency)
+{
+    if (m_vobulator != nullptr)
+    {
+        m_vobulator->resume();
+        m_vobulator->disable();
+        m_vobulator->setStartFrequency(frequency);
+        m_vobulator->enable();
+    }
+}
+
+void SerialPortMenu::setEndFrequencyForVobulator(const long frequency)
+{
+    if (m_vobulator != nullptr)
+    {
+        m_vobulator->resume();
+        m_vobulator->disable();
+        m_vobulator->setEndFrequency(frequency);
+        m_vobulator->enable();
     }
 }
 

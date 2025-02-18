@@ -1,6 +1,6 @@
 # signal_generator_ad9833
 
-Ver 0.2.4
+Ver 0.2.5
 
 # Introduction
 
@@ -107,6 +107,7 @@ The View, objects in this are implement the ViewIf, this part of code is respons
  - Restoring generators settings when vobulator enabled then disabled.
  - restoring vobulator settings when vobulator enabled then generators enabled and then vobulator enabled back.
  - Single channel only support and make code ready for missing connection to the devices (power up diagnostics).
+ - Amplitude scaling.
  - Vobulator feature for UNO.
  - Potentiometer to normalize values of signals for different waveforms.
  - Use hardware SPI for ESP32 instead of software emulation.

@@ -32,8 +32,13 @@ public:
     virtual bool isEnabled() const = 0;
     /// @brief Returns true if auto step is disabled
     virtual bool isPaused() const = 0;
-
+    /// @brief Sets the start frequency for the vobulator sweep
+    virtual void setStartFrequency(const long startFrequency) = 0;
+    /// @brief Gets the start frequency for vobulator sweep
     virtual long getStartFrequency() const = 0;
+    /// @brief Sets the end frequency for the vobulator sweep
+    virtual void setEndFrequency(const long endFrequency) = 0;
+    /// @brief Gets the end frequency for vobulator sweep
     virtual long getEndFrequency() const = 0;
 };
 
