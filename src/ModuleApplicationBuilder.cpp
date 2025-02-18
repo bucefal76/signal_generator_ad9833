@@ -3,7 +3,7 @@
 #include "ModuleConfig.hpp"
 #include "ModuleApplicationIf.hpp"
 #include "Model/GeneratorIf.hpp"
-#include "Model/VobulatorIf.hpp"
+#include "Model/WobbulatorIf.hpp"
 #include "View/ViewIf.hpp"
 
 #ifdef USE_SERIAL
@@ -13,7 +13,7 @@
 
 #ifdef USE_ESP32
 #include "Model/GeneratorForEsp32.hpp"
-#include "Model/VobulatorForEsp32.hpp"
+#include "Model/WobbulatorForEsp32.hpp"
 #else
 #include "Model/GeneratorForUno.hpp"
 #endif
@@ -29,7 +29,7 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 {
     GeneratorIf *generatorChannel1 = nullptr;
     GeneratorIf *generatorChannel2 = nullptr;
-    VobulatorIf *vobulator = nullptr;
+    WobbulatorIf *vobbulator = nullptr;
     ViewIf *view = nullptr;
 #ifdef USE_ESP32
 
@@ -56,12 +56,12 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 #endif
 
 #ifdef USE_ESP32
-    vobulator = VobulatorForEsp32::getInstance();
-    if (vobulator != nullptr)
+    vobbulator = WobbulatorForEsp32::getInstance();
+    if (vobbulator != nullptr)
     {
-        rApplication.addThread(VobulatorForEsp32::getInstance());
-        vobulator->setGenerator(generatorChannel1);
-        vobulator->disable();
+        rApplication.addThread(WobbulatorForEsp32::getInstance());
+        vobbulator->setGenerator(generatorChannel1);
+        vobbulator->disable();
     }
 #endif
 
@@ -69,7 +69,7 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
     view = new SerialPortView();
     rApplication.addThread(SerialPortMenu::getInstance());
     SerialPortMenu::getInstance()->setGeneratorsToControl(generatorChannel1, generatorChannel2);
-    SerialPortMenu::getInstance()->setVobulator(vobulator);
+    SerialPortMenu::getInstance()->setWobbulator(vobbulator);
     SerialPortMenu::getInstance()->setView(view);
     SerialPortMenu::getInstance()->enable();
 #endif

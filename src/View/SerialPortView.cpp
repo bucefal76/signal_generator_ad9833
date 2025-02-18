@@ -15,7 +15,7 @@ void SerialPortView::displayMainMenu(const GeneratorIf *generator1, const Genera
     Serial.println(F("Main menu:"));
     Serial.println(F("1. Channel 1"));
     Serial.println(F("2. Channel 2"));
-    Serial.println(F("3. Vobulator - channel 1"));
+    Serial.println(F("3. Wobbulator - channel 1"));
 }
 
 void SerialPortView::displayGeneratorChannelMenu(const GeneratorIf *generator) const
@@ -89,18 +89,18 @@ void SerialPortView::displayChannelStatus(const uint8_t channelId, const bool ch
     Serial.println(F(" Hz]"));
 }
 
-void SerialPortView::displayVobulatorMenu(const VobulatorIf *vobulator) const
+void SerialPortView::displayWobbulatorMenu(const WobbulatorIf *wobbulator) const
 {
-    if (vobulator != nullptr)
+    if (wobbulator != nullptr)
     {
-        displayVobulatorStatus(vobulator->isEnabled(),
-                               vobulator->isPaused(),
-                               vobulator->getCurrentFrequency(),
-                               vobulator->getStartFrequency(),
-                               vobulator->getEndFrequency());
+        displayWobbulatorStatus(wobbulator->isEnabled(),
+                                wobbulator->isPaused(),
+                                wobbulator->getCurrentFrequency(),
+                                wobbulator->getStartFrequency(),
+                                wobbulator->getEndFrequency());
     }
 
-    Serial.println(F("Vobulator menu:"));
+    Serial.println(F("Wobbulator menu:"));
     Serial.println(F("1. Enable"));
     Serial.println(F("2. Disable"));
     Serial.println(F("3. Pause"));
@@ -112,13 +112,13 @@ void SerialPortView::displayVobulatorMenu(const VobulatorIf *vobulator) const
     Serial.println(F("0. Return to main menu"));
 }
 
-void SerialPortView::displayVobulatorStatus(const bool isEnabled,
-                                            const bool isPaused,
-                                            const long currentFrequency,
-                                            const long startFrequency,
-                                            const long endFrequency) const
+void SerialPortView::displayWobbulatorStatus(const bool isEnabled,
+                                             const bool isPaused,
+                                             const long currentFrequency,
+                                             const long startFrequency,
+                                             const long endFrequency) const
 {
-    Serial.print(F("Vobulator "));
+    Serial.print(F("Wobbulator "));
     Serial.print(F(": [State: "));
     if (isEnabled)
     {
@@ -145,15 +145,15 @@ void SerialPortView::displayVobulatorStatus(const bool isEnabled,
     }
 }
 
-void SerialPortView::displayVobulatorFrequencySelectionMenu(const VobulatorIf *vobulator, const ViewIf::VobulatorFrequency frequencyType) const
+void SerialPortView::displayWobbulatorFrequencySelectionMenu(const WobbulatorIf *wobbulator, const ViewIf::WobbulatorFrequency frequencyType) const
 {
-    if (vobulator != nullptr)
+    if (wobbulator != nullptr)
     {
-        displayVobulatorStatus(vobulator->isEnabled(),
-                               vobulator->isPaused(),
-                               vobulator->getCurrentFrequency(),
-                               vobulator->getStartFrequency(),
-                               vobulator->getEndFrequency());
+        displayWobbulatorStatus(wobbulator->isEnabled(),
+                                wobbulator->isPaused(),
+                                wobbulator->getCurrentFrequency(),
+                                wobbulator->getStartFrequency(),
+                                wobbulator->getEndFrequency());
     }
 
     Serial.println(F("Frequency menu:"));

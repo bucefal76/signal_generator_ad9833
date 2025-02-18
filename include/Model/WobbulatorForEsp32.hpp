@@ -6,7 +6,7 @@
 #ifdef USE_ESP32
 
 #include <Thread.h>
-#include "Model/VobulatorIf.hpp"
+#include "Model/WobbulatorIf.hpp"
 
 class GeneratorIf;
 
@@ -15,12 +15,12 @@ class GeneratorIf;
 
 #define VOBULATOR_NUMBER_OF_STEPS 50
 
-class VobulatorForEsp32 : public Thread, public VobulatorIf
+class WobbulatorForEsp32 : public Thread, public WobbulatorIf
 {
 public:
-    static VobulatorForEsp32 *getInstance();
+    static WobbulatorForEsp32 *getInstance();
 
-    VobulatorForEsp32();
+    WobbulatorForEsp32();
 
     virtual void enable() final;
     virtual void disable() final;
@@ -33,8 +33,9 @@ public:
     virtual bool isPaused() const final;
     virtual long getStartFrequency() const final;
     virtual long getEndFrequency() const final;
-
-    virtual void setGenerator(GeneratorIf *generator);
+    virtual void setStartFrequency(const long startFrequency) final;
+    virtual void setEndFrequency(const long endFrequency) final;
+    virtual void setGenerator(GeneratorIf *generator) final;
 
 private:
     void update();
@@ -47,7 +48,7 @@ private:
     uint16_t m_currentStep;
     bool m_isPaused;
 
-    static VobulatorForEsp32 *m_Instance;
+    static WobbulatorForEsp32 *m_Instance;
 };
 
 #endif
