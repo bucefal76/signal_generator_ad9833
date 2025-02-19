@@ -3,6 +3,7 @@
 
 #include "Model/GeneratorIf.hpp"
 #include "Model/WobbulatorIf.hpp"
+#include "Model/SettingsIf.hpp"
 #include "View/ViewIf.hpp"
 
 /// @brief Interface to define the methods to control the function generators.
@@ -21,6 +22,8 @@ public:
     /// @brief Method to set the Wobbulator to control.
     /// @param Wobbulator Pointer to the Wobbulator object.
     virtual void setWobbulator(WobbulatorIf *wobbulator) = 0;
+    /// @brief Method to set the object responsible for keeping device settings.
+    virtual void setSettingsStorage(SettingsIf *settingsStorage) = 0;
 };
 
 #endif

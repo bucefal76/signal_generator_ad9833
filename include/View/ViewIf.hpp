@@ -18,8 +18,7 @@ public:
     };
 
     /// @brief Display the main menu.
-    virtual void
-    displayMainMenu(const GeneratorIf *generator1, const GeneratorIf *generator2) const = 0;
+    virtual void displayMainMenu(const GeneratorIf *generator1, const GeneratorIf *generator2, const WobbulatorIf *wobbulator = nullptr) const = 0;
     /// @brief Display the channel menu.
     virtual void displayGeneratorChannelMenu(const GeneratorIf *generator) const = 0;
     /// @brief Display the wave type menu.

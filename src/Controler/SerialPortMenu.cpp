@@ -8,7 +8,6 @@ SerialPortMenu *SerialPortMenu::m_Instance = nullptr;
 
 #define GENERATOR_DEFAULT_FREQUENCY_HZ 1000
 
-
 SerialPortMenu *SerialPortMenu::getInstance()
 {
     if (m_Instance == nullptr)
@@ -26,7 +25,8 @@ SerialPortMenu::SerialPortMenu()
       m_generatorChannel1(nullptr),
       m_generatorChannel2(nullptr),
       m_view(nullptr),
-      m_wobbulator(nullptr)
+      m_wobbulator(nullptr),
+      m_settings(nullptr)
 {
     setInterval(SERIAL_MENU_THREAD_TIME_INTERVAL_MS);
     onRun(onRunCallback);
@@ -48,6 +48,13 @@ void SerialPortMenu::update()
 
     if (m_view == nullptr)
     {
+        Serial.println("ERROR - SerialPortMenu.m_View is nullptr!!!");
+        return;
+    }
+
+    if (m_settings == nullptr)
+    {
+        Serial.println("ERROR - SerialPortMenu.m_settings is nullptr!!!");
         return;
     }
 
@@ -59,7 +66,7 @@ void SerialPortMenu::update()
         {
             Serial.read();
             m_menuState = MenuStateMain;
-            m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2);
+            m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2, m_wobbulator);
         }
         break;
     }
@@ -81,7 +88,6 @@ void SerialPortMenu::update()
                 m_view->displayGeneratorChannelMenu(m_generatorChannel2);
                 break;
             case '3':
-                Serial.println(F("3"));
                 m_menuState = MenuStateWobbulatorMenu;
                 m_view->displayWobbulatorMenu(m_wobbulator);
                 break;
@@ -101,7 +107,7 @@ void SerialPortMenu::update()
             switch (incomingChar)
             {
             case '1':
-                setGeneratorChannel1Wave(m_lastSelectedGeneratorChannel1WaveType, m_lastSelectedGeneratorChannel1Frequency);
+                setGeneratorChannel1Wave(m_settings->getGenerator1Wave(), m_settings->getGenerator1Frequency());
                 m_view->displayGeneratorChannelMenu(m_generatorChannel1);
                 break;
             case '2':
@@ -118,7 +124,7 @@ void SerialPortMenu::update()
                 break;
             default:
                 m_menuState = MenuStateMain;
-                m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2);
+                m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2, m_wobbulator);
                 break;
             }
         }
@@ -134,29 +140,29 @@ void SerialPortMenu::update()
             switch (incomingChar)
             {
             case '1':
-                setGeneratorChannel1Wave(GeneratorIf::TypeSinusoidal, m_lastSelectedGeneratorChannel1Frequency);
+                setGeneratorChannel1Wave(GeneratorIf::TypeSinusoidal, m_settings->getGenerator1Frequency());
                 m_view->displayGeneratorChannelMenu(m_generatorChannel1);
                 m_menuState = MenuStateChannel1Menu;
                 break;
 
             case '2':
             {
-                setGeneratorChannel1Wave(GeneratorIf::TypeSquare, m_lastSelectedGeneratorChannel1Frequency);
+                setGeneratorChannel1Wave(GeneratorIf::TypeSquare, m_settings->getGenerator1Frequency());
                 m_view->displayGeneratorChannelMenu(m_generatorChannel1);
                 m_menuState = MenuStateChannel1Menu;
                 break;
             }
             case '3':
             {
-                setGeneratorChannel1Wave(GeneratorIf::TypeRamp, m_lastSelectedGeneratorChannel1Frequency);
+                setGeneratorChannel1Wave(GeneratorIf::TypeRamp, m_settings->getGenerator1Frequency());
                 m_view->displayGeneratorChannelMenu(m_generatorChannel1);
                 m_menuState = MenuStateChannel1Menu;
                 break;
             }
             default:
-                setGeneratorChannel1Wave(m_lastSelectedGeneratorChannel1WaveType, m_lastSelectedGeneratorChannel1Frequency);
+                setGeneratorChannel1Wave(m_settings->getGenerator1Wave(), m_settings->getGenerator1Frequency());
                 m_menuState = MenuStateChannel1Menu;
-                m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2);
+                m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2, m_wobbulator);
                 break;
             }
         }
@@ -175,7 +181,7 @@ void SerialPortMenu::update()
 
             if (frequency > 0)
             {
-                setGeneratorChannel1Wave(m_lastSelectedGeneratorChannel1WaveType, frequency);
+                setGeneratorChannel1Wave(m_settings->getGenerator1Wave(), frequency);
                 m_view->displayGeneratorChannelMenu(m_generatorChannel1);
                 m_menuState = MenuStateChannel1Menu;
             }
@@ -183,7 +189,7 @@ void SerialPortMenu::update()
             {
                 m_menuState = MenuStateChannel1Menu;
                 Serial.println(F("Invalid frequency!"));
-                m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2);
+                m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2, m_wobbulator);
             }
         }
 
@@ -199,7 +205,7 @@ void SerialPortMenu::update()
             switch (incomingChar)
             {
             case '1':
-                setGeneratorChannel2Wave(m_lastSelectedGeneratorChannel2WaveType, m_lastSelectedGeneratorChannel2Frequency);
+                setGeneratorChannel2Wave(m_settings->getGenerator2Wave(), m_settings->getGenerator2Frequency());
                 m_view->displayGeneratorChannelMenu(m_generatorChannel2);
                 break;
             case '2':
@@ -216,7 +222,7 @@ void SerialPortMenu::update()
                 break;
             default:
                 m_menuState = MenuStateMain;
-                m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2);
+                m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2, m_wobbulator);
                 break;
             }
         }
@@ -232,29 +238,29 @@ void SerialPortMenu::update()
             switch (incomingChar)
             {
             case '1':
-                setGeneratorChannel2Wave(GeneratorIf::TypeSinusoidal, m_lastSelectedGeneratorChannel2Frequency);
+                setGeneratorChannel2Wave(GeneratorIf::TypeSinusoidal, m_settings->getGenerator2Frequency());
                 m_view->displayGeneratorChannelMenu(m_generatorChannel2);
                 m_menuState = MenuStateChannel2Menu;
                 break;
 
             case '2':
             {
-                setGeneratorChannel2Wave(GeneratorIf::TypeSquare, m_lastSelectedGeneratorChannel2Frequency);
+                setGeneratorChannel2Wave(GeneratorIf::TypeSquare, m_settings->getGenerator2Frequency());
                 m_view->displayGeneratorChannelMenu(m_generatorChannel2);
                 m_menuState = MenuStateChannel2Menu;
                 break;
             }
             case '3':
             {
-                setGeneratorChannel2Wave(GeneratorIf::TypeRamp, m_lastSelectedGeneratorChannel2Frequency);
+                setGeneratorChannel2Wave(GeneratorIf::TypeRamp, m_settings->getGenerator2Frequency());
                 m_view->displayGeneratorChannelMenu(m_generatorChannel2);
                 m_menuState = MenuStateChannel2Menu;
                 break;
             }
             default:
-                setGeneratorChannel2Wave(m_lastSelectedGeneratorChannel2WaveType, m_lastSelectedGeneratorChannel2Frequency);
+                setGeneratorChannel2Wave(m_settings->getGenerator2Wave(), m_settings->getGenerator2Frequency());
                 m_menuState = MenuStateChannel2Menu;
-                m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2);
+                m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2, m_wobbulator);
                 break;
             }
         }
@@ -273,15 +279,15 @@ void SerialPortMenu::update()
 
             if (frequency > 0)
             {
-                setGeneratorChannel2Wave(m_lastSelectedGeneratorChannel2WaveType, frequency);
-                m_view->displayGeneratorChannelMenu(m_generatorChannel1);
+                setGeneratorChannel2Wave(m_settings->getGenerator2Wave(), frequency);
+                m_view->displayGeneratorChannelMenu(m_generatorChannel2);
                 m_menuState = MenuStateChannel2Menu;
             }
             else
             {
                 m_menuState = MenuStateChannel2Menu;
                 Serial.println(F("Invalid frequency!"));
-                m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2);
+                m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2, m_wobbulator);
             }
         }
 
@@ -329,7 +335,7 @@ void SerialPortMenu::update()
                 m_menuState = MenuStateWobbulatorSelectEndFrequencyMenu;
                 break;
             default:
-                m_view->displayMainMenu(nullptr, nullptr);
+                m_view->displayMainMenu(m_generatorChannel1, m_generatorChannel2, m_wobbulator);
                 m_menuState = MenuStateMain;
                 break;
             }
@@ -421,13 +427,24 @@ void SerialPortMenu::setWobbulator(WobbulatorIf *wobbulator)
     m_wobbulator = wobbulator;
 }
 
+void SerialPortMenu::setSettingsStorage(SettingsIf *settingsStorage)
+{
+    m_settings = settingsStorage;
+}
+
 void SerialPortMenu::setGeneratorChannel1Wave(const GeneratorIf::WaveType waveType, const long frequency)
 {
     if (m_generatorChannel1 != nullptr)
     {
+        // Disable wobbulator if needed
+        if (m_wobbulator != nullptr)
+        {
+            m_wobbulator->disable();
+        }
+        // Now enable generator
         m_generatorChannel1->generateWave(waveType, frequency);
-        m_lastSelectedGeneratorChannel1Frequency = m_generatorChannel1->getFrequency();
-        m_lastSelectedGeneratorChannel1WaveType = m_generatorChannel1->getWaveType();
+        m_settings->setGenerator1Frequency(m_generatorChannel1->getFrequency());
+        m_settings->setGenerator1Wave(m_generatorChannel1->getWaveType());
     }
 }
 
@@ -436,8 +453,8 @@ void SerialPortMenu::setGeneratorChannel2Wave(const GeneratorIf::WaveType waveTy
     if (m_generatorChannel2 != nullptr)
     {
         m_generatorChannel2->generateWave(waveType, frequency);
-        m_lastSelectedGeneratorChannel2Frequency = m_generatorChannel2->getFrequency();
-        m_lastSelectedGeneratorChannel2WaveType = m_generatorChannel2->getWaveType();
+        m_settings->setGenerator2Frequency(m_generatorChannel2->getFrequency());
+        m_settings->setGenerator2Wave(m_generatorChannel2->getWaveType());
     }
 }
 
@@ -445,6 +462,12 @@ void SerialPortMenu::disableGeneratorChannel1()
 {
     if (m_generatorChannel1 != nullptr)
     {
+        // Disable wobbulator if needed
+        if (m_wobbulator != nullptr)
+        {
+            m_wobbulator->disable();
+        }
+
         m_generatorChannel1->disableWave();
     }
 }
@@ -461,8 +484,16 @@ void SerialPortMenu::enableWobbulator()
 {
     if (m_wobbulator != nullptr)
     {
-        setGeneratorChannel1Wave(GeneratorIf::TypeNone, GENERATOR_DEFAULT_FREQUENCY_HZ);
-        setGeneratorChannel2Wave(GeneratorIf::TypeNone, GENERATOR_DEFAULT_FREQUENCY_HZ);
+        if (nullptr != m_generatorChannel1)
+        {
+            /// Do not overwrite the stored in memory generator settings, just turn OFF the generator
+            m_generatorChannel1->generateWave(GeneratorIf::TypeNone, GENERATOR_DEFAULT_FREQUENCY_HZ);
+        }
+        if (nullptr != m_generatorChannel2)
+        {
+            /// Do not overwrite the stored in memory generator settings, just turn OFF the generator
+            m_generatorChannel2->generateWave(GeneratorIf::TypeNone, GENERATOR_DEFAULT_FREQUENCY_HZ);
+        }
         m_wobbulator->enable();
     }
 }

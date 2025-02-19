@@ -4,6 +4,7 @@
 #include "ModuleApplicationIf.hpp"
 #include "Model/GeneratorIf.hpp"
 #include "Model/WobbulatorIf.hpp"
+#include "Model/VolatileSettings.hpp"
 #include "View/ViewIf.hpp"
 
 #ifdef USE_SERIAL
@@ -68,6 +69,7 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 #ifdef USE_SERIAL
     view = new SerialPortView();
     rApplication.addThread(SerialPortMenu::getInstance());
+    SerialPortMenu::getInstance()->setSettingsStorage(new VoltileSettings());
     SerialPortMenu::getInstance()->setGeneratorsToControl(generatorChannel1, generatorChannel2);
     SerialPortMenu::getInstance()->setWobbulator(vobbulator);
     SerialPortMenu::getInstance()->setView(view);

@@ -42,6 +42,9 @@ void WobbulatorForEsp32::enable()
 {
     if (m_Generator != nullptr)
     {
+        dac_output_voltage(DAC_CHANNEL_1, 0U);
+        m_Generator->disableWave();
+
         m_currentStep = VOBULATOR_RAMP_FIRST_STEP;
 
         m_frequencyStep = (m_endFrequency - m_startFrequency) / VOBULATOR_NUMBER_OF_STEPS;
