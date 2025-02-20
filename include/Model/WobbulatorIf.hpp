@@ -2,6 +2,7 @@
 #define WOBBULATORIF_HPP
 
 #include "Model/GeneratorIf.hpp"
+#include "Model/SettingsIf.hpp"
 
 /// @brief Wobbulator interface, defines an abstract class for the Wobbulator
 /// @details The Wobbulator implementation classes a class that generates a signal
@@ -14,6 +15,8 @@ public:
     /// @brief Sets the generator channel used to generate sine sweep signal.
     /// @param generator Pointer to the generator object.
     virtual void setGenerator(GeneratorIf *generator) = 0;
+    /// @brief Sets the pointer to the vobulator settins
+    virtual void setsSettingsStorage(SettingsIf *settingsStorage) = 0;
     /// @brief Enable Wobbulator.
     virtual void enable() = 0;
     /// @brief Disable generator.

@@ -30,7 +30,8 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 {
     GeneratorIf *generatorChannel1 = nullptr;
     GeneratorIf *generatorChannel2 = nullptr;
-    WobbulatorIf *vobbulator = nullptr;
+    WobbulatorIf *wobbulator = nullptr;
+    SettingsIf *settings = new VoltileSettings();
     ViewIf *view = nullptr;
 #ifdef USE_ESP32
 
@@ -57,21 +58,22 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 #endif
 
 #ifdef USE_ESP32
-    vobbulator = WobbulatorForEsp32::getInstance();
-    if (vobbulator != nullptr)
+    wobbulator = WobbulatorForEsp32::getInstance();
+    if (wobbulator != nullptr)
     {
         rApplication.addThread(WobbulatorForEsp32::getInstance());
-        vobbulator->setGenerator(generatorChannel1);
-        vobbulator->disable();
+        wobbulator->setsSettingsStorage(settings);
+        wobbulator->setGenerator(generatorChannel1);
+        wobbulator->disable();
     }
 #endif
 
 #ifdef USE_SERIAL
     view = new SerialPortView();
     rApplication.addThread(SerialPortMenu::getInstance());
-    SerialPortMenu::getInstance()->setSettingsStorage(new VoltileSettings());
+    SerialPortMenu::getInstance()->setSettingsStorage(settings);
     SerialPortMenu::getInstance()->setGeneratorsToControl(generatorChannel1, generatorChannel2);
-    SerialPortMenu::getInstance()->setWobbulator(vobbulator);
+    SerialPortMenu::getInstance()->setWobbulator(wobbulator);
     SerialPortMenu::getInstance()->setView(view);
     SerialPortMenu::getInstance()->enable();
 #endif

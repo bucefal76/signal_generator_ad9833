@@ -25,8 +25,7 @@ WobbulatorForEsp32 *WobbulatorForEsp32::getInstance()
 
 WobbulatorForEsp32::WobbulatorForEsp32()
     : m_Generator(nullptr),
-      m_startFrequency(500),
-      m_endFrequency(20000),
+      m_Settings(nullptr),
       m_currentStep(VOBULATOR_RAMP_FIRST_STEP),
       m_frequencyStep(1U),
       m_isPaused(false)
@@ -47,7 +46,7 @@ void WobbulatorForEsp32::enable()
 
         m_currentStep = VOBULATOR_RAMP_FIRST_STEP;
 
-        m_frequencyStep = (m_endFrequency - m_startFrequency) / VOBULATOR_NUMBER_OF_STEPS;
+        m_frequencyStep = (m_Settings->getEndFrequency() - m_Settings->getStartFrequency()) / VOBULATOR_NUMBER_OF_STEPS;
 
         m_isPaused = false;
         enabled = true;
@@ -71,7 +70,7 @@ void WobbulatorForEsp32::update()
             const uint8_t rampDcValue = m_currentStep * VOBULATOR_RAMP_STEP;
             dac_output_voltage(DAC_CHANNEL_1, rampDcValue);
 
-            const long frequency = m_startFrequency + m_currentStep * m_frequencyStep;
+            const long frequency = m_Settings->getStartFrequency() + m_currentStep * m_frequencyStep;
             m_Generator->generateWave(GeneratorIf::TypeSinusoidal, frequency);
 
             if (false == m_isPaused)
@@ -89,6 +88,11 @@ void WobbulatorForEsp32::update()
 void WobbulatorForEsp32::setGenerator(GeneratorIf *generator)
 {
     m_Generator = generator;
+}
+
+void WobbulatorForEsp32::setsSettingsStorage(SettingsIf *settingsStorage)
+{
+    m_Settings = settingsStorage;
 }
 
 void WobbulatorForEsp32::onRunCallback()
@@ -135,7 +139,7 @@ void WobbulatorForEsp32::stepDown()
 
 long WobbulatorForEsp32::getCurrentFrequency() const
 {
-    return m_startFrequency + m_currentStep * m_frequencyStep;
+    return m_Settings->getStartFrequency() + m_currentStep * m_frequencyStep;
 }
 
 bool WobbulatorForEsp32::isEnabled() const
@@ -150,21 +154,21 @@ bool WobbulatorForEsp32::isPaused() const
 
 long WobbulatorForEsp32::getStartFrequency() const
 {
-    return m_startFrequency;
+    return m_Settings->getStartFrequency();
 }
 
 long WobbulatorForEsp32::getEndFrequency() const
 {
-    return m_endFrequency;
+    return m_Settings->getEndFrequency();
 }
 
 void WobbulatorForEsp32::setStartFrequency(const long startFrequency)
 {
     if ((startFrequency > 0) && (startFrequency < VOBULATOR_MAX_FREQUENCY))
     {
-        if (startFrequency < m_endFrequency)
+        if (startFrequency < m_Settings->getEndFrequency())
         {
-            m_startFrequency = startFrequency;
+            m_Settings->setStartFrequency(startFrequency);
         }
     }
 }
@@ -173,9 +177,9 @@ void WobbulatorForEsp32::setEndFrequency(const long endFrequency)
 {
     if ((endFrequency > 0) && (endFrequency <= VOBULATOR_MAX_FREQUENCY))
     {
-        if (m_startFrequency < endFrequency)
+        if (m_Settings->getStartFrequency() < endFrequency)
         {
-            m_endFrequency = endFrequency;
+            m_Settings->setEndFrequency(endFrequency);
         }
     }
 }

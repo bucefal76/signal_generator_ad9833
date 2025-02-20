@@ -130,6 +130,7 @@ void SerialPortView::displayWobbulatorStatus(const bool isEnabled,
     Serial.print(F("Wobbulator"));
     Serial.print(F(": [State: "));
     if (isEnabled)
+    
     {
         Serial.print(F("Enabled, "));
         if (isPaused)
