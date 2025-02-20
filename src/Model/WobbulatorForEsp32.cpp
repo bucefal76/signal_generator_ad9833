@@ -169,6 +169,10 @@ void WobbulatorForEsp32::setStartFrequency(const long startFrequency)
         if (startFrequency < m_Settings->getEndFrequency())
         {
             m_Settings->setStartFrequency(startFrequency);
+
+            m_CurrentStepNo = VOBULATOR_RAMP_FIRST_STEP;
+
+            m_FrequencyStep = (m_Settings->getEndFrequency() - m_Settings->getStartFrequency()) / VOBULATOR_NUMBER_OF_STEPS;
         }
     }
 }
@@ -180,6 +184,10 @@ void WobbulatorForEsp32::setEndFrequency(const long endFrequency)
         if (m_Settings->getStartFrequency() < endFrequency)
         {
             m_Settings->setEndFrequency(endFrequency);
+
+            m_CurrentStepNo = VOBULATOR_RAMP_FIRST_STEP;
+
+            m_FrequencyStep = (m_Settings->getEndFrequency() - m_Settings->getStartFrequency()) / VOBULATOR_NUMBER_OF_STEPS;
         }
     }
 }
