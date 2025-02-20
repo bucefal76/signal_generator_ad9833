@@ -73,12 +73,12 @@ private:
         MenuStateWobbulatorSelectEndFrequencyMenu
     };
 
-    MenuStateT m_menuState;
-    GeneratorIf *m_generatorChannel1;
-    GeneratorIf *m_generatorChannel2;
-    ViewIf *m_view;
-    WobbulatorIf *m_wobbulator;
-    SettingsIf *m_settings;
+    MenuStateT m_MenuState;
+    GeneratorIf *m_GeneratorChannel1;
+    GeneratorIf *m_GeneratorChannel2;
+    ViewIf *m_View;
+    WobbulatorIf *m_Wobbulator;
+    SettingsIf *m_Settings;
 
     static SerialPortMenu *m_Instance;
 };

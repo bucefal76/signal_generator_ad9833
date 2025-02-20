@@ -5,7 +5,7 @@
 #define POWER_MODE_SLEEP_AL 3U
 
 GeneratorAd9833::GeneratorAd9833(const uint8_t channelId)
-    : m_AD(nullptr), m_channelId(channelId)
+    : m_AD(nullptr), m_ChannelId(channelId)
 {
 }
 
@@ -19,7 +19,7 @@ GeneratorAd9833::~GeneratorAd9833()
 
 uint8_t GeneratorAd9833::getChannelId() const
 {
-    return m_channelId;
+    return m_ChannelId;
 }
 
 void GeneratorAd9833::generateWave(const WaveType type, const long frequency)

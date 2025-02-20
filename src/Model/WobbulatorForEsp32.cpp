@@ -26,9 +26,9 @@ WobbulatorForEsp32 *WobbulatorForEsp32::getInstance()
 WobbulatorForEsp32::WobbulatorForEsp32()
     : m_Generator(nullptr),
       m_Settings(nullptr),
-      m_currentStep(VOBULATOR_RAMP_FIRST_STEP),
-      m_frequencyStep(1U),
-      m_isPaused(false)
+      m_CurrentStepNo(VOBULATOR_RAMP_FIRST_STEP),
+      m_FrequencyStep(1U),
+      m_IsPaused(false)
 {
     setInterval(VOBULATOR_BY_DC_THREAD_TIME_INTERVAL_MS);
     onRun(onRunCallback);
@@ -44,11 +44,11 @@ void WobbulatorForEsp32::enable()
         dac_output_voltage(DAC_CHANNEL_1, 0U);
         m_Generator->disableWave();
 
-        m_currentStep = VOBULATOR_RAMP_FIRST_STEP;
+        m_CurrentStepNo = VOBULATOR_RAMP_FIRST_STEP;
 
-        m_frequencyStep = (m_Settings->getEndFrequency() - m_Settings->getStartFrequency()) / VOBULATOR_NUMBER_OF_STEPS;
+        m_FrequencyStep = (m_Settings->getEndFrequency() - m_Settings->getStartFrequency()) / VOBULATOR_NUMBER_OF_STEPS;
 
-        m_isPaused = false;
+        m_IsPaused = false;
         enabled = true;
     }
 }
@@ -56,7 +56,7 @@ void WobbulatorForEsp32::enable()
 void WobbulatorForEsp32::disable()
 {
     enabled = false;
-    m_isPaused = false;
+    m_IsPaused = false;
     dac_output_voltage(DAC_CHANNEL_1, 0U);
     m_Generator->disableWave();
 }
@@ -65,22 +65,22 @@ void WobbulatorForEsp32::update()
 {
     if (enabled && m_Generator != nullptr)
     {
-        if (m_currentStep < VOBULATOR_NUMBER_OF_STEPS)
+        if (m_CurrentStepNo < VOBULATOR_NUMBER_OF_STEPS)
         {
-            const uint8_t rampDcValue = m_currentStep * VOBULATOR_RAMP_STEP;
+            const uint8_t rampDcValue = m_CurrentStepNo * VOBULATOR_RAMP_STEP;
             dac_output_voltage(DAC_CHANNEL_1, rampDcValue);
 
-            const long frequency = m_Settings->getStartFrequency() + m_currentStep * m_frequencyStep;
+            const long frequency = m_Settings->getStartFrequency() + (m_CurrentStepNo * m_FrequencyStep);
             m_Generator->generateWave(GeneratorIf::TypeSinusoidal, frequency);
 
-            if (false == m_isPaused)
+            if (false == m_IsPaused)
             {
-                m_currentStep++;
+                m_CurrentStepNo++;
             }
         }
         else
         {
-            m_currentStep = VOBULATOR_RAMP_FIRST_STEP;
+            m_CurrentStepNo = VOBULATOR_RAMP_FIRST_STEP;
         }
     }
 }
@@ -102,44 +102,44 @@ void WobbulatorForEsp32::onRunCallback()
 
 void WobbulatorForEsp32::pause()
 {
-    m_isPaused = true;
+    m_IsPaused = true;
 }
 
 void WobbulatorForEsp32::resume()
 {
-    m_isPaused = false;
+    m_IsPaused = false;
 }
 
 void WobbulatorForEsp32::stepUp()
 {
-    if (m_isPaused)
+    if (m_IsPaused)
     {
-        m_currentStep++;
-        if (m_currentStep >= VOBULATOR_NUMBER_OF_STEPS)
+        m_CurrentStepNo++;
+        if (m_CurrentStepNo >= VOBULATOR_NUMBER_OF_STEPS)
         {
-            m_currentStep = VOBULATOR_NUMBER_OF_STEPS - 1;
+            m_CurrentStepNo = VOBULATOR_NUMBER_OF_STEPS - 1;
         }
     }
 }
 
 void WobbulatorForEsp32::stepDown()
 {
-    if (m_isPaused)
+    if (m_IsPaused)
     {
-        if (m_currentStep == VOBULATOR_RAMP_FIRST_STEP)
+        if (m_CurrentStepNo == VOBULATOR_RAMP_FIRST_STEP)
         {
-            m_currentStep = VOBULATOR_RAMP_FIRST_STEP;
+            m_CurrentStepNo = VOBULATOR_RAMP_FIRST_STEP;
         }
         else
         {
-            m_currentStep--;
+            m_CurrentStepNo--;
         }
     }
 }
 
 long WobbulatorForEsp32::getCurrentFrequency() const
 {
-    return m_Settings->getStartFrequency() + m_currentStep * m_frequencyStep;
+    return m_Settings->getStartFrequency() + m_CurrentStepNo * m_FrequencyStep;
 }
 
 bool WobbulatorForEsp32::isEnabled() const
@@ -149,7 +149,7 @@ bool WobbulatorForEsp32::isEnabled() const
 
 bool WobbulatorForEsp32::isPaused() const
 {
-    return m_isPaused;
+    return m_IsPaused;
 }
 
 long WobbulatorForEsp32::getStartFrequency() const
