@@ -10,7 +10,7 @@
 class SerialPortView : public ViewIf
 {
 public:
-    void displayMainMenu(const GeneratorIf *generator1, const GeneratorIf *generator2) const final;
+    void displayMainMenu(const GeneratorIf *generator1, const GeneratorIf *generator2, const WobbulatorIf *wobbulator = nullptr) const final;
     void displayGeneratorChannelMenu(const GeneratorIf *generator) const final;
     void displayGeneratorWaveTypeSelectionMenu(const GeneratorIf *generator) const;
     void displayGeneratorFrequencySelectionMenu(const GeneratorIf *generator) const final;

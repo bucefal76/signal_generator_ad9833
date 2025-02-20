@@ -20,6 +20,7 @@ public:
     virtual void setGeneratorsToControl(GeneratorIf *generatorLine1, GeneratorIf *generatorLine2) final;
     virtual void setView(ViewIf *view) final;
     virtual void setWobbulator(WobbulatorIf *wobbulator) final;
+    virtual void setSettingsStorage(SettingsIf *settingsStorage) final;
 
 private:
     /// @brief Main function of the thread
@@ -72,17 +73,12 @@ private:
         MenuStateWobbulatorSelectEndFrequencyMenu
     };
 
-    MenuStateT m_menuState;
-    GeneratorIf::WaveType m_lastSelectedGeneratorChannel1WaveType;
-    GeneratorIf::WaveType m_lastSelectedGeneratorChannel2WaveType;
-    long m_lastSelectedGeneratorChannel1Frequency;
-    long m_lastSelectedGeneratorChannel2Frequency;
-    long m_wobbulatorStartFrequency;
-    long m_wobbulatorEndFrequency;
-    GeneratorIf *m_generatorChannel1;
-    GeneratorIf *m_generatorChannel2;
-    ViewIf *m_view;
-    WobbulatorIf *m_wobbulator;
+    MenuStateT m_MenuState;
+    GeneratorIf *m_GeneratorChannel1;
+    GeneratorIf *m_GeneratorChannel2;
+    ViewIf *m_View;
+    WobbulatorIf *m_Wobbulator;
+    SettingsIf *m_Settings;
 
     static SerialPortMenu *m_Instance;
 };

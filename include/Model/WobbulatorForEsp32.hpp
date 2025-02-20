@@ -36,17 +36,17 @@ public:
     virtual void setStartFrequency(const long startFrequency) final;
     virtual void setEndFrequency(const long endFrequency) final;
     virtual void setGenerator(GeneratorIf *generator) final;
+    virtual void setsSettingsStorage(SettingsIf *settingsStorage) final;
 
 private:
     void update();
     static void onRunCallback();
 
-    GeneratorIf *m_Generator; // Pointer to the generator object
-    long m_startFrequency;    // Starting frequency
-    long m_endFrequency;      // Ending frequency
-    long m_frequencyStep;     // Frequency step
-    uint16_t m_currentStep;
-    bool m_isPaused;
+    GeneratorIf *m_Generator;
+    SettingsIf *m_Settings;
+    long m_FrequencyStep;
+    uint16_t m_CurrentStepNo;
+    bool m_IsPaused;
 
     static WobbulatorForEsp32 *m_Instance;
 };

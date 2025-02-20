@@ -26,7 +26,7 @@ protected:
     /// @brief Pointer to the AD9833 class form the robtillaart/AD9833 library.
     AD9833 *m_AD;
     /// @brief The channel id of the generator.
-    uint8_t m_channelId;
+    uint8_t m_ChannelId;
 };
 
 #endif

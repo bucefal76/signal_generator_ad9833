@@ -2,16 +2,25 @@
 
 #ifdef USE_SERIAL
 
-void SerialPortView::displayMainMenu(const GeneratorIf *generator1, const GeneratorIf *generator2) const
+void SerialPortView::displayMainMenu(const GeneratorIf *generator1, const GeneratorIf *generator2, const WobbulatorIf *wobbulator) const
 {
+    if (wobbulator != nullptr)
+    {
+        displayWobbulatorStatus(wobbulator->isEnabled(),
+                                wobbulator->isPaused(),
+                                wobbulator->getCurrentFrequency(),
+                                wobbulator->getStartFrequency(),
+                                wobbulator->getEndFrequency());
+    }
     if (generator1 != nullptr)
     {
         displayChannelStatus(generator1->getChannelId(), generator1->isEnabled(), generator1->getWaveType(), generator1->getFrequency());
     }
     if (generator2 != nullptr)
     {
-        displayChannelStatus(generator1->getChannelId(), generator2->isEnabled(), generator2->getWaveType(), generator2->getFrequency());
+        displayChannelStatus(generator2->getChannelId(), generator2->isEnabled(), generator2->getWaveType(), generator2->getFrequency());
     }
+
     Serial.println(F("Main menu:"));
     Serial.println(F("1. Channel 1"));
     Serial.println(F("2. Channel 2"));
@@ -118,9 +127,10 @@ void SerialPortView::displayWobbulatorStatus(const bool isEnabled,
                                              const long startFrequency,
                                              const long endFrequency) const
 {
-    Serial.print(F("Wobbulator "));
+    Serial.print(F("Wobbulator"));
     Serial.print(F(": [State: "));
     if (isEnabled)
+    
     {
         Serial.print(F("Enabled, "));
         if (isPaused)
