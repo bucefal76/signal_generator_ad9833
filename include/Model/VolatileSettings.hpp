@@ -27,12 +27,12 @@ public:
     virtual long getEndFrequency() const final;
 
 private:
-    GeneratorIf::WaveType m_lastSelectedGeneratorChannel1WaveType;
-    GeneratorIf::WaveType m_lastSelectedGeneratorChannel2WaveType;
-    long m_lastSelectedGeneratorChannel1Frequency;
-    long m_lastSelectedGeneratorChannel2Frequency;
-    long m_wobbulatorStartFrequency;
-    long m_wobbulatorEndFrequency;
+    GeneratorIf::WaveType m_GeneratorChannel1WaveType;
+    GeneratorIf::WaveType m_GeneratorChannel2WaveType;
+    long m_GeneratorChannel1Frequency;
+    long m_GeneratorChannel2Frequency;
+    long m_WobbulatorStartFrequency;
+    long m_WobbulatorEndFrequency;
 };
 
 #endif

@@ -74,8 +74,6 @@ private:
     };
 
     MenuStateT m_menuState;
-    long m_wobbulatorStartFrequency;
-    long m_wobbulatorEndFrequency;
     GeneratorIf *m_generatorChannel1;
     GeneratorIf *m_generatorChannel2;
     ViewIf *m_view;

@@ -20,8 +20,6 @@ SerialPortMenu *SerialPortMenu::getInstance()
 
 SerialPortMenu::SerialPortMenu()
     : m_menuState(MenuStateStart),
-      m_wobbulatorStartFrequency(1),
-      m_wobbulatorEndFrequency(1),
       m_generatorChannel1(nullptr),
       m_generatorChannel2(nullptr),
       m_view(nullptr),
