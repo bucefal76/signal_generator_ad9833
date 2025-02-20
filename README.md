@@ -1,6 +1,6 @@
 # signal_generator_ad9833
 
-Ver 0.2.5
+Ver 0.2.6
 
 # Introduction
 
