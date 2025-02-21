@@ -22,9 +22,19 @@ void SerialPortView::displayMainMenu(const GeneratorIf *generator1, const Genera
     }
 
     Serial.println(F("Main menu:"));
-    Serial.println(F("1. Channel 1"));
-    Serial.println(F("2. Channel 2"));
-    Serial.println(F("3. Wobbulator - channel 1"));
+
+    if (generator1 != nullptr)
+    {
+        Serial.println(F("1. Channel 1"));
+    }
+    if (generator2 != nullptr)
+    {
+        Serial.println(F("2. Channel 2"));
+    }
+    if (wobbulator != nullptr)
+    {
+        Serial.println(F("3. Wobbulator - channel 1"));
+    }
 }
 
 void SerialPortView::displayGeneratorChannelMenu(const GeneratorIf *generator) const
@@ -130,7 +140,7 @@ void SerialPortView::displayWobbulatorStatus(const bool isEnabled,
     Serial.print(F("Wobbulator"));
     Serial.print(F(": [State: "));
     if (isEnabled)
-    
+
     {
         Serial.print(F("Enabled, "));
         if (isPaused)

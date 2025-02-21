@@ -82,14 +82,29 @@ void SerialPortMenu::update()
                 m_View->displayGeneratorChannelMenu(m_GeneratorChannel1);
                 break;
             case '2':
-                m_MenuState = MenuStateChannel2Menu;
-                m_View->displayGeneratorChannelMenu(m_GeneratorChannel2);
+                if (m_GeneratorChannel2 != nullptr)
+                {
+                    m_MenuState = MenuStateChannel2Menu;
+                    m_View->displayGeneratorChannelMenu(m_GeneratorChannel2);
+                }
+                else
+                {
+                    m_View->displayMainMenu(m_GeneratorChannel1, m_GeneratorChannel2, m_Wobbulator);
+                }
                 break;
             case '3':
-                m_MenuState = MenuStateWobbulatorMenu;
-                m_View->displayWobbulatorMenu(m_Wobbulator);
+                if (m_Wobbulator != nullptr)
+                {
+                    m_MenuState = MenuStateWobbulatorMenu;
+                    m_View->displayWobbulatorMenu(m_Wobbulator);
+                }
+                else
+                {
+                    m_View->displayMainMenu(m_GeneratorChannel1, m_GeneratorChannel2, m_Wobbulator);
+                }
                 break;
             default:
+                m_View->displayMainMenu(m_GeneratorChannel1, m_GeneratorChannel2, m_Wobbulator);
                 break;
             }
         }
