@@ -1,31 +1,31 @@
-#include "Model/WobbulatorBase.hpp"
+#include "Model/Wobbulator.hpp"
 
 #ifdef USE_ESP32
 
 #include <math.h>
 #include <stdint.h>
-#include <driver/dac.h>
 
 #define VOBULATOR_MAX_FREQUENCY 12500000U
 #define VOBULATOR_RAMP_FIRST_STEP 0U
 // DAC resolution is 8 bits, so 256 steps
 #define VOBULATOR_RAMP_STEP (256 / VOBULATOR_NUMBER_OF_STEPS)
 
-WobbulatorBase *WobbulatorBase::m_Instance = nullptr;
+Wobbulator *Wobbulator::m_Instance = nullptr;
 
-WobbulatorBase *WobbulatorBase::getInstance()
+Wobbulator *Wobbulator::getInstance()
 {
     if (m_Instance == nullptr)
     {
-        m_Instance = new WobbulatorBase();
+        m_Instance = new Wobbulator();
     }
 
     return m_Instance;
 }
 
-WobbulatorBase::WobbulatorBase()
+Wobbulator::Wobbulator()
     : m_Generator(nullptr),
       m_Settings(nullptr),
+      m_RampSignalSource(nullptr),
       m_CurrentStepNo(VOBULATOR_RAMP_FIRST_STEP),
       m_FrequencyStep(1U),
       m_IsPaused(false)
@@ -33,15 +33,14 @@ WobbulatorBase::WobbulatorBase()
     setInterval(VOBULATOR_BY_DC_THREAD_TIME_INTERVAL_MS);
     onRun(onRunCallback);
     enabled = false;
-
-    dac_output_enable(DAC_CHANNEL_1); // GPIO25
 }
 
-void WobbulatorBase::enable()
+void Wobbulator::enable()
 {
     if (m_Generator != nullptr)
     {
-        dac_output_voltage(DAC_CHANNEL_1, 0U);
+        m_RampSignalSource->setValue(0U);
+
         m_Generator->disableWave();
 
         m_CurrentStepNo = VOBULATOR_RAMP_FIRST_STEP;
@@ -53,22 +52,22 @@ void WobbulatorBase::enable()
     }
 }
 
-void WobbulatorBase::disable()
+void Wobbulator::disable()
 {
     enabled = false;
     m_IsPaused = false;
-    dac_output_voltage(DAC_CHANNEL_1, 0U);
+    m_RampSignalSource->setValue(0U);
     m_Generator->disableWave();
 }
 
-void WobbulatorBase::update()
+void Wobbulator::update()
 {
     if (enabled && m_Generator != nullptr)
     {
         if (m_CurrentStepNo < VOBULATOR_NUMBER_OF_STEPS)
         {
             const uint8_t rampDcValue = m_CurrentStepNo * VOBULATOR_RAMP_STEP;
-            dac_output_voltage(DAC_CHANNEL_1, rampDcValue);
+            m_RampSignalSource->setValue(rampDcValue);
 
             const long frequency = m_Settings->getStartFrequency() + (m_CurrentStepNo * m_FrequencyStep);
             m_Generator->generateWave(GeneratorIf::TypeSinusoidal, frequency);
@@ -85,32 +84,37 @@ void WobbulatorBase::update()
     }
 }
 
-void WobbulatorBase::setGenerator(GeneratorIf *generator)
+void Wobbulator::setGenerator(GeneratorIf *generator)
 {
     m_Generator = generator;
 }
 
-void WobbulatorBase::setsSettingsStorage(SettingsIf *settingsStorage)
+void Wobbulator::setSettingsStorage(SettingsIf *settingsStorage)
 {
     m_Settings = settingsStorage;
 }
 
-void WobbulatorBase::onRunCallback()
+void Wobbulator::setRampSignal(RampSignalIf *rampSignalSource)
+{
+    m_RampSignalSource = rampSignalSource;
+}
+
+void Wobbulator::onRunCallback()
 {
     m_Instance->update();
 }
 
-void WobbulatorBase::pause()
+void Wobbulator::pause()
 {
     m_IsPaused = true;
 }
 
-void WobbulatorBase::resume()
+void Wobbulator::resume()
 {
     m_IsPaused = false;
 }
 
-void WobbulatorBase::stepUp()
+void Wobbulator::stepUp()
 {
     if (m_IsPaused)
     {
@@ -122,7 +126,7 @@ void WobbulatorBase::stepUp()
     }
 }
 
-void WobbulatorBase::stepDown()
+void Wobbulator::stepDown()
 {
     if (m_IsPaused)
     {
@@ -137,32 +141,32 @@ void WobbulatorBase::stepDown()
     }
 }
 
-long WobbulatorBase::getCurrentFrequency() const
+long Wobbulator::getCurrentFrequency() const
 {
     return m_Settings->getStartFrequency() + m_CurrentStepNo * m_FrequencyStep;
 }
 
-bool WobbulatorBase::isEnabled() const
+bool Wobbulator::isEnabled() const
 {
     return enabled;
 }
 
-bool WobbulatorBase::isPaused() const
+bool Wobbulator::isPaused() const
 {
     return m_IsPaused;
 }
 
-long WobbulatorBase::getStartFrequency() const
+long Wobbulator::getStartFrequency() const
 {
     return m_Settings->getStartFrequency();
 }
 
-long WobbulatorBase::getEndFrequency() const
+long Wobbulator::getEndFrequency() const
 {
     return m_Settings->getEndFrequency();
 }
 
-void WobbulatorBase::setStartFrequency(const long startFrequency)
+void Wobbulator::setStartFrequency(const long startFrequency)
 {
     if ((startFrequency > 0) && (startFrequency < VOBULATOR_MAX_FREQUENCY))
     {
@@ -177,7 +181,7 @@ void WobbulatorBase::setStartFrequency(const long startFrequency)
     }
 }
 
-void WobbulatorBase::setEndFrequency(const long endFrequency)
+void Wobbulator::setEndFrequency(const long endFrequency)
 {
     if ((endFrequency > 0) && (endFrequency <= VOBULATOR_MAX_FREQUENCY))
     {

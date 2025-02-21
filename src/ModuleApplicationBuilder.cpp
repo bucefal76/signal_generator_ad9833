@@ -5,6 +5,7 @@
 #include "Model/GeneratorIf.hpp"
 #include "Model/WobbulatorIf.hpp"
 #include "Model/VolatileSettings.hpp"
+#include "Model/RampSignalIf.hpp"
 #include "View/ViewIf.hpp"
 
 #ifdef USE_SERIAL
@@ -14,7 +15,8 @@
 
 #ifdef USE_ESP32
 #include "Model/GeneratorForEsp32.hpp"
-#include "Model/WobbulatorBase.hpp"
+#include "Model/RampSignalForEsp32.hpp"
+#include "Model/Wobbulator.hpp"
 #else
 #include "Model/GeneratorForUno.hpp"
 #endif
@@ -32,6 +34,7 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
     GeneratorIf *generatorChannel2 = nullptr;
     WobbulatorIf *wobbulator = nullptr;
     SettingsIf *settings = new VoltileSettings();
+    RampSignalIf *rampSignal = nullptr;
     ViewIf *view = nullptr;
 #ifdef USE_ESP32
 
@@ -62,13 +65,18 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 #endif
 
 #ifdef USE_ESP32
-    wobbulator = WobbulatorBase::getInstance();
-    if (wobbulator != nullptr)
+    rampSignal = new RampSignalForEsp32();
+    if (rampSignal != nullptr)
     {
-        rApplication.addThread(WobbulatorBase::getInstance());
-        wobbulator->setsSettingsStorage(settings);
-        wobbulator->setGenerator(generatorChannel1);
-        wobbulator->disable();
+        wobbulator = Wobbulator::getInstance();
+        if (wobbulator != nullptr)
+        {
+            rApplication.addThread(Wobbulator::getInstance());
+            wobbulator->setRampSignal(rampSignal);
+            wobbulator->setSettingsStorage(settings);
+            wobbulator->setGenerator(generatorChannel1);
+            wobbulator->disable();
+        }
     }
 #endif
 
