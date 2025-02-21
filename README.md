@@ -50,6 +50,17 @@ For channel 2, select is a pin 9, other input pins are the same, power is 5V.
       |               |  Pin GND ---------------- Pin DGND    |              |
       -----------------                                       ----------------      
 
+For wobbulator output (external ADC for the ramp signal):
+
+      -----------------                                       ----------------
+      |               |                                       |              |
+      |  ARDUINO      |  Pin A4 ----------------- Pin SDA     |   MCP 4725   |  Pin Out
+      |  UNO          |  Pin A5 ----------------- Pin SCL     |              |  Pin Gnd
+      |               |                                       |              | 
+      |               |  Pin 5V ----------------- Pin VCC     |              |
+      |               |  Pin GND ---------------- Pin GND     |              |
+      -----------------                                       ----------------     
+
 See for details in the include/ModuleConfig.hpp.
 
 ## ESP32 Wemos D1 R32
@@ -76,6 +87,9 @@ For channel 2, select is a pin 13, other input pins are the same, power is 3.3V.
       |               |  Pin GND ---------------- Pin DGND    |              |
       -----------------                                       ----------------
 
+For wobbulator output (internal ADC for the ramp signal): PIN 25
+
+
 See for details in the include/ModuleConfig.hpp.
 
 # Other remarks
@@ -97,6 +111,7 @@ The View, objects in this are implement the ViewIf, this part of code is respons
 # Dependencies
 
 [robtillaart/AD9833](https://github.com/RobTillaart/AD9833)
+[robtillaart/MCP4725](https://github.com/RobTillaart/MCP4725)
 [ivanseidel/ArduinoThread](https://github.com/ivanseidel/ArduinoThread)
 [mike-matera/ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)
 [SPI](https://github.com/esp8266/Arduino/blob/master/libraries/SPI/SPI.h)

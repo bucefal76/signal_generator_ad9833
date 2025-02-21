@@ -14,7 +14,7 @@
 
 #ifdef USE_ESP32
 #include "Model/GeneratorForEsp32.hpp"
-#include "Model/WobbulatorForEsp32.hpp"
+#include "Model/WobbulatorBase.hpp"
 #else
 #include "Model/GeneratorForUno.hpp"
 #endif
@@ -62,10 +62,10 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 #endif
 
 #ifdef USE_ESP32
-    wobbulator = WobbulatorForEsp32::getInstance();
+    wobbulator = WobbulatorBase::getInstance();
     if (wobbulator != nullptr)
     {
-        rApplication.addThread(WobbulatorForEsp32::getInstance());
+        rApplication.addThread(WobbulatorBase::getInstance());
         wobbulator->setsSettingsStorage(settings);
         wobbulator->setGenerator(generatorChannel1);
         wobbulator->disable();
