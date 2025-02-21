@@ -11,8 +11,9 @@ At least as long as suitable library to talk ith the chip are available.
 
 # Current features
 
-- Single channel sine, square and ramp signal up to 12Mhz.
-- Control over serial port.
+- Double or single channel sine, square and ramp signal up to 12Mhz.
+- Wobbulator up to 12Mhz (ESP32 for now).
+- Control over serial port (same as power).
 
 # Required hardware
 
@@ -50,7 +51,7 @@ For channel 2, select is a pin 9, other input pins are the same, power is 5V.
       |               |  Pin GND ---------------- Pin DGND    |              |
       -----------------                                       ----------------      
 
-For wobbulator output (external ADC for the ramp signal):
+For wobbulator ramp signal output (external ADC MCP 4725):
 
       -----------------                                       ----------------
       |               |                                       |              |
@@ -87,7 +88,7 @@ For channel 2, select is a pin 13, other input pins are the same, power is 3.3V.
       |               |  Pin GND ---------------- Pin DGND    |              |
       -----------------                                       ----------------
 
-For wobbulator output (internal ADC for the ramp signal): PIN 25
+For wobbulator ramp signal output (internal ADC) is PIN 25.
 
 
 See for details in the include/ModuleConfig.hpp.
@@ -110,14 +111,19 @@ The View, objects in this are implement the ViewIf, this part of code is respons
 
 # Dependencies
 
-[robtillaart/AD9833](https://github.com/RobTillaart/AD9833)
-[robtillaart/MCP4725](https://github.com/RobTillaart/MCP4725)
-[ivanseidel/ArduinoThread](https://github.com/ivanseidel/ArduinoThread)
-[mike-matera/ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)
-[SPI](https://github.com/esp8266/Arduino/blob/master/libraries/SPI/SPI.h)
+- [robtillaart/AD9833](https://github.com/RobTillaart/AD9833)
+- [ivanseidel/ArduinoThread](https://github.com/ivanseidel/ArduinoThread)
+- [SPI](https://github.com/esp8266/Arduino/blob/master/libraries/SPI/SPI.h)
+
+For Arduino UNO only
+
+-  [robtillaart/MCP4725](https://github.com/RobTillaart/MCP4725) 
+ - [mike-matera/ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)
 
 # Future developments
 
- - Wobbulator feature for UNO.
+ - Wobbulator feature for UNO. 
+   - Scale the ramp signal for the UNO (12bit not 8bit DAC is used).
+ - Cleanup the settings, change long -> unsigned long and in other places in the code.
  - Potentiometer to normalize values of signals for different waveforms.
 

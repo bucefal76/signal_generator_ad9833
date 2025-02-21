@@ -6,6 +6,7 @@
 #include "Model/WobbulatorIf.hpp"
 #include "Model/VolatileSettings.hpp"
 #include "Model/RampSignalIf.hpp"
+#include "Model/Wobbulator.hpp"
 #include "View/ViewIf.hpp"
 
 #ifdef USE_SERIAL
@@ -16,9 +17,9 @@
 #ifdef USE_ESP32
 #include "Model/GeneratorForEsp32.hpp"
 #include "Model/RampSignalForEsp32.hpp"
-#include "Model/Wobbulator.hpp"
 #else
 #include "Model/GeneratorForUno.hpp"
+#include "Model/RampSignalForUno.hpp"
 #endif
 
 #include <SPI.h>
@@ -66,6 +67,9 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 
 #ifdef USE_ESP32
     rampSignal = new RampSignalForEsp32();
+#else
+    rampSignal = new RampSignalForUno();
+#endif
     if (rampSignal != nullptr)
     {
         wobbulator = Wobbulator::getInstance();
@@ -78,7 +82,6 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
             wobbulator->disable();
         }
     }
-#endif
 
 #ifdef USE_SERIAL
     view = new SerialPortView();

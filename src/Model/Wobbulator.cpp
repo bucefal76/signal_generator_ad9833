@@ -1,7 +1,5 @@
 #include "Model/Wobbulator.hpp"
 
-#ifdef USE_ESP32
-
 #include <math.h>
 #include <stdint.h>
 
@@ -26,11 +24,11 @@ Wobbulator::Wobbulator()
     : m_Generator(nullptr),
       m_Settings(nullptr),
       m_RampSignalSource(nullptr),
-      m_CurrentStepNo(VOBULATOR_RAMP_FIRST_STEP),
       m_FrequencyStep(1U),
+      m_CurrentStepNo(VOBULATOR_RAMP_FIRST_STEP),
       m_IsPaused(false)
 {
-    setInterval(VOBULATOR_BY_DC_THREAD_TIME_INTERVAL_MS);
+    setInterval(VOBULATOR_THREAD_TIME_INTERVAL_MS);
     onRun(onRunCallback);
     enabled = false;
 }
@@ -195,5 +193,3 @@ void Wobbulator::setEndFrequency(const long endFrequency)
         }
     }
 }
-
-#endif
