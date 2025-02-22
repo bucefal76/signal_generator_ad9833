@@ -105,22 +105,73 @@ The application area has "dirty set up code"; see ModuleApplicationBuilder.cpp.
 This code is responsible for creating and connecting all building blocks.
 The building blocks interact with the echoer through formal interfaces.
 
-The Controller, objects in this area implement ControllerIf - this part of the code controls the generator's objects.
-The Model, objects in this implement the GeneratorIf, this part of code is responsible for talking to the real generator hardware.
+The Controller, objects in this area implement ControllerIf - this part of the code controls the generator's and wobbulator objects.
+The Model, objects in this implement the GeneratorIf, WobbulatorIf and other objects.
+This part of code is responsible for talking to the real generator hardware, performing the wobbulator actions or store settings.
 The View, objects in this are implement the ViewIf, this part of code is responsible for displaying information to the operator.
 
+<b>Simplified diagram of the project interfaces and classes relationships:</b>
 
 ```mermaid
 classDiagram
-   
+      
+
+      namespace Controller {    
+            class ControllerIf
+            class SerialPortMenu
+      }
+
+      ControllerIf <|.. SerialPortMenu :implements
+      <<inerface>> ControllerIf    
+
+      namespace View {
+            class ViewIf
+            class SerialPortView
+      }
+
+      ViewIf <|.. SerialPortView :implements
+      <<inerface>> ViewIf    
+
+      namespace Model {
+            class WobbulatorIf
+            class GeneratorIf
+            class RampSignalIf
+            class SettingsIf
+
+            class GeneratorAd9933
+            class GeneratorForEsp32
+            class GeneratorForUno
+
+            class Wobbulator
+
+            class RampSignalForEsp32
+            class RampSignalForUno
+
+            class VolatileSettings
+      }
+
+      <<inerface>> ViewIf
+      <<inerface>> GeneratorIf
+      <<inerface>> RampSignalIf      
+
+      GeneratorIf <|.. GeneratorAd9933 : implements
+      GeneratorAd9933 <|-- GeneratorForEsp32 : specializes
+      GeneratorAd9933 <|-- GeneratorForUno : specializes
+
+      WobbulatorIf <|.. Wobbulator : implements
+      RampSignalIf <|.. RampSignalForEsp32 :implements
+      RampSignalIf <|.. RampSignalForUno :implements
+
+      SettingsIf <|.. VolatileSettings :specializes
+
+      Wobbulator o-- RampSignalIf
+      Wobbulator o-- SettingsIf 
+      GeneratorAd9933 o-- SettingsIf
+
+      SerialPortMenu --> ViewIf : uses
+      SerialPortMenu --> GeneratorIf : uses
+      SerialPortMenu --> WobbulatorIf : ueses
     
-    class ControllerIf
-    <<inerface>> ControllerIf
-
-    class ViewIf
-    <<inerface>> ViewIf
-
-    class Zebra
 
 
 ```
