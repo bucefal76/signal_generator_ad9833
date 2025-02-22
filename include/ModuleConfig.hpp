@@ -8,7 +8,7 @@
 // and the wobbulator.
 // When defined, two AD9833 chips will be used: one for generator channel 1
 // and the wobbulator, and the other for generator channel 2.
-/* #define USE_TWO_GENERATORS */
+/* #define USE_TWO_GENERATORS_FOR_TWO_CHANNELS */
 
 #define WOBBULATOR_NUMBER_OF_STEPS 50
 
@@ -50,5 +50,8 @@
 #ifdef USE_SERIAL
 #define SERIAL_MENU_THREAD_TIME_INTERVAL_MS 100U
 #endif
+
+//
+#define USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES
 
 #endif

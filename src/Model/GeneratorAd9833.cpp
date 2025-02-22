@@ -5,9 +5,15 @@
 
 #define POWER_MODE_SLEEP_AL 3U
 
+// TEMP
+#include <X9C103S.h>
+X9C103S pot1(6, 7, 8); // X9C103S digital potentiometer connected with inc pin to pin 6 ud pin to pin 7 and cs pin to pin 8. Change pin numbers as nessary.
+
 GeneratorAd9833::GeneratorAd9833(const uint8_t channelId)
     : m_AD(nullptr), m_ChannelId(channelId)
 {
+    pot1.initializePot();
+    pot1.setToHighest();
 }
 
 GeneratorAd9833::~GeneratorAd9833()
@@ -33,16 +39,19 @@ void GeneratorAd9833::generateWave(const WaveType type, const long frequency)
         switch (type)
         {
         case TypeSinusoidal:
+            pot1.setToHighest();
             m_AD->setWave(AD9833_SINE);
             break;
         case TypeSquare:
-
+            pot1.setResistance(13);
             m_AD->setWave(AD9833_SQUARE1);
             break;
         case TypeRamp:
+            pot1.setToHighest();
             m_AD->setWave(AD9833_TRIANGLE);
             break;
         default:
+            pot1.setToLowest();
             m_AD->setFrequency(0, 0);
             m_AD->setWave(AD9833_OFF);
         }

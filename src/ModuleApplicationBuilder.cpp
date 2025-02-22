@@ -51,7 +51,7 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 #else
     // The ESP32 uses software emulated SPI interface
     generatorChannel1 = new GeneratorForEsp32(1, ESP32_CHANNEL_1_SPI_CS, ESP32_CHANNEL_1_SPI_SDATA, ESP32_CHANNEL_1_SPI_SCLK);
-#ifdef USE_TWO_GENERATORS
+#ifdef USE_TWO_GENERATORS_FOR_TWO_CHANNELS
     generatorChannel2 = new GeneratorForEsp32(2, ESP32_CHANNEL_2_SPI_CS, ESP32_CHANNEL_2_SPI_SDATA, ESP32_CHANNEL_2_SPI_SCLK);
 #endif
 #endif
@@ -60,7 +60,7 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
     // For Uno hardware SPI interface need to be initalized first
     SPI.begin();
     generatorChannel1 = new GeneratorForUno(1, UNO_CHANNEL_1_SPI_CS);
-#ifdef USE_TWO_GENERATORS
+#ifdef USE_TWO_GENERATORS_FOR_TWO_CHANNELS
     generatorChannel2 = new GeneratorForUno(2, UNO_CHANNEL_2_SPI_CS);
 #endif
 #endif
