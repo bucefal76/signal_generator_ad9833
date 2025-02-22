@@ -23,7 +23,7 @@ RampSignalForUno::RampSignalForUno()
         while (true)
         {
 #ifdef USE_SERIAL
-            Serial.println("Cannot communicate with one ore more AD9833 generators!");
+            Serial.println("Cannot communicate with the MCP 4725 DAC!");
 #endif
 
             digitalWrite(LED_BUILTIN, HIGH); // turn the LED on (HIGH is the voltage level)
