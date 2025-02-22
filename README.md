@@ -1,6 +1,6 @@
 # signal_generator_ad9833
 
-Ver 0.2.6
+Ver 0.2.9
 
 # Introduction
 
@@ -11,8 +11,9 @@ At least as long as suitable library to talk ith the chip are available.
 
 # Current features
 
-- Single channel sine, square and ramp signal up to 12Mhz.
-- Control over serial port.
+- Double or single channel sine, square and ramp signal up to 12Mhz.
+- Wobbulator up to 12Mhz (ESP32 for now).
+- Control over serial port (same as power).
 
 # Required hardware
 
@@ -50,6 +51,17 @@ For channel 2, select is a pin 9, other input pins are the same, power is 5V.
       |               |  Pin GND ---------------- Pin DGND    |              |
       -----------------                                       ----------------      
 
+For wobbulator ramp signal output (external ADC MCP 4725):
+
+      -----------------                                       ----------------
+      |               |                                       |              |
+      |  ARDUINO      |  Pin A4 ----------------- Pin SDA     |   MCP 4725   |  Pin Out
+      |  UNO          |  Pin A5 ----------------- Pin SCL     |              |  Pin Gnd
+      |               |                                       |              | 
+      |               |  Pin 5V ----------------- Pin VCC     |              |
+      |               |  Pin GND ---------------- Pin GND     |              |
+      -----------------                                       ----------------     
+
 See for details in the include/ModuleConfig.hpp.
 
 ## ESP32 Wemos D1 R32
@@ -76,6 +88,9 @@ For channel 2, select is a pin 13, other input pins are the same, power is 3.3V.
       |               |  Pin GND ---------------- Pin DGND    |              |
       -----------------                                       ----------------
 
+For wobbulator ramp signal output (internal ADC) is PIN 25.
+
+
 See for details in the include/ModuleConfig.hpp.
 
 # Other remarks
@@ -90,20 +105,86 @@ The application area has "dirty set up code"; see ModuleApplicationBuilder.cpp.
 This code is responsible for creating and connecting all building blocks.
 The building blocks interact with the echoer through formal interfaces.
 
-The Controller, objects in this area implement ControllerIf - this part of the code controls the generator's objects.
-The Model, objects in this implement the GeneratorIf, this part of code is responsible for talking to the real generator hardware.
+The Controller, objects in this area implement ControllerIf - this part of the code controls the generator's and wobbulator objects.
+The Model, objects in this implement the GeneratorIf, WobbulatorIf and other objects.
+This part of code is responsible for talking to the real generator hardware, performing the wobbulator actions or store settings.
 The View, objects in this are implement the ViewIf, this part of code is responsible for displaying information to the operator.
 
+<b>Simplified diagram of the project interfaces and classes relationships:</b>
+
+```mermaid
+classDiagram
+      
+
+      namespace Controller {    
+            class ControllerIf
+            class SerialPortMenu
+      }
+
+      ControllerIf <|.. SerialPortMenu :implements
+      <<inerface>> ControllerIf    
+
+      namespace View {
+            class ViewIf
+            class SerialPortView
+      }
+
+      ViewIf <|.. SerialPortView :implements
+      <<inerface>> ViewIf    
+
+      namespace Model {
+            class WobbulatorIf
+            class GeneratorIf
+            class RampSignalIf
+            class SettingsIf
+
+            class GeneratorAd9933
+            class GeneratorForEsp32
+            class GeneratorForUno
+
+            class Wobbulator
+
+            class RampSignalForEsp32
+            class RampSignalForUno
+
+            class VolatileSettings
+      }
+
+      <<inerface>> ViewIf
+      <<inerface>> GeneratorIf
+      <<inerface>> RampSignalIf      
+
+      GeneratorIf <|.. GeneratorAd9933 : implements
+      GeneratorAd9933 <|-- GeneratorForEsp32 : specializes
+      GeneratorAd9933 <|-- GeneratorForUno : specializes
+
+      WobbulatorIf <|.. Wobbulator : implements
+      RampSignalIf <|.. RampSignalForEsp32 :implements
+      RampSignalIf <|.. RampSignalForUno :implements
+
+      SettingsIf <|.. VolatileSettings :specializes
+
+      Wobbulator o-- RampSignalIf
+      Wobbulator o-- SettingsIf 
+      GeneratorAd9933 o-- SettingsIf
+
+      SerialPortMenu --> ViewIf : uses
+      SerialPortMenu --> GeneratorIf : uses
+      SerialPortMenu --> WobbulatorIf : ueses
+
+```
 # Dependencies
 
-[robtillaart/AD9833](https://github.com/RobTillaart/AD9833)
-[ivanseidel/ArduinoThread](https://github.com/ivanseidel/ArduinoThread)
-[mike-matera/ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)
-[SPI](https://github.com/esp8266/Arduino/blob/master/libraries/SPI/SPI.h)
+- [robtillaart/AD9833](https://github.com/RobTillaart/AD9833)
+- [ivanseidel/ArduinoThread](https://github.com/ivanseidel/ArduinoThread)
+- [SPI](https://github.com/esp8266/Arduino/blob/master/libraries/SPI/SPI.h)
+
+For Arduino UNO only
+
+-  [robtillaart/MCP4725](https://github.com/RobTillaart/MCP4725) 
+- [mike-matera/ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)
 
 # Future developments
 
- - Restoring Wobbulator settings when Wobbulator enabled then generators enabled and then Wobbulator enabled back.
- - Single channel only support and make code ready for missing connection to the devices (power up diagnostics).
- - Wobbulator feature for UNO.
  - Potentiometer to normalize values of signals for different waveforms.
+

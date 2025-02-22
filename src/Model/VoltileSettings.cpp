@@ -20,12 +20,12 @@ GeneratorIf::WaveType VoltileSettings::getGenerator1Wave() const
     return m_GeneratorChannel1WaveType;
 }
 
-void VoltileSettings::setGenerator1Frequency(const long frequency)
+void VoltileSettings::setGenerator1Frequency(const unsigned long frequency)
 {
     m_GeneratorChannel1Frequency = frequency;
 }
 
-long VoltileSettings::getGenerator1Frequency() const
+unsigned long VoltileSettings::getGenerator1Frequency() const
 {
     return m_GeneratorChannel1Frequency;
 }
@@ -40,32 +40,32 @@ GeneratorIf::WaveType VoltileSettings::getGenerator2Wave() const
     return m_GeneratorChannel2WaveType;
 }
 
-void VoltileSettings::setGenerator2Frequency(const long frequency)
+void VoltileSettings::setGenerator2Frequency(const unsigned long frequency)
 {
     m_GeneratorChannel2Frequency = frequency;
 }
 
-long VoltileSettings::getGenerator2Frequency() const
+unsigned long VoltileSettings::getGenerator2Frequency() const
 {
     return m_GeneratorChannel2Frequency;
 }
 
-void VoltileSettings::setStartFrequency(const long startFrequency)
+void VoltileSettings::setStartFrequency(const unsigned long startFrequency)
 {
     m_WobbulatorStartFrequency = startFrequency;
 }
 
-long VoltileSettings::getStartFrequency() const
+unsigned long VoltileSettings::getStartFrequency() const
 {
     return m_WobbulatorStartFrequency;
 }
 
-void VoltileSettings::setEndFrequency(const long endFrequency)
+void VoltileSettings::setEndFrequency(const unsigned long endFrequency)
 {
     m_WobbulatorEndFrequency = endFrequency;
 }
 
-long VoltileSettings::getEndFrequency() const
+unsigned long VoltileSettings::getEndFrequency() const
 {
     return m_WobbulatorEndFrequency;
 }
