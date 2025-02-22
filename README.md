@@ -109,6 +109,21 @@ The Controller, objects in this area implement ControllerIf - this part of the c
 The Model, objects in this implement the GeneratorIf, this part of code is responsible for talking to the real generator hardware.
 The View, objects in this are implement the ViewIf, this part of code is responsible for displaying information to the operator.
 
+
+```mermaid
+classDiagram
+   
+    
+    class ControllerIf
+    <<inerface>> ControllerIf
+
+    class ViewIf
+    <<inerface>> ViewIf
+
+    class Zebra
+
+
+```
 # Dependencies
 
 - [robtillaart/AD9833](https://github.com/RobTillaart/AD9833)
