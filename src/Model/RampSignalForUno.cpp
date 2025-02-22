@@ -2,10 +2,11 @@
 
 #ifndef USE_ESP32
 
+#include "ModuleConfig.hpp"
 #include "Wire.h"
 #include "MCP4725.h"
 
-MCP4725 MCP(0x60);
+MCP4725 MCP(WOBBULATOR_RAMP_SIGNAL_ADC_I2C_ADDRESS);
 
 RampSignalForUno::RampSignalForUno()
 {

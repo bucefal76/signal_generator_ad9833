@@ -41,7 +41,7 @@ void Wobbulator::enable()
 
         m_CurrentStepNo = VOBULATOR_RAMP_FIRST_STEP;
 
-        m_FrequencyStep = (m_Settings->getEndFrequency() - m_Settings->getStartFrequency()) / VOBULATOR_NUMBER_OF_STEPS;
+        m_FrequencyStep = (m_Settings->getEndFrequency() - m_Settings->getStartFrequency()) / WOBBULATOR_NUMBER_OF_STEPS;
 
         m_IsPaused = false;
         enabled = true;
@@ -60,9 +60,9 @@ void Wobbulator::update()
 {
     if (enabled && m_Generator != nullptr)
     {
-        if (m_CurrentStepNo < VOBULATOR_NUMBER_OF_STEPS)
+        if (m_CurrentStepNo < WOBBULATOR_NUMBER_OF_STEPS)
         {
-            const uint16_t rampDcValue = m_CurrentStepNo * VOBULATOR_RAMP_STEP;
+            const uint16_t rampDcValue = m_CurrentStepNo * WOBBULATOR_RAMP_SIGNAL_STEP;
             m_RampSignalSource->setValue(rampDcValue);
 
             const long frequency = m_Settings->getStartFrequency() + (m_CurrentStepNo * m_FrequencyStep);
@@ -115,9 +115,9 @@ void Wobbulator::stepUp()
     if (m_IsPaused)
     {
         m_CurrentStepNo++;
-        if (m_CurrentStepNo >= VOBULATOR_NUMBER_OF_STEPS)
+        if (m_CurrentStepNo >= WOBBULATOR_NUMBER_OF_STEPS)
         {
-            m_CurrentStepNo = VOBULATOR_NUMBER_OF_STEPS - 1;
+            m_CurrentStepNo = WOBBULATOR_NUMBER_OF_STEPS - 1;
         }
     }
 }
@@ -172,7 +172,7 @@ void Wobbulator::setStartFrequency(const long startFrequency)
 
             m_CurrentStepNo = VOBULATOR_RAMP_FIRST_STEP;
 
-            m_FrequencyStep = (m_Settings->getEndFrequency() - m_Settings->getStartFrequency()) / VOBULATOR_NUMBER_OF_STEPS;
+            m_FrequencyStep = (m_Settings->getEndFrequency() - m_Settings->getStartFrequency()) / WOBBULATOR_NUMBER_OF_STEPS;
         }
     }
 }
@@ -187,7 +187,7 @@ void Wobbulator::setEndFrequency(const long endFrequency)
 
             m_CurrentStepNo = VOBULATOR_RAMP_FIRST_STEP;
 
-            m_FrequencyStep = (m_Settings->getEndFrequency() - m_Settings->getStartFrequency()) / VOBULATOR_NUMBER_OF_STEPS;
+            m_FrequencyStep = (m_Settings->getEndFrequency() - m_Settings->getStartFrequency()) / WOBBULATOR_NUMBER_OF_STEPS;
         }
     }
 }
