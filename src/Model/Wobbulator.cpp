@@ -65,7 +65,7 @@ void Wobbulator::update()
             const uint16_t rampDcValue = m_CurrentStepNo * WOBBULATOR_RAMP_SIGNAL_STEP;
             m_RampSignalSource->setValue(rampDcValue);
 
-            const long frequency = m_Settings->getStartFrequency() + (m_CurrentStepNo * m_FrequencyStep);
+            const unsigned long frequency = m_Settings->getStartFrequency() + (m_CurrentStepNo * m_FrequencyStep);
             m_Generator->generateWave(GeneratorIf::TypeSinusoidal, frequency);
 
             if (false == m_IsPaused)
@@ -137,7 +137,7 @@ void Wobbulator::stepDown()
     }
 }
 
-long Wobbulator::getCurrentFrequency() const
+unsigned long Wobbulator::getCurrentFrequency() const
 {
     return m_Settings->getStartFrequency() + m_CurrentStepNo * m_FrequencyStep;
 }
@@ -152,17 +152,17 @@ bool Wobbulator::isPaused() const
     return m_IsPaused;
 }
 
-long Wobbulator::getStartFrequency() const
+unsigned long Wobbulator::getStartFrequency() const
 {
     return m_Settings->getStartFrequency();
 }
 
-long Wobbulator::getEndFrequency() const
+unsigned long Wobbulator::getEndFrequency() const
 {
     return m_Settings->getEndFrequency();
 }
 
-void Wobbulator::setStartFrequency(const long startFrequency)
+void Wobbulator::setStartFrequency(const unsigned long startFrequency)
 {
     if ((startFrequency > 0) && (startFrequency < VOBULATOR_MAX_FREQUENCY))
     {
@@ -177,7 +177,7 @@ void Wobbulator::setStartFrequency(const long startFrequency)
     }
 }
 
-void Wobbulator::setEndFrequency(const long endFrequency)
+void Wobbulator::setEndFrequency(const unsigned long endFrequency)
 {
     if ((endFrequency > 0) && (endFrequency <= VOBULATOR_MAX_FREQUENCY))
     {

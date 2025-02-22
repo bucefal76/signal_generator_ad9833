@@ -21,13 +21,13 @@ public:
     virtual void resume() final;
     virtual void stepUp() final;
     virtual void stepDown();
-    virtual long getCurrentFrequency() const final;
+    virtual unsigned long getCurrentFrequency() const final;
     virtual bool isEnabled() const final;
     virtual bool isPaused() const final;
-    virtual long getStartFrequency() const final;
-    virtual long getEndFrequency() const final;
-    virtual void setStartFrequency(const long startFrequency) final;
-    virtual void setEndFrequency(const long endFrequency) final;
+    virtual unsigned long getStartFrequency() const final;
+    virtual unsigned long getEndFrequency() const final;
+    virtual void setStartFrequency(const unsigned long startFrequency) final;
+    virtual void setEndFrequency(const unsigned long endFrequency) final;
     virtual void setGenerator(GeneratorIf *generator) final;
     virtual void setSettingsStorage(SettingsIf *settingsStorage) final;
     virtual void setRampSignal(RampSignalIf *rampSignalSource) final;
@@ -39,7 +39,7 @@ private:
     GeneratorIf *m_Generator;
     SettingsIf *m_Settings;
     RampSignalIf *m_RampSignalSource;
-    long m_FrequencyStep;
+    unsigned long m_FrequencyStep;
     uint16_t m_CurrentStepNo;
     bool m_IsPaused;
 

@@ -36,6 +36,7 @@
 #define WOBBULATOR_RAMP_SIGNAL_STEP (4095 / WOBBULATOR_NUMBER_OF_STEPS)
 
 // I2C address for external ADC used for wobbulator ramp signal
+// Note usually it is 0x62U, my ADC was set to 0x60U, check your I2C address.
 #define WOBBULATOR_RAMP_SIGNAL_ADC_I2C_ADDRESS 0x60U
 
 #define UNO_CHANNEL_1_SPI_CS 10

@@ -33,19 +33,19 @@ public:
     /// @brief Manual step DOWN;
     virtual void stepDown() = 0;
     /// @brief Returns value of the current frequency.
-    virtual long getCurrentFrequency() const = 0;
+    virtual unsigned long getCurrentFrequency() const = 0;
     /// @brief Returns true if is enabled
     virtual bool isEnabled() const = 0;
     /// @brief Returns true if auto step is disabled
     virtual bool isPaused() const = 0;
     /// @brief Sets the start frequency for the Wobbulator sweep
-    virtual void setStartFrequency(const long startFrequency) = 0;
+    virtual void setStartFrequency(const unsigned long startFrequency) = 0;
     /// @brief Gets the start frequency for Wobbulator sweep
-    virtual long getStartFrequency() const = 0;
+    virtual unsigned long getStartFrequency() const = 0;
     /// @brief Sets the end frequency for the Wobbulator sweep
-    virtual void setEndFrequency(const long endFrequency) = 0;
+    virtual void setEndFrequency(const unsigned long endFrequency) = 0;
     /// @brief Gets the end frequency for Wobbulator sweep
-    virtual long getEndFrequency() const = 0;
+    virtual unsigned long getEndFrequency() const = 0;
 };
 
 #endif

@@ -1,6 +1,6 @@
 # signal_generator_ad9833
 
-Ver 0.2.8
+Ver 0.2.9
 
 # Introduction
 
@@ -182,12 +182,9 @@ classDiagram
 For Arduino UNO only
 
 -  [robtillaart/MCP4725](https://github.com/RobTillaart/MCP4725) 
- - [mike-matera/ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)
+- [mike-matera/ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)
 
 # Future developments
 
- - Wobbulator feature for UNO. 
-   - Scale the ramp signal for the UNO (12bit not 8bit DAC is used).
- - Cleanup the settings, change long -> unsigned long and in other places in the code.
  - Potentiometer to normalize values of signals for different waveforms.
 
