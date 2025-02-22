@@ -1,6 +1,6 @@
 # signal_generator_ad9833
 
-Ver 0.2.7
+Ver 0.2.8
 
 # Introduction
 
@@ -171,8 +171,6 @@ classDiagram
       SerialPortMenu --> ViewIf : uses
       SerialPortMenu --> GeneratorIf : uses
       SerialPortMenu --> WobbulatorIf : ueses
-    
-
 
 ```
 # Dependencies

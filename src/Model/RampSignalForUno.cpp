@@ -12,12 +12,12 @@ RampSignalForUno::RampSignalForUno()
     Wire.begin();
 
     MCP.begin();
-    MCP.setValue(1000);
+    MCP.setValue(0U);
 }
 
 void RampSignalForUno::setValue(const uint16_t signalValue)
 {
-    MCP.setValue(signalValue * 10);
+    MCP.setValue(signalValue);
 }
 
 #endif

@@ -8,8 +8,6 @@
 
 class GeneratorIf;
 
-#define VOBULATOR_NUMBER_OF_STEPS 50
-
 class Wobbulator : public Thread, public WobbulatorIf
 {
 public:

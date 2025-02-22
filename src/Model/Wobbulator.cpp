@@ -5,8 +5,6 @@
 
 #define VOBULATOR_MAX_FREQUENCY 12500000U
 #define VOBULATOR_RAMP_FIRST_STEP 0U
-// DAC resolution is 8 bits, so 256 steps
-#define VOBULATOR_RAMP_STEP (256 / VOBULATOR_NUMBER_OF_STEPS)
 
 Wobbulator *Wobbulator::m_Instance = nullptr;
 
@@ -64,7 +62,7 @@ void Wobbulator::update()
     {
         if (m_CurrentStepNo < VOBULATOR_NUMBER_OF_STEPS)
         {
-            const uint8_t rampDcValue = m_CurrentStepNo * VOBULATOR_RAMP_STEP;
+            const uint16_t rampDcValue = m_CurrentStepNo * VOBULATOR_RAMP_STEP;
             m_RampSignalSource->setValue(rampDcValue);
 
             const long frequency = m_Settings->getStartFrequency() + (m_CurrentStepNo * m_FrequencyStep);
