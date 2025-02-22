@@ -1,6 +1,7 @@
 #include "Model/GeneratorAd9833.hpp"
 
 #include "AD9833.h"
+#include "ModuleConfig.hpp"
 
 #define POWER_MODE_SLEEP_AL 3U
 
@@ -95,5 +96,32 @@ void GeneratorAd9833::disableWave()
         m_AD->setFrequency(0, 0);
         m_AD->setWave(AD9833_OFF);
         m_AD->setPowerMode(POWER_MODE_SLEEP_AL);
+    }
+}
+
+void GeneratorAd9833::connectivityTest()
+{
+    if (m_AD != nullptr)
+    {
+        m_AD->setFrequency(TEST_VALUE);
+
+        const float frequency = m_AD->getFrequency();
+
+        if (frequency != TEST_VALUE)
+        {
+            pinMode(LED_BUILTIN, OUTPUT);
+
+            while (true)
+            {
+#ifdef USE_SERIAL
+                Serial.println("Cannot communicate with one ore more AD9833 generators!");
+#endif
+
+                digitalWrite(LED_BUILTIN, HIGH); // turn the LED on (HIGH is the voltage level)
+                delay(1000);                     // wait for a second
+                digitalWrite(LED_BUILTIN, LOW);  // turn the LED off by making the voltage LOW
+                delay(1000);
+            }
+        }
     }
 }

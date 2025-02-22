@@ -13,6 +13,8 @@ GeneratorForEsp32::GeneratorForEsp32(const uint8_t generatorId, const uint8_t sp
     if (m_AD != nullptr)
     {
         m_AD->begin();
+
+        connectivityTest();
     }
 }
 
@@ -24,6 +26,8 @@ GeneratorForEsp32::GeneratorForEsp32(const uint8_t generatorId, SPIClass *spi, c
     if (m_AD != nullptr)
     {
         m_AD->begin();
+
+        connectivityTest();
     }
 }
 

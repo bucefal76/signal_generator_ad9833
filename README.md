@@ -1,6 +1,6 @@
 # signal_generator_ad9833
 
-Ver 0.2.9
+Ver 0.3.0
 
 # Introduction
 
@@ -27,6 +27,17 @@ At least as long as suitable library to talk ith the chip are available.
 
 # Pinout
 
+The code includes a basic connectivity test to check the SPI connection to the AD9833 generators.
+If the connection test fails, the built-in LED will blink upon power-up with a cycle of 1 second.
+Please refer to the GeneratorAd9833::connectivityTest() method for more details.
+
+Additionally, the Arduino UNO (Atmega 328p) performs a connectivity test to an external DAC MCP 4725. 
+Please refer to the RampSignalForUno::RampSignalForUno() method for more details.
+
+If there is a connectivity issue, a message will be displayed on the serial port (if it is configured).
+
+If you encounter any of these problems, please check your connections and restart the firmware.
+
 ## Atmega 328p Arduino UNO
 
 For channel 1, select is a pin 10, other input pins are the same, power is 5V.
@@ -35,7 +46,7 @@ For channel 1, select is a pin 10, other input pins are the same, power is 5V.
       |               |                                       |              |
       |  ARDUINO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out
       |  UNO          |  Pin 11 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN
-      |               |  Pin 13 ----------------- Pin SCKL    |              | 
+      |               |  Pin 13 ----------------- Pin SCKL    |   Generator  | 
       |               |  Pin 5V ----------------- Pin VCC     |              |
       |               |  Pin GND ---------------- Pin DGND    |              |
       -----------------                                       ----------------
@@ -46,17 +57,17 @@ For channel 2, select is a pin 9, other input pins are the same, power is 5V.
       |               |                                       |              |
       |  ARDUINO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out
       |  UNO          |  Pin 11 ----------------- Pin SDATA   |   Channel 2  |  Pin AGDN
-      |               |  Pin 13 ----------------- Pin SCKL    |              | 
+      |               |  Pin 13 ----------------- Pin SCKL    |   Generator  | 
       |               |  Pin 5V ----------------- Pin VCC     |              |
       |               |  Pin GND ---------------- Pin DGND    |              |
       -----------------                                       ----------------      
 
-For wobbulator ramp signal output (external ADC MCP 4725):
+For wobbulator ramp signal output (external DAC MCP 4725):
 
       -----------------                                       ----------------
       |               |                                       |              |
       |  ARDUINO      |  Pin A4 ----------------- Pin SDA     |   MCP 4725   |  Pin Out
-      |  UNO          |  Pin A5 ----------------- Pin SCL     |              |  Pin Gnd
+      |  UNO          |  Pin A5 ----------------- Pin SCL     |   DAC        |  Pin Gnd
       |               |                                       |              | 
       |               |  Pin 5V ----------------- Pin VCC     |              |
       |               |  Pin GND ---------------- Pin GND     |              |
@@ -72,7 +83,7 @@ For channel 1, select is a pin 12, other input pins are the same, power is 3.3V.
       |               |                                       |              |
       |  ESP32        |  Pin 12 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out
       |  WEMOS        |  Pin 23 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN
-      |  D1 R32       |  Pin 18 ----------------- Pin SCKL    |              |
+      |  D1 R32       |  Pin 18 ----------------- Pin SCKL    |   Generator  |
       |               |  Pin 3.3V --------------- Pin VCC     |              |
       |               |  Pin GND ---------------- Pin DGND    |              |
       -----------------                                       ----------------
@@ -83,12 +94,12 @@ For channel 2, select is a pin 13, other input pins are the same, power is 3.3V.
       |               |                                       |              |
       |  ESP32        |  Pin 13 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out
       |  WEMOS        |  Pin 23 ----------------- Pin SDATA   |   Channel 2  |  Pin AGDN
-      |  D1 R32       |  Pin 18 ----------------- Pin SCKL    |              |
+      |  D1 R32       |  Pin 18 ----------------- Pin SCKL    |   Generator  |
       |               |  Pin 3.3V --------------- Pin VCC     |              |
       |               |  Pin GND ---------------- Pin DGND    |              |
       -----------------                                       ----------------
 
-For wobbulator ramp signal output (internal ADC) is PIN 25.
+For wobbulator ramp signal output (internal DAC) is PIN 25.
 
 
 See for details in the include/ModuleConfig.hpp.
