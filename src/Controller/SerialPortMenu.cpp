@@ -2,7 +2,7 @@
 
 #ifdef USE_SERIAL
 
-#include "Controler/SerialPortMenu.hpp"
+#include "Controller/SerialPortMenu.hpp"
 
 SerialPortMenu *SerialPortMenu::m_Instance = nullptr;
 

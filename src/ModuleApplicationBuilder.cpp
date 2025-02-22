@@ -10,7 +10,7 @@
 #include "View/ViewIf.hpp"
 
 #ifdef USE_SERIAL
-#include "Controler/SerialPortMenu.hpp"
+#include "Controller/SerialPortMenu.hpp"
 #include "View/SerialPortView.hpp"
 #endif
 
