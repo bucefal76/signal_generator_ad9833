@@ -5,6 +5,8 @@
 
 class AD9833;
 
+#define TEST_VALUE 0x55AA
+
 /// @brief Class to generate waves with the AD9833 function generator
 /// for the Atmega 328p Arduino Uno and ESP32 Wemos R32 board.
 /// This is a common code, it simplifies use of robtillaart/AD9833 library.
@@ -23,6 +25,9 @@ public:
     virtual bool isEnabled() const override;
 
 protected:
+    /// @brief This is a blocking method to test if we can connect with the AD9833.
+    void connectivityTest();
+
     /// @brief Pointer to the AD9833 class form the robtillaart/AD9833 library.
     AD9833 *m_AD;
     /// @brief The channel id of the generator.

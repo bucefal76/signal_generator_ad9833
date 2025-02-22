@@ -27,6 +27,10 @@ At least as long as suitable library to talk ith the chip are available.
 
 # Pinout
 
+The code has basic connectivity test to check SPI connection to the AD9833 generators.
+If connection test fails the build in LED will blink at power up with 1sek cycles.
+See the GeneratorAd9833::connectivityTest().
+
 ## Atmega 328p Arduino UNO
 
 For channel 1, select is a pin 10, other input pins are the same, power is 5V.

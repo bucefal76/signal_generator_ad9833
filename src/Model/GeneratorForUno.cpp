@@ -11,6 +11,8 @@ GeneratorForUno::GeneratorForUno(const uint8_t generatorId, const uint8_t spiCsL
     if (m_AD != nullptr)
     {
         m_AD->begin();
+
+        connectivityTest();
     }
 }
 
