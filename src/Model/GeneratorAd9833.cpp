@@ -1,12 +1,13 @@
 #include "Model/GeneratorAd9833.hpp"
 
 #include "AD9833.h"
-#include "ModuleConfig.hpp"
 
 #define POWER_MODE_SLEEP_AL 3U
 
 GeneratorAd9833::GeneratorAd9833(const uint8_t channelId)
-    : m_AD(nullptr), m_ChannelId(channelId)
+    : m_AD(nullptr),
+      m_ChannelId(channelId),
+      m_Potentiometer(nullptr)
 {
 }
 
@@ -33,16 +34,31 @@ void GeneratorAd9833::generateWave(const WaveType type, const long frequency)
         switch (type)
         {
         case TypeSinusoidal:
+            if (m_Potentiometer != nullptr)
+            {
+                m_Potentiometer->setFullSignalStrength();
+            }
             m_AD->setWave(AD9833_SINE);
             break;
         case TypeSquare:
-
+            if (m_Potentiometer != nullptr)
+            {
+                m_Potentiometer->setSignalStrength(13U);
+            }
             m_AD->setWave(AD9833_SQUARE1);
             break;
         case TypeRamp:
+            if (m_Potentiometer != nullptr)
+            {
+                m_Potentiometer->setFullSignalStrength();
+            }
             m_AD->setWave(AD9833_TRIANGLE);
             break;
         default:
+            if (m_Potentiometer != nullptr)
+            {
+                m_Potentiometer->setMinimalSignalStrength();
+            }
             m_AD->setFrequency(0, 0);
             m_AD->setWave(AD9833_OFF);
         }
@@ -124,4 +140,9 @@ void GeneratorAd9833::connectivityTest()
             }
         }
     }
+}
+
+void GeneratorAd9833::setPotentiometer(PotentiometerIf *potentiometer)
+{
+    m_Potentiometer = potentiometer;
 }

@@ -423,11 +423,9 @@ void SerialPortMenu::setGeneratorsToControl(GeneratorIf *generatorLine1, Generat
 {
     m_GeneratorChannel1 = generatorLine1;
     setGeneratorChannel1Wave(GeneratorIf::TypeSquare, GENERATOR_DEFAULT_FREQUENCY_HZ);
-    /// setGeneratorChannel1Wave(GeneratorIf::TypeSquare, 1000000);
 
     m_GeneratorChannel2 = generatorLine2;
     setGeneratorChannel2Wave(GeneratorIf::TypeSquare, GENERATOR_DEFAULT_FREQUENCY_HZ / 2);
-    /// setGeneratorChannel2Wave(GeneratorIf::TypeSinusoidal, 1000000);
 }
 
 void SerialPortMenu::setView(ViewIf *view)
