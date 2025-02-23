@@ -43,7 +43,7 @@ void GeneratorAd9833::generateWave(const WaveType type, const long frequency)
         case TypeSquare:
             if (m_Potentiometer != nullptr)
             {
-                m_Potentiometer->setSignalStrength(13U);
+                m_Potentiometer->setSignalStrength(X9C103S_POTENTIOMETER_SIGNAL_STRENGTH);
             }
             m_AD->setWave(AD9833_SQUARE1);
             break;

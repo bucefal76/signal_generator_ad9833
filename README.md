@@ -1,6 +1,6 @@
 # signal_generator_ad9833
 
-Ver 0.3.2
+Ver 0.3.4
 
 # Introduction
 
@@ -295,5 +295,4 @@ For Arduino UNO only
 
  - Potentiometer to normalize values of signals for different waveforms.
   - For the ESP32 + connectivity diagram
- - Refactor MCP4725 MCP shall be a member of the RampSignalForUno class.
 
