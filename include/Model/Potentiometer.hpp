@@ -6,7 +6,7 @@
 
 #ifdef USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES
 
-class X9C103S;
+class X9C103S_;
 
 class Potentiometer : public PotentiometerIf
 {
@@ -17,7 +17,7 @@ public:
     virtual void setMinimalSignalStrength() final;
 
 private:
-    X9C103S *m_Potentiometer;
+    X9C103S_ *m_Potentiometer;
 };
 
 #endif
