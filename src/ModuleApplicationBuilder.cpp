@@ -72,16 +72,11 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 
 #ifdef USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES
 
-#ifdef USE_ESP32
-#error "Add support for potentiometer for ESP32 or disable the USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES"
-#else
     PotentiometerIf *potentiometerChannel1 = new Potentiometer(X9C103S_POTENTIOMETER_INC_PIN, X9C103S_POTENTIOMETER_UD_PIN, X9C103S_POTENTIOMETER_CHANNEL_1_CS_PIN);
     generatorChannel1->setPotentiometer(potentiometerChannel1);
 #ifdef USE_TWO_GENERATORS_FOR_TWO_CHANNELS
     PotentiometerIf *potentiometerChannel2 = new Potentiometer(X9C103S_POTENTIOMETER_INC_PIN, X9C103S_POTENTIOMETER_UD_PIN, X9C103S_POTENTIOMETER_CHANNEL_2_CS_PIN);
     generatorChannel2->setPotentiometer(potentiometerChannel2);
-#endif
-
 #endif
 
 #endif // USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES
