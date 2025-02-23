@@ -227,4 +227,7 @@ For Arduino UNO only
 # Future developments
 
  - Potentiometer to normalize values of signals for different waveforms.
+  - For the UNO + connectivity diagram
+  - For the ESP32 + connectivity diagram
+ - Refactor MCP4725 MCP shall be a member of the RampSignalForUno class.
 

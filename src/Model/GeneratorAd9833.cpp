@@ -1,19 +1,22 @@
 #include "Model/GeneratorAd9833.hpp"
 
 #include "AD9833.h"
-#include "ModuleConfig.hpp"
 
 #define POWER_MODE_SLEEP_AL 3U
 
 // TEMP
-#include <X9C103S.h>
-X9C103S pot1(6, 7, 8); // X9C103S digital potentiometer connected with inc pin to pin 6 ud pin to pin 7 and cs pin to pin 8. Change pin numbers as nessary.
+// #include <X9C103S.h>
+// X9C103S pot1(X9C103S_POTENTIOMETER_INC_PIN, X9C103S_POTENTIOMETER_UD_PIN, X9C103S_POTENTIOMETER_CHANNEL_1_CS_PIN); // X9C103S digital potentiometer connected with inc pin to pin 6 ud pin to pin 7 and cs pin to pin 8. Change pin numbers as nessary.
 
 GeneratorAd9833::GeneratorAd9833(const uint8_t channelId)
-    : m_AD(nullptr), m_ChannelId(channelId)
+    : m_AD(nullptr),
+      m_ChannelId(channelId),
+      m_Potentiometer(nullptr)
 {
-    pot1.initializePot();
-    pot1.setToHighest();
+    /*
+        pot1.initializePot();
+        pot1.setToHighest();
+        */
 }
 
 GeneratorAd9833::~GeneratorAd9833()
@@ -39,19 +42,35 @@ void GeneratorAd9833::generateWave(const WaveType type, const long frequency)
         switch (type)
         {
         case TypeSinusoidal:
-            pot1.setToHighest();
+            if (m_Potentiometer != nullptr)
+            {
+                m_Potentiometer->setFullSignalStrength();
+            }
+            // pot1.setToHighest();
             m_AD->setWave(AD9833_SINE);
             break;
         case TypeSquare:
-            pot1.setResistance(13);
+            // pot1.setResistance(13);
+            if (m_Potentiometer != nullptr)
+            {
+                m_Potentiometer->setSignalStrength(13U);
+            }
             m_AD->setWave(AD9833_SQUARE1);
             break;
         case TypeRamp:
-            pot1.setToHighest();
+            if (m_Potentiometer != nullptr)
+            {
+                m_Potentiometer->setFullSignalStrength();
+            }
+            // pot1.setToHighest();
             m_AD->setWave(AD9833_TRIANGLE);
             break;
         default:
-            pot1.setToLowest();
+            if (m_Potentiometer != nullptr)
+            {
+                m_Potentiometer->setMinimalSignalStrength();
+            }
+            // pot1.setToLowest();
             m_AD->setFrequency(0, 0);
             m_AD->setWave(AD9833_OFF);
         }
@@ -133,4 +152,9 @@ void GeneratorAd9833::connectivityTest()
             }
         }
     }
+}
+
+void GeneratorAd9833::setPotentiometer(PotentiometerIf *potentiometer)
+{
+    m_Potentiometer = potentiometer;
 }

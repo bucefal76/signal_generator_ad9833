@@ -2,6 +2,7 @@
 #define GENRATORAD9833_HPP
 
 #include "Model/GeneratorIf.hpp"
+#include "ModuleConfig.hpp"
 
 class AD9833;
 
@@ -23,6 +24,7 @@ public:
     virtual long getFrequency() const override;
     virtual WaveType getWaveType() const override;
     virtual bool isEnabled() const override;
+    virtual void setPotentiometer(PotentiometerIf *potentiometer) final;
 
 protected:
     /// @brief This is a blocking method to test if we can connect with the AD9833.
@@ -32,6 +34,8 @@ protected:
     AD9833 *m_AD;
     /// @brief The channel id of the generator.
     uint8_t m_ChannelId;
+    /// @brief Pointer to the potentiometer to normalize signals amplitude.
+    PotentiometerIf *m_Potentiometer;
 };
 
 #endif
