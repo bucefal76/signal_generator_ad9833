@@ -6,7 +6,7 @@
 
 #ifdef USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES
 
-#include <X9C103S.h>
+class X9C103S;
 
 class Potentiometer : public PotentiometerIf
 {

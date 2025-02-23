@@ -1,6 +1,6 @@
 # signal_generator_ad9833
 
-Ver 0.3.1
+Ver 0.3.2
 
 # Introduction
 
@@ -57,8 +57,8 @@ For channel 1, select is a pin 10, other input pins are the same, power is 5V.
 
       -----------------                                       ----------------
       |               |                                       |              |
-      |  ARDUINO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out
-      |  UNO          |  Pin 11 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN
+      |  ARDUINO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out 1 --
+      |  UNO          |  Pin 11 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN  -- 
       |               |  Pin 13 ----------------- Pin SCKL    |   Generator  | 
       |               |  Pin 5V ----------------- Pin VCC     |              |
       |               |  Pin GND ---------------- Pin DGND    |              |
@@ -68,8 +68,8 @@ For channel 2, select is a pin 9, other input pins are the same, power is 5V.
 
       -----------------                                       ----------------
       |               |                                       |              |
-      |  ARDUINO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out
-      |  UNO          |  Pin 11 ----------------- Pin SDATA   |   Channel 2  |  Pin AGDN
+      |  ARDUINO      |  Pin 10 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out 2 --
+      |  UNO          |  Pin 11 ----------------- Pin SDATA   |   Channel 2  |  Pin AGDN  --
       |               |  Pin 13 ----------------- Pin SCKL    |   Generator  | 
       |               |  Pin 5V ----------------- Pin VCC     |              |
       |               |  Pin GND ---------------- Pin DGND    |              |
@@ -79,14 +79,48 @@ For wobbulator ramp signal output (external DAC MCP 4725):
 
       -----------------                                       ----------------
       |               |                                       |              |
-      |  ARDUINO      |  Pin A4 ----------------- Pin SDA     |   MCP 4725   |  Pin Out
-      |  UNO          |  Pin A5 ----------------- Pin SCL     |   DAC        |  Pin Gnd
+      |  ARDUINO      |  Pin A4 ----------------- Pin SDA     |   MCP 4725   |  Pin Out --
+      |  UNO          |  Pin A5 ----------------- Pin SCL     |   DAC        |  Pin Gnd --
       |               |                                       |              | 
       |               |  Pin 5V ----------------- Pin VCC     |              |
       |               |  Pin GND ---------------- Pin GND     |              |
       -----------------                                       ----------------     
 
-See for details in the include/ModuleConfig.hpp.
+In case when the potentiometer is used:
+
+For Channel 1:
+
+      -----------------                                      --------------------
+      |                |  Pin 6 ------------------ Pin CS    |    X9C103S       |
+      |   ARDUINO      |  Pin 7 ------------------ Pin UD    |  Potentiometer   |
+      |   UNO          |  Pin 8 ------------------ Pin INC   |  Channel 1       |
+      |                |  Pin GND ---------------- Pin VL    |                  | 
+      -----------------                                      |                  | VW --
+                                                             |                  |
+      -----------------                                      |                  |     OUT
+      |    AD9833      |  Pin Out ---------------- Pin VH    |                  |     
+      |                |                                     --------------------
+      |   Channel 1    |  Pin AGND ----------------------------------------------------
+      |                |
+      ------------------
+
+For Channel 2:
+
+      -----------------                                      --------------------
+      |                |  Pin 5 ------------------ Pin CS    |    X9C103S       |
+      |   ARDUINO      |  Pin 7 ------------------ Pin UD    |  Potentiometer   |
+      |   UNO          |  Pin 8 ------------------ Pin INC   |  Channel 2       |
+      |                |  Pin GND ---------------- Pin VL    |                  | 
+      -----------------                                      |                  | VW --
+                                                             |                  |
+      -----------------                                      |                  |     OUT
+      |    AD9833      |  Pin Out ---------------- Pin VH    |                  |     
+      |                |                                     --------------------
+      |   Channel 2    |  Pin AGND ----------------------------------------------------
+      |                |
+      ------------------
+
+See for details in the include/ModuleConfig.hpp. AGND == Analog Ground.
 
 ## ESP32 Wemos D1 R32
 
@@ -94,8 +128,8 @@ For channel 1, select is a pin 12, other input pins are the same, power is 3.3V.
 
       -----------------                                        ----------------
       |               |                                       |              |
-      |  ESP32        |  Pin 12 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out
-      |  WEMOS        |  Pin 23 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN
+      |  ESP32        |  Pin 12 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out 1 --
+      |  WEMOS        |  Pin 23 ----------------- Pin SDATA   |   Channel 1  |  Pin AGDN  --
       |  D1 R32       |  Pin 18 ----------------- Pin SCKL    |   Generator  |
       |               |  Pin 3.3V --------------- Pin VCC     |              |
       |               |  Pin GND ---------------- Pin DGND    |              |
@@ -105,8 +139,8 @@ For channel 2, select is a pin 13, other input pins are the same, power is 3.3V.
 
       -----------------                                        ----------------
       |               |                                       |              |
-      |  ESP32        |  Pin 13 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out
-      |  WEMOS        |  Pin 23 ----------------- Pin SDATA   |   Channel 2  |  Pin AGDN
+      |  ESP32        |  Pin 13 ----------------- Pin FSYNCH  |   AD9833     |  Pin Out 2 --
+      |  WEMOS        |  Pin 23 ----------------- Pin SDATA   |   Channel 2  |  Pin AGDN  --
       |  D1 R32       |  Pin 18 ----------------- Pin SCKL    |   Generator  |
       |               |  Pin 3.3V --------------- Pin VCC     |              |
       |               |  Pin GND ---------------- Pin DGND    |              |
@@ -137,6 +171,38 @@ This can be easily switched on or off in the ModulesConfig.hpp file by adjusting
 - I have noticed that when both generators work at the same time, and one of them is generating a square wave, 
 the second generator may get distortion (spikes) as the power lines are not correctly filtered (assuming powering from the UNO board itself).
 For this reason, it is recommended that the power lines to both AD9833 devices be thoroughly filtered.
+- There is a problem with X9C103S.h library (hedrahexon/X9C103S). The initialization is not correct.
+  When firmware is restarted but we do not do a power cycle (no power off - power on) on the device then the X9C103S chip remembers the previous settings 
+  (for example resistance set to 10) and when the firmware tries to set its settings again (e.g. 10),
+  it ends up adding new settings to the existing hardware settings (in this case we will end up with 20).
+  To fix this modify void X9C103S::initializePot() in by adding at the end:
+
+```
+void X9C103S::initializePot()
+{
+pinMode(_inc_pin, OUTPUT);
+pinMode(_ud_pin, OUTPUT);
+pinMode(_cs_pin, OUTPUT);
+digitalWrite(_cs_pin, HIGH); // Ensure initial state is HIGH
+_resistance = 1;
+
+// EXTRA CODE / FIX
+// Now make sure that the real resistance of the chip is in synch with _resistance!
+digitalWrite(_ud_pin, LOW); // Set direction to decrement
+digitalWrite(_cs_pin, LOW); // Enable the potentiometer
+
+for (uint8_t i = 0; i < 101; i++)
+{
+    digitalWrite(_inc_pin, LOW);
+    delay(1);
+    digitalWrite(_inc_pin, HIGH);
+    delay(1);
+}
+digitalWrite(_cs_pin, HIGH); // Disable the potentiometer
+// END OF EXTRA CODE
+}
+
+```
 
 
 # Architecture
@@ -218,6 +284,7 @@ classDiagram
 - [robtillaart/AD9833](https://github.com/RobTillaart/AD9833)
 - [ivanseidel/ArduinoThread](https://github.com/ivanseidel/ArduinoThread)
 - [SPI](https://github.com/esp8266/Arduino/blob/master/libraries/SPI/SPI.h)
+- [hedrahexon/X9C103S](https://github.com/Hedrahexon/X9C103S)
 
 For Arduino UNO only
 
@@ -227,7 +294,6 @@ For Arduino UNO only
 # Future developments
 
  - Potentiometer to normalize values of signals for different waveforms.
-  - For the UNO + connectivity diagram
   - For the ESP32 + connectivity diagram
  - Refactor MCP4725 MCP shall be a member of the RampSignalForUno class.
 

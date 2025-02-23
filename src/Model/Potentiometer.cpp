@@ -1,4 +1,5 @@
 #include "Model/Potentiometer.hpp"
+#include <X9C103S.h>
 
 #ifdef USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES
 
