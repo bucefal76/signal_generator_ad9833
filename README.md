@@ -1,6 +1,6 @@
 # signal_generator_ad9833
 
-Ver 0.3.4
+Ver 0.3.5
 
 # Introduction
 
@@ -165,6 +165,21 @@ Therefore, it may be more effective to amplify the sinusoidal and triangular sig
 Nonetheless, I have opted to include the option of using the digital potentiometer at the generator's output in the code.
 This can be easily switched on or off in the ModulesConfig.hpp file by adjusting the setting (USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES).
 
+## A little bit better solution
+
+A different approach to this problem is outlined in the document titled "schematics/arduino_uno_application.pdf." 
+
+This approach involves additional analog circuitry that splits the signal into two paths using transistors Q1, Q2, Q3, and Q4. 
+One path amplifies the sinusoidal and triangular signals with transistor Q5 before they are sent to the mixer (Q6).
+In contrast, the second path, which handles the square wave, slightly attenuates the signal with resistor R11 before it reaches the mixer (Q6).
+Finally, there is a buffer transistor, Q7.
+
+The advantage of this circuit is that all types of signals maintain the same amplitude. 
+However, this comes at a cost: the maximum frequency is reduced.
+Please feel free to modify or fix the circuit. I'm not a professional hardware designer.
+
+- [Schematic with analog circuity to normalize signals](schematics/arduino_uno_application.pdf)
+
 # Other remarks
 
 - Wobbulator always works with channel 1.
@@ -293,6 +308,6 @@ For Arduino UNO only
 
 # Future developments
 
- - Potentiometer to normalize values of signals for different waveforms.
-  - For the ESP32 + connectivity diagram
-
+- Potentiometer to normalize values of signals for different waveforms.
+ - For the ESP32 + connectivity diagram
+- Prepare elegant way for controlling transistor switches for signal normalization.
