@@ -13,9 +13,14 @@
 class NormCircuitControlIf
 {
 public:
-    virtual void setSwitchChannel1On() = 0;
-    virtual void setSwitchChannel2On() = 0;
-    virtual void setBothSwitchesOff() = 0;
+    /// @brief Method enables an amplification branch in /schematics/arduino_uno_application.pdf
+    /// Transistors Q1 and Q5.
+    virtual void enableAmplificationBranch() = 0;
+    /// @brief Method enables dumping branch in /schematics/arduino_uno_application.pdf
+    /// Transistors Q2 and R11.
+    virtual void enableDumpingBranch() = 0;
+    /// @brief Method disables both branches, no signal at the output.
+    virtual void disableBothBranches() = 0;
 };
 
 #endif

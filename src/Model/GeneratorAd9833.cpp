@@ -5,13 +5,14 @@
 
 #define POWER_MODE_SLEEP_AL 3U
 
-NormCircuitControlForNeo normCirc;
-
 GeneratorAd9833::GeneratorAd9833(const uint8_t channelId)
     : m_AD(nullptr),
       m_ChannelId(channelId),
-      m_Potentiometer(nullptr)
+      m_Potentiometer(nullptr),
+      m_NormCircuitControl(nullptr)
 {
+    /// TEMP
+    m_NormCircuitControl = new NormCircuitControlForNeo();
 }
 
 GeneratorAd9833::~GeneratorAd9833()
@@ -37,7 +38,10 @@ void GeneratorAd9833::generateWave(const WaveType type, const long frequency)
         switch (type)
         {
         case TypeSinusoidal:
-            normCirc.setSwitchChannel1On();
+            if (m_NormCircuitControl != nullptr)
+            {
+                m_NormCircuitControl->enableAmplificationBranch();
+            }
             if (m_Potentiometer != nullptr)
             {
                 m_Potentiometer->setFullSignalStrength();
@@ -45,7 +49,10 @@ void GeneratorAd9833::generateWave(const WaveType type, const long frequency)
             m_AD->setWave(AD9833_SINE);
             break;
         case TypeSquare:
-            normCirc.setSwitchChannel2On();
+            if (m_NormCircuitControl != nullptr)
+            {
+                m_NormCircuitControl->enableDumpingBranch();
+            }
             if (m_Potentiometer != nullptr)
             {
                 m_Potentiometer->setSignalStrength(X9C103S_POTENTIOMETER_SIGNAL_STRENGTH);
@@ -53,7 +60,10 @@ void GeneratorAd9833::generateWave(const WaveType type, const long frequency)
             m_AD->setWave(AD9833_SQUARE1);
             break;
         case TypeRamp:
-            normCirc.setSwitchChannel1On();
+            if (m_NormCircuitControl != nullptr)
+            {
+                m_NormCircuitControl->enableAmplificationBranch();
+            }
             if (m_Potentiometer != nullptr)
             {
                 m_Potentiometer->setFullSignalStrength();
@@ -61,7 +71,10 @@ void GeneratorAd9833::generateWave(const WaveType type, const long frequency)
             m_AD->setWave(AD9833_TRIANGLE);
             break;
         default:
-            normCirc.setBothSwitchesOff();
+            if (m_NormCircuitControl != nullptr)
+            {
+                m_NormCircuitControl->disableBothBranches();
+            }
             if (m_Potentiometer != nullptr)
             {
                 m_Potentiometer->setMinimalSignalStrength();
@@ -152,4 +165,9 @@ void GeneratorAd9833::connectivityTest()
 void GeneratorAd9833::setPotentiometer(PotentiometerIf *potentiometer)
 {
     m_Potentiometer = potentiometer;
+}
+
+void GeneratorAd9833::setNormalizationCircuitController(NormCircuitControlIf *normCircuitController)
+{
+    m_NormCircuitControl = normCircuitController;
 }

@@ -21,7 +21,7 @@ NormCircuitControlForNeo::NormCircuitControlForNeo()
     digitalWrite(CHANNEL2_SHORT_SWITCH, HIGH);
 }
 
-void NormCircuitControlForNeo::setSwitchChannel1On()
+void NormCircuitControlForNeo::enableAmplificationBranch()
 {
     // Block channel 2
     digitalWrite(CHANNEL2_OUTPUT_SWITCH, LOW);
@@ -31,7 +31,7 @@ void NormCircuitControlForNeo::setSwitchChannel1On()
     digitalWrite(CHANNEL1_OUTPUT_SWITCH, HIGH);
 }
 
-void NormCircuitControlForNeo::setSwitchChannel2On()
+void NormCircuitControlForNeo::enableDumpingBranch()
 {
     // Block channel 1
     digitalWrite(CHANNEL1_OUTPUT_SWITCH, LOW);
@@ -41,7 +41,7 @@ void NormCircuitControlForNeo::setSwitchChannel2On()
     digitalWrite(CHANNEL2_OUTPUT_SWITCH, HIGH);
 }
 
-void NormCircuitControlForNeo::setBothSwitchesOff()
+void NormCircuitControlForNeo::disableBothBranches()
 {
     digitalWrite(CHANNEL1_OUTPUT_SWITCH, LOW);
     digitalWrite(CHANNEL2_OUTPUT_SWITCH, LOW);

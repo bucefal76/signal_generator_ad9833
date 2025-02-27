@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "Model/PotentiometerIf.hpp"
+#include "Model/NormCircuitControlIf.hpp"
 
 /// @brief Interface to define the methods to generate a wave with
 /// the any function generator, that implements this interface.
@@ -34,9 +35,11 @@ public:
     virtual long getFrequency() const = 0;
     // @brief Method to check if the generator is enabled, from the device itself.
     virtual bool isEnabled() const = 0;
-    /// @brief  Sets the pointer to the potentiometer object to normalize the signals
+    /// @brief Sets the pointer to the potentiometer object to normalize the signals
     /// @param potentiometer Pointer to the PotentiometerIf type object.
     virtual void setPotentiometer(PotentiometerIf *potentiometer) = 0;
+    /// @brief Sets the pointer to the normalization circuit controller, see NormCircuitControlIf.
+    virtual void setNormalizationCircuitController(NormCircuitControlIf *normCircuitController) = 0;
 };
 
 #endif
