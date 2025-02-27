@@ -51,8 +51,8 @@
 #define SERIAL_MENU_THREAD_TIME_INTERVAL_MS 100U
 #endif
 
-//
-/// #define USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES
+/// Use this define to connect the potentiometer to the DAC output
+/* #define USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES */
 #ifdef USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES
 
 #ifdef USE_ESP32
@@ -75,6 +75,28 @@
 
 #else
 #define X9C103S_POTENTIOMETER_SIGNAL_STRENGTH 0
+#endif
+
+/// This define shall be used only with device configured
+/// in the document: /schematics/arduino_uno_application.pdf.
+/// This is:
+/// - Arduino Nano or UNO.
+/// - Single channel generator.
+/// - External DAC for wobbulator Y channel ramp signal.
+/// - No potentiometer at the output
+/// In this configuration all signals are adjusted to 1.3V peak to peak.
+#define USE_ANALOG_CRAZY_COMPLEX_OUTPUT
+/// Guards:
+#ifdef USE_ANALOG_CRAZY_COMPLEX_OUTPUT
+#ifdef USE_TWO_GENERATORS_FOR_TWO_CHANNELS
+#error "Cannot use two generators in /schematics/arduino_uno_application.pdf mode!"
+#endif
+#ifdef USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES
+#error "Cannot use potentiometer in /schematics/arduino_uno_application.pdf mode!"
+#endif
+#ifdef USE_ESP32
+#error "ESP32 is not compatible with the /schematics/arduino_uno_application.pdf mode!"
+#endif
 #endif
 
 #endif
