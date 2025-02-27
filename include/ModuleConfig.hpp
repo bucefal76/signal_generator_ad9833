@@ -85,9 +85,9 @@
 /// - External DAC for wobbulator Y channel ramp signal.
 /// - No potentiometer at the output
 /// In this configuration all signals are adjusted to 1.3V peak to peak.
-#define USE_ANALOG_CRAZY_COMPLEX_OUTPUT
+#define USE_NORMALIZATION_CIRCUIT
 /// Guards:
-#ifdef USE_ANALOG_CRAZY_COMPLEX_OUTPUT
+#ifdef USE_NORMALIZATION_CIRCUIT
 #ifdef USE_TWO_GENERATORS_FOR_TWO_CHANNELS
 #error "Cannot use two generators in /schematics/arduino_uno_application.pdf mode!"
 #endif
