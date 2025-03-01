@@ -3,8 +3,6 @@
 
 #include "ModuleConfig.hpp"
 
-#ifdef USE_NORMALIZATION_CIRCUIT
-
 /*
     Interface to control normalization circuit.
     See /schematics/arduino_uno_application.pdf
@@ -22,7 +20,5 @@ public:
     /// @brief Method disables both branches, no signal at the output.
     virtual void disableBothBranches() = 0;
 };
-
-#endif
 
 #endif

@@ -11,8 +11,6 @@ GeneratorAd9833::GeneratorAd9833(const uint8_t channelId)
       m_Potentiometer(nullptr),
       m_NormCircuitControl(nullptr)
 {
-    /// TEMP
-    m_NormCircuitControl = new NormCircuitControlForNeo();
 }
 
 GeneratorAd9833::~GeneratorAd9833()

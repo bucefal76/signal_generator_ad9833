@@ -85,7 +85,7 @@
 /// - External DAC for wobbulator Y channel ramp signal.
 /// - No potentiometer at the output
 /// In this configuration all signals are adjusted to 1.3V peak to peak.
-#define USE_NORMALIZATION_CIRCUIT
+/* #define USE_NORMALIZATION_CIRCUIT */
 /// Guards:
 #ifdef USE_NORMALIZATION_CIRCUIT
 #ifdef USE_TWO_GENERATORS_FOR_TWO_CHANNELS
