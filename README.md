@@ -1,6 +1,6 @@
 # signal_generator_ad9833
 
-Ver 0.3.5
+Ver 0.4.0
 
 # Introduction
 
@@ -37,6 +37,7 @@ Device configuration is defined in include\ModuleConfig.hpp
 | WOBBULATOR_NUMBER_OF_STEPS              | How many steps the wobbulator will take between start and end frequency sweep, feel free to change |
 | SERIAL_MENU_THREAD_TIME_INTERVAL_MS     | Define how often device will scan serial port for your key down in the menu                     | 
 | USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES | Use X9C103S potentiometer to dial down the square waveform to the sinus and triangle level, optional |
+| USE_NORMALIZATION_CIRCUIT               | Use this define to work with signal amplitude normalization unit described in schematics/arduino_uno_application.pdf. Only for Arduino UNO/NANO, single channel. |
 
 # Pinout
 
@@ -307,7 +308,3 @@ For Arduino UNO only
 - [mike-matera/ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)
 
 # Future developments
-
-- Potentiometer to normalize values of signals for different waveforms.
- - For the ESP32 + connectivity diagram
-- Prepare elegant way for controlling transistor switches for signal normalization.

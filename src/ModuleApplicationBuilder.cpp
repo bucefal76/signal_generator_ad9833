@@ -5,6 +5,7 @@
 #include "Model/VolatileSettings.hpp"
 #include "Model/Wobbulator.hpp"
 #include "Model/Potentiometer.hpp"
+#include "Model/NormCircuitControlForNeo.hpp"
 
 #ifdef USE_SERIAL
 #include "Controller/SerialPortMenu.hpp"
@@ -32,6 +33,11 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
     SettingsIf *settings = new VoltileSettings();
     RampSignalIf *rampSignal = nullptr;
     ViewIf *view = nullptr;
+    NormCircuitControlIf *normCircuitControl = nullptr;
+
+#ifdef USE_NORMALIZATION_CIRCUIT
+    normCircuitControl = new NormCircuitControlForNeo();
+#endif
 
     GeneratorIf *generatorChannel1 = nullptr;
 #ifdef USE_TWO_GENERATORS_FOR_TWO_CHANNELS
@@ -71,15 +77,17 @@ void ModuleApplicationBuilder::setupThreads(ModuleApplicationIf &rApplication)
 #endif // USE_ESP32
 
 #ifdef USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES
-
     PotentiometerIf *potentiometerChannel1 = new Potentiometer(X9C103S_POTENTIOMETER_INC_PIN, X9C103S_POTENTIOMETER_UD_PIN, X9C103S_POTENTIOMETER_CHANNEL_1_CS_PIN);
     generatorChannel1->setPotentiometer(potentiometerChannel1);
 #ifdef USE_TWO_GENERATORS_FOR_TWO_CHANNELS
     PotentiometerIf *potentiometerChannel2 = new Potentiometer(X9C103S_POTENTIOMETER_INC_PIN, X9C103S_POTENTIOMETER_UD_PIN, X9C103S_POTENTIOMETER_CHANNEL_2_CS_PIN);
     generatorChannel2->setPotentiometer(potentiometerChannel2);
 #endif
-
 #endif // USE_X9C103S_POTENTIOMETER_TO_NORMALIZE_WAVEFORMS_AMPLITUDES
+
+#ifdef USE_NORMALIZATION_CIRCUIT
+    generatorChannel1->setNormalizationCircuitController(normCircuitControl);
+#endif
 
 #ifdef USE_ESP32
     rampSignal = new RampSignalForEsp32();

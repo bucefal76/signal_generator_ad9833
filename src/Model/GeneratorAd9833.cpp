@@ -1,64 +1,16 @@
 #include "Model/GeneratorAd9833.hpp"
+#include "Model/NormCircuitControlForNeo.hpp"
 
 #include "AD9833.h"
 
 #define POWER_MODE_SLEEP_AL 3U
 
-#define CHANNEL1_OUTPUT_SWITCH 9
-#define CHANNEL2_OUTPUT_SWITCH 8
-#define CHANNEL1_SHORT_SWITCH 7
-#define CHANNEL2_SHORT_SWITCH 6
-
-void setSwitchChannel1On()
-{
-#ifdef USE_ANALOG_CRAZY_COMPLEX_OUTPUT
-    // Block channel 2
-    digitalWrite(CHANNEL2_OUTPUT_SWITCH, LOW);
-    digitalWrite(CHANNEL2_SHORT_SWITCH, HIGH);
-    // Enable channel 1
-    digitalWrite(CHANNEL1_SHORT_SWITCH, LOW);
-    digitalWrite(CHANNEL1_OUTPUT_SWITCH, HIGH);
-#endif
-}
-
-void setSwitchChannel2On()
-{
-#ifdef USE_ANALOG_CRAZY_COMPLEX_OUTPUT
-    // Block channel 1
-    digitalWrite(CHANNEL1_OUTPUT_SWITCH, LOW);
-    digitalWrite(CHANNEL1_SHORT_SWITCH, HIGH);
-    // Enable channel 2
-    digitalWrite(CHANNEL2_SHORT_SWITCH, LOW);
-    digitalWrite(CHANNEL2_OUTPUT_SWITCH, HIGH);
-#endif
-}
-
-void setBothSwitchesOff()
-{
-#ifdef USE_ANALOG_CRAZY_COMPLEX_OUTPUT
-    digitalWrite(CHANNEL1_OUTPUT_SWITCH, LOW);
-    digitalWrite(CHANNEL2_OUTPUT_SWITCH, LOW);
-    digitalWrite(CHANNEL1_SHORT_SWITCH, HIGH);
-    digitalWrite(CHANNEL2_SHORT_SWITCH, HIGH);
-#endif
-}
-
 GeneratorAd9833::GeneratorAd9833(const uint8_t channelId)
     : m_AD(nullptr),
       m_ChannelId(channelId),
-      m_Potentiometer(nullptr)
+      m_Potentiometer(nullptr),
+      m_NormCircuitControl(nullptr)
 {
-#ifdef USE_ANALOG_CRAZY_COMPLEX_OUTPUT
-    pinMode(CHANNEL1_OUTPUT_SWITCH, OUTPUT);
-    pinMode(CHANNEL2_OUTPUT_SWITCH, OUTPUT);
-    pinMode(CHANNEL1_SHORT_SWITCH, OUTPUT);
-    pinMode(CHANNEL2_SHORT_SWITCH, OUTPUT);
-
-    digitalWrite(CHANNEL2_OUTPUT_SWITCH, LOW);
-    digitalWrite(CHANNEL1_OUTPUT_SWITCH, LOW);
-    digitalWrite(CHANNEL1_SHORT_SWITCH, HIGH);
-    digitalWrite(CHANNEL2_SHORT_SWITCH, HIGH);
-#endif
 }
 
 GeneratorAd9833::~GeneratorAd9833()
@@ -84,7 +36,10 @@ void GeneratorAd9833::generateWave(const WaveType type, const long frequency)
         switch (type)
         {
         case TypeSinusoidal:
-            setSwitchChannel1On();
+            if (m_NormCircuitControl != nullptr)
+            {
+                m_NormCircuitControl->enableAmplificationBranch();
+            }
             if (m_Potentiometer != nullptr)
             {
                 m_Potentiometer->setFullSignalStrength();
@@ -92,7 +47,10 @@ void GeneratorAd9833::generateWave(const WaveType type, const long frequency)
             m_AD->setWave(AD9833_SINE);
             break;
         case TypeSquare:
-            setSwitchChannel2On();
+            if (m_NormCircuitControl != nullptr)
+            {
+                m_NormCircuitControl->enableDumpingBranch();
+            }
             if (m_Potentiometer != nullptr)
             {
                 m_Potentiometer->setSignalStrength(X9C103S_POTENTIOMETER_SIGNAL_STRENGTH);
@@ -100,7 +58,10 @@ void GeneratorAd9833::generateWave(const WaveType type, const long frequency)
             m_AD->setWave(AD9833_SQUARE1);
             break;
         case TypeRamp:
-            setSwitchChannel1On();
+            if (m_NormCircuitControl != nullptr)
+            {
+                m_NormCircuitControl->enableAmplificationBranch();
+            }
             if (m_Potentiometer != nullptr)
             {
                 m_Potentiometer->setFullSignalStrength();
@@ -108,6 +69,10 @@ void GeneratorAd9833::generateWave(const WaveType type, const long frequency)
             m_AD->setWave(AD9833_TRIANGLE);
             break;
         default:
+            if (m_NormCircuitControl != nullptr)
+            {
+                m_NormCircuitControl->disableBothBranches();
+            }
             if (m_Potentiometer != nullptr)
             {
                 m_Potentiometer->setMinimalSignalStrength();
@@ -198,4 +163,9 @@ void GeneratorAd9833::connectivityTest()
 void GeneratorAd9833::setPotentiometer(PotentiometerIf *potentiometer)
 {
     m_Potentiometer = potentiometer;
+}
+
+void GeneratorAd9833::setNormalizationCircuitController(NormCircuitControlIf *normCircuitController)
+{
+    m_NormCircuitControl = normCircuitController;
 }

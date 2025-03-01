@@ -25,6 +25,7 @@ public:
     virtual WaveType getWaveType() const override;
     virtual bool isEnabled() const override;
     virtual void setPotentiometer(PotentiometerIf *potentiometer) final;
+    virtual void setNormalizationCircuitController(NormCircuitControlIf *normCircuitController) final;
 
 protected:
     /// @brief This is a blocking method to test if we can connect with the AD9833.
@@ -36,6 +37,9 @@ protected:
     uint8_t m_ChannelId;
     /// @brief Pointer to the potentiometer to normalize signals amplitude.
     PotentiometerIf *m_Potentiometer;
+    /// @brief Pointer to the more advanced normalization than potentiometer.
+    /// It can be use instead the potentiometer.
+    NormCircuitControlIf *m_NormCircuitControl;
 };
 
 #endif
